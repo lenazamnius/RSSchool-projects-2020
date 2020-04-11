@@ -1,4 +1,4 @@
-import { testFunc } from './test';
+import cards from './cards-object';
 import './styles/main.scss';
 
-console.log(testFunc('Hello'));
+console.log(cards[1][1].word);
