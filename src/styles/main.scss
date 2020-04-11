@@ -4,8 +4,8 @@ body {
   background-color: $bg;
   font-family: 'Bellota', cursive;
   // font-family: 'Roboto', sans-serif;
-  color: wheat;
 }
+
 .app-wrapper {
   position: relative;
 
@@ -14,15 +14,26 @@ body {
     top: 0;
     left: 0;
     width: 20%;
-    min-width: 280px;
+    width: 300px;
     height: 100vh;
+    margin-left: -300px;
     z-index: 10;
-    padding-top: 40px;
+    padding: 40px 20px 0 50px;
     font-size: 1.5rem;
-    text-align: center;
+    transition: transform .45s ease-in;
+
+    &.active {
+      transform: translateX(300px);
+    }
 
     .sidebar-item {
       margin-top: 15px;
+      color: white;
+      text-decoration: none;
+
+      &:hover {
+        color: rgba(233, 84, 32, .6);
+      }
     }
 
     .sidebar-item:first-of-type {
@@ -33,14 +44,14 @@ body {
     .sidebar-cross {
       text-align: right;
       padding-right: 40px;
-    }
+
+      &:hover {
+        color: rgba(233, 84, 32, .6);
+      }
+    } 
 
     .fa-paw {
       margin-right: 10px;
-    }
-
-    .fa-paw:hover {
-      color: rgb(233, 84, 32);
     }
   }
 }
@@ -54,14 +65,14 @@ body {
   padding-top: 40px;
 
   .toggle-icon {
-    width: 35px;
-    height: 35px;
-    margin-right: 15px;
-    border: 2px solid white;
+    margin-right: 50px;
+    font-size: 1.6rem;
+    color: white;
   }
 
   .logo {
     font-size: 1.6rem;
+    text-decoration: none;
   }
 }
 
@@ -75,6 +86,7 @@ body {
     height: 300px;
     text-align: center;
     font-size: 1.4rem;
+    text-decoration: none;
   }
   
   .card-img-top {
