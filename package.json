@@ -4,7 +4,8 @@
   "description": "Application for children to learn English words",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build:dev": "webpack --mode development",
+    "build:prod": "webpack --mode production",
     "start:dev": "webpack-dev-server"
   },
   "repository": {

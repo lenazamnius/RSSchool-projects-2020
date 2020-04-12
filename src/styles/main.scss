@@ -1,7 +1,9 @@
-$bg: wheat;
+// $bg: rgb(255, 248, 220);
+$bg-color: #f9fafb;
+$text-highlight: rgba(233, 84, 32, .6);
 
 body {
-  background-color: $bg;
+  background-color: $bg-color;
   font-family: 'Bellota', cursive;
   // font-family: 'Roboto', sans-serif;
 }
@@ -32,7 +34,7 @@ body {
       text-decoration: none;
 
       &:hover {
-        color: rgba(233, 84, 32, .6);
+        color: $text-highlight;
       }
     }
 
@@ -46,7 +48,7 @@ body {
       padding-right: 40px;
 
       &:hover {
-        color: rgba(233, 84, 32, .6);
+        color: $text-highlight;
       }
     } 
 
@@ -67,7 +69,7 @@ body {
   .toggle-icon {
     margin-right: 50px;
     font-size: 1.6rem;
-    color: white;
+    color: $text-highlight;
   }
 
   .logo {
@@ -76,20 +78,21 @@ body {
   }
 }
 
-.main-container {
+.board-container {
   max-width: 1400px;
   margin: 0 auto;
   padding-top: 70px;
 
   .card {
-    width: 290px;
-    height: 300px;
-    text-align: center;
+    width: 300px;
+    height: 275px;
     font-size: 1.4rem;
+    text-align: center;
     text-decoration: none;
   }
   
-  .card-img-top {
-    border-radius: 15%;
-  }
+  // .card-img-top {
+  //   border-radius: 10px;
+  //   border: 3px solid white;
+  // }
 }

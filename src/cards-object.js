@@ -1,5 +1,6 @@
+const sections = ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions', 'Shapes', 'Vehicle'];
+
 const cards = [
-  ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions', 'Shapes', 'Vehicle'],
   [
     {
       word: 'cry',
@@ -302,6 +303,18 @@ const cards = [
   ],
   [
     {
+      word: 'cross',
+      translation: 'крест',
+      image: 'images/cross.jpg',
+      audioSrc: 'audio/cross.mp3',
+    },
+    {
+      word: 'ellipse',
+      translation: 'овал',
+      image: 'images/ellipse.jpg',
+      audioSrc: 'audio/ellipse.mp3',
+    },
+    {
       word: 'circle',
       translation: 'круг',
       image: 'images/circle.jpg',
@@ -320,12 +333,6 @@ const cards = [
       audioSrc: 'audio/square.mp3',
     },
     {
-      word: 'ellipse',
-      translation: 'овал',
-      image: 'images/ellipse.jpg',
-      audioSrc: 'audio/ellipse.mp3',
-    },
-    {
       word: 'star',
       translation: 'звезда',
       image: 'images/star.jpg',
@@ -342,12 +349,6 @@ const cards = [
       translation: 'окружность',
       image: 'images/ring.jpg',
       audioSrc: 'audio/ring.mp3',
-    },
-    {
-      word: 'cross',
-      translation: 'крест',
-      image: 'images/cross.jpg',
-      audioSrc: 'audio/cross.mp3',
     },
   ],
   [
@@ -396,4 +397,4 @@ const cards = [
   ],
 ];
 
-export default cards;
+export { cards, sections };
