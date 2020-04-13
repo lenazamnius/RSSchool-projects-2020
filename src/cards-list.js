@@ -10,7 +10,7 @@ class CardsList {
     const board = document.createElement('div');
     board.classList.add('main-board', 'd-flex', 'flex-wrap', 'justify-content-center');
 
-    if (this.state === '') {
+    if (this.state === 'Main Page') {
       board.classList.add('main-board');
       sections.forEach((val, index) => {
         const newCard = new Card(this.state, `src/${cards[index][0].image}`, val);

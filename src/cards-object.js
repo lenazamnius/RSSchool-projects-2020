@@ -383,6 +383,12 @@ const cards = [
       audioSrc: 'audio/boat.mp3',
     },
     {
+      word: 'plane',
+      translation: 'самолёт',
+      image: 'images/plane.jpg',
+      audioSrc: 'audio/plane.mp3',
+    },
+    {
       word: 'truck',
       translation: 'грузовик',
       image: 'images/truck.jpg',

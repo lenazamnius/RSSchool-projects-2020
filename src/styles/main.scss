@@ -1,10 +1,15 @@
-// $bg: rgb(255, 248, 220);
 $bg-color: #f9fafb;
+$train-color: rgba(23, 163, 184, 1);
+$train-color-highlight: rgb(10, 81, 92);
 $text-highlight: rgba(233, 84, 32, .6);
+$mediaDeskWidth: 1392px;
+$mediaTabletWidth: 1043px;
+$mediaPhoneWidth: 696px;
 
 body {
   background-color: $bg-color;
   font-family: 'Bellota', cursive;
+  letter-spacing: 1.5px;
   // font-family: 'Roboto', sans-serif;
 }
 
@@ -15,45 +20,86 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 20%;
-    width: 300px;
+    width: 370px;
     height: 100vh;
-    margin-left: -300px;
+    margin-left: -370px;
+    padding: 40px 20px 0 70px;    
+    font-size: 1.6rem;
     z-index: 10;
-    padding: 40px 20px 0 50px;
-    font-size: 1.5rem;
     transition: transform .45s ease-in;
 
     &.active {
-      transform: translateX(300px);
+      outline: 9999px solid rgba(23, 163, 184, 0.3);
+      transform: translateX(370px);
+
+      @media screen and (max-width: $mediaDeskWidth) {
+        transform: translateX(350px);
+      }
+  
+      @media screen and (max-width: $mediaTabletWidth) {
+        transform: translateX(320px);
+      }
+  
+      @media screen and (max-width: $mediaPhoneWidth) {
+        transform: translateX(290px);
+      }
     }
 
     .sidebar-item {
       margin-top: 15px;
       color: white;
       text-decoration: none;
+      transition: transform .3s ease-in;
+
+      &:first-of-type {
+        margin-bottom: 10px;
+        margin-left: 40px;
+      }
 
       &:hover {
-        color: $text-highlight;
+        font-weight: 700;
+        color: $train-color-highlight;
+        transform: translateX(15px);
+      }
+
+      &.active {
+        color: $train-color-highlight;
+        font-weight: 700;
+        font-size: 1.7rem;
       }
     }
 
-    .sidebar-item:first-of-type {
-      margin-bottom: 10px;
-      margin-left: 40px;
-    }
-
     .sidebar-cross {
-      text-align: right;
       padding-right: 40px;
+      text-align: right;
+      font-size: 2.6rem;
+      color: $bg-color;
 
       &:hover {
-        color: $text-highlight;
+        color: rgba(233, 84, 32, 1);
       }
     } 
 
     .fa-paw {
       margin-right: 10px;
+    }
+
+    @media screen and (max-width: $mediaDeskWidth) {
+      width: 350px;
+      margin-left: -350px;
+      padding-left: 60px;
+    }
+
+    @media screen and (max-width: $mediaTabletWidth) {
+      width: 320px;
+      margin-left: -320px;
+      padding-left: 50px;
+    }
+
+    @media screen and (max-width: $mediaPhoneWidth) {
+      width: 290px;
+      margin-left: -290px;
+      padding-left: 35px;
     }
   }
 }
@@ -61,20 +107,52 @@ body {
 
 .header-container {
   justify-content: space-between;
-  max-width: 1265px;
+  width: 1340px;
   height: 50px;
   margin: 0 auto;
   padding-top: 40px;
 
   .toggle-icon {
     margin-right: 50px;
-    font-size: 1.6rem;
-    color: $text-highlight;
+    font-size: 2.2rem;
+    color: $train-color;
+    cursor: pointer;
+
+    &:hover {
+      color: $train-color-highlight;
+    }
   }
 
   .logo {
-    font-size: 1.6rem;
+    display: block;
+    height: 50px;
+    margin-top: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: $train-color-highlight;
+    text-transform: uppercase;
     text-decoration: none;
+
+    @media screen and (max-width: $mediaPhoneWidth) {
+      display: none;
+    }
+  }
+
+  .custom-control-input ~ .custom-control-label::before {
+    border-color: $train-color;
+    background-color: $train-color;
+}
+
+  @media screen and (max-width: $mediaDeskWidth) {
+    width: 990px;
+  }
+
+  @media screen and (max-width: $mediaTabletWidth) {
+    width: 645px;
+  }
+
+  @media screen and (max-width: $mediaPhoneWidth) {
+    width: 295px;
   }
 }
 
@@ -86,13 +164,22 @@ body {
   .card {
     width: 300px;
     height: 275px;
-    font-size: 1.4rem;
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1;
     text-align: center;
     text-decoration: none;
+    
+    .card-text {
+      max-width: 270px;
+      overflow-y: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .reverse:hover {
+      color: $train-color;
+      text-shadow: 1px -4px 3px #fff;
+    }   
   }
-  
-  // .card-img-top {
-  //   border-radius: 10px;
-  //   border: 3px solid white;
-  // }
 }
