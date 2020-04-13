@@ -13,7 +13,7 @@ class CardsList {
     if (this.state === 'Main Page') {
       board.classList.add('main-board');
       sections.forEach((val, index) => {
-        const newCard = new Card(this.state, `src/${cards[index][0].image}`, val);
+        const newCard = new Card(this.state, `${cards[index][0].image}`, val);
 
         board.appendChild(newCard.createCard());
       });
@@ -23,7 +23,7 @@ class CardsList {
 
       board.classList.add('section-board');
       section.forEach((val) => {
-        const newCard = new Card(this.state, `src/${val.image}`, val.word);
+        const newCard = new Card(this.state, `${val.image}`, val.word);
 
         board.appendChild(newCard.createCard());
       });
