@@ -1,18 +1,19 @@
-$light: #f9fafb;
+$light: rgba(249, 250, 251, 1);
 $train-mode-color: rgba(23, 163, 184, 1);
 $train-mode-color-outline: rgba(23, 163, 184, .3);
 $train-mode-color-highlight: rgb(10, 81, 92);
 $play-mode-color: rgba(233, 84, 32, 1);
-$text-highlight: rgba(233, 84, 32, .6);
+$play-mode-color-highlight: rgb(156, 46, 6);
+// $text-highlight: rgba(233, 84, 32, .6);
 $media-large: 1392px;
 $media-medium: 1043px;
 $media-small: 696px;
+$media-extra-small: 370px;
 
 body {
   background-color: $light;
   font-family: 'Bellota', cursive;
   letter-spacing: 1.5px;
-  // font-family: 'Roboto', sans-serif;
 }
 
 .app-wrapper {
@@ -43,7 +44,11 @@ body {
       }
   
       @media screen and (max-width: $media-small) {
-        transform: translateX(290px);
+        transform: translateX(300px);
+      }
+
+      @media screen and (max-width: $media-extra-small) {
+        transform: translateX(100vw);
       }
     }
 
@@ -100,36 +105,43 @@ body {
     }
 
     @media screen and (max-width: $media-small) {
-      width: 290px;
-      margin-left: -290px;
+      width: 300px;
+      margin-left: -300px;
+      padding-left: 35px;
+    }
+
+    @media screen and (max-width: $media-extra-small) {
+      width: 100vw;
+      margin-left: -100vw;
       padding-left: 35px;
     }
   }
 }
 
-
 .header-container {
   justify-content: space-between;
   width: 1340px;
-  height: 50px;
+  height: 100px;
   margin: 0 auto;
-  padding-top: 40px;
+  padding-top: 45px;
 
-  .toggle-icon {
+  .burger-icon {
     margin-right: 50px;
-    font-size: 2.2rem;
+    font-size: 3rem;
     color: $train-mode-color;
     cursor: pointer;
 
     &:hover {
       color: $play-mode-color;
     }
+
+    @media screen and (max-width: $media-small) {
+      margin-right: 5px;
+      font-size: 2.7rem;
+    }
   }
 
   .logo {
-    display: block;
-    height: 50px;
-    margin-top: 10px;
     font-size: 1.4rem;
     font-weight: 700;
     color: $train-mode-color-highlight;
@@ -141,10 +153,91 @@ body {
     }
   }
 
-  .custom-control-input ~ .custom-control-label::before {
-    border-color: $train-mode-color;
-    background-color: $train-mode-color;
-}
+  // Switcher between play and train modes
+  .toggle {
+    position: relative;
+    display: block;
+    width: 190px;
+    height: 55px;
+    outline: 0;
+    text-decoration: none;
+    border-radius: 100px;
+    background-color: darken($train-mode-color, 10%);
+    transition: all 500ms;
+
+    &:hover:not(.toggle-moving) {
+      &:after {
+        background-color: $train-mode-color-highlight;
+      }
+    }
+
+    &:hover {
+      &:after {
+        background-color: $play-mode-color-highlight;
+      }
+    }
+
+    &:after {
+      display: block;
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      left: 4px;
+      width: calc(50% - 4px);
+      padding-left: 5px;
+      line-height: 43px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $train-mode-color-highlight;
+      background-color: $train-mode-color;
+      border: 2px solid $light;
+      transition: all 500ms;
+
+      @media screen and (max-width: $media-small) {
+        font-size: 1.25rem;
+        line-height: 33px;
+      }
+    }
+
+    @media screen and (max-width: $media-small) {
+      width: 145px;
+      height: 45px;
+    }
+  }
+
+  .toggle-on {
+
+    &:after {
+      content: 'Train';
+      border-radius: 50px 5px 5px 50px;
+      color: $light;
+    }
+  }
+
+  .toggle-off {
+
+    &:after {
+      padding-left: 0;
+      content: 'Play';
+      color: $light;
+      border-radius: 5px 50px 50px 5px;
+      transform: translate(100%, 0);
+      
+    }
+  }
+
+  .toggle-moving {
+    background-color: darken($play-mode-color, 10%);
+
+    &:after {
+      background-color: darken($play-mode-color, 5%);
+      transition: color 0s,
+                  transform 500ms,
+                  border-radius 500ms,          
+                  background-color 500ms;
+    }
+  }
 
   @media screen and (max-width: $media-large) {
     width: 990px;
@@ -156,6 +249,10 @@ body {
 
   @media screen and (max-width: $media-small) {
     width: 295px;
+  }
+
+  @media screen and (max-width: $media-extra-small) {
+    width: 265px;
   }
 }
 

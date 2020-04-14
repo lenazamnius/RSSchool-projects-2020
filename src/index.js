@@ -8,7 +8,7 @@ const config = {
 };
 
 const removeSidebar = document.getElementById('cross');
-const addSidebar = document.getElementById('toggle-sidebar');
+const addSidebar = document.getElementById('burger');
 const sidebar = document.getElementById('sidebar-menu');
 const sidebarItems = document.querySelectorAll('.sidebar-item');
 const boardContainer = document.getElementById('board-container');
@@ -59,12 +59,17 @@ boardContainer.addEventListener('click', (event) => {
   const sectionCard = event.target.closest('a');
 
   if (config.page !== 'Main Page') {
+    const reverseIcon = event.target.closest('span');
+
     if (!sectionCard || !sectionCard.dataset.audioSrc) return;
+    if (!reverseIcon) {
+      const audioLink = sectionCard.dataset.audioSrc;
+      const sound = new Audio(audioLink);
 
-    const audioLink = sectionCard.dataset.audioSrc;
-    const sound = new Audio(audioLink);
-
-    sound.play();
+      sound.play();
+    } else {
+      console.log('paw!');
+    }
   } else {
     if (!sectionCard || !boardContainer.contains(sectionCard)) return;
 
@@ -84,7 +89,6 @@ boardContainer.addEventListener('mouseover', (event) => {
 
   if (!sectionCard || !boardContainer.contains(sectionCard)) return;
   sectionCard.classList.add('over-event');
-
 });
 
 boardContainer.addEventListener('mouseout', (event) => {
@@ -92,4 +96,19 @@ boardContainer.addEventListener('mouseout', (event) => {
 
   if (!sectionCard || !boardContainer.contains(sectionCard)) return;
   sectionCard.classList.remove('over-event');
+});
+
+// ======================================================      event on toggle switch
+const toggleSwitch = document.getElementById('toggle');
+
+toggleSwitch.addEventListener('click', (event) => {
+  const toggle = event.target;
+
+  toggle.classList.toggle('toggle-on');
+  toggle.classList.toggle('toggle-off');
+  if ([...toggle.classList].includes('toggle-off')) {
+    toggle.classList.add('toggle-moving');
+  } else {
+    toggle.classList.remove('toggle-moving');
+  }
 });
