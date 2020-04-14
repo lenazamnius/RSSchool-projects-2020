@@ -30,6 +30,7 @@ class Card {
       cardBody.classList.add('card', 'bg-info', 'p-2', 'm-4');
     } else {
       cardBody.classList.add('card', 'bg-secondary', 'm-4');
+      cardBody.setAttribute('data-audio-src', `${this.audio}`);
       cardName.classList.add('d-flex', 'justify-content-center');
       cardNameText.classList.add('ml-auto', 'mb-0');
       cardName.appendChild(reverseIcon);
@@ -38,11 +39,6 @@ class Card {
     }
 
     return cardBody;
-  }
-
-  playSound() {
-    const sound = new Audio(this.audio);
-    sound.play();
   }
 }
 

@@ -57,17 +57,25 @@ sidebar.addEventListener('click', (event) => {
 // ======================================================      page navigation from main page board
 boardContainer.addEventListener('click', (event) => {
   const sectionCard = event.target.closest('a');
-  console.log(sectionCard);
-  const cardValue = sectionCard.querySelector('.card-text').innerText;
 
-  if (config.page !== 'Main Page') return;
-  if (!sectionCard || !boardContainer.contains(sectionCard)) return;
+  if (config.page !== 'Main Page') {
+    if (!sectionCard || !sectionCard.dataset.audioSrc) return;
 
-  newCardsBoard(cardValue);
-  sidebarItems.forEach((val) => val.classList.remove('active'));
-  sidebarItems.forEach((val) => {
-    if (val.innerText === cardValue) val.classList.add('active');
-  });
+    const audioLink = sectionCard.dataset.audioSrc;
+    const sound = new Audio(audioLink);
+
+    sound.play();
+  } else {
+    if (!sectionCard || !boardContainer.contains(sectionCard)) return;
+
+    const cardValue = sectionCard.querySelector('.card-text').innerText;
+
+    newCardsBoard(cardValue);
+    sidebarItems.forEach((val) => val.classList.remove('active'));
+    sidebarItems.forEach((val) => {
+      if (val.innerText === cardValue) val.classList.add('active');
+    });
+  }
 });
 
 // ======================================================      mouseover event on main page cards
@@ -76,6 +84,7 @@ boardContainer.addEventListener('mouseover', (event) => {
 
   if (!sectionCard || !boardContainer.contains(sectionCard)) return;
   sectionCard.classList.add('over-event');
+
 });
 
 boardContainer.addEventListener('mouseout', (event) => {
