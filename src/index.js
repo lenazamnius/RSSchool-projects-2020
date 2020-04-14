@@ -22,7 +22,7 @@ function highlightMenuItem(menuItem) {
 }
 
 
-function createCardBoard(cardVal) {
+function newCardsBoard(cardVal) {
   config.page = cardVal;
 
   while (boardContainer.firstChild) boardContainer.removeChild(boardContainer.firstChild);
@@ -32,7 +32,8 @@ function createCardBoard(cardVal) {
 }
 
 boardContainer.appendChild(pageBoard.createCardsBoard());
-// ===============================================================            Dropdown Sidebar Menu
+
+// ============================================================      add, remove sidebar menu events
 addSidebar.addEventListener('click', () => {
   sidebar.classList.add('active');
 });
@@ -41,31 +42,45 @@ removeSidebar.addEventListener('click', () => {
   sidebar.classList.remove('active');
 });
 
-// ===============================================================        change pages from sidebar
+// =============================================================        page navigation from sidebar
 sidebar.addEventListener('click', (event) => {
   const menuItem = event.target;
   const menuItemValue = menuItem.innerText;
 
   if (event.target.tagName !== 'A') return;
 
-  createCardBoard(menuItemValue);
+  newCardsBoard(menuItemValue);
   highlightMenuItem(menuItem);
   sidebar.classList.remove('active');
 });
 
-// ===============================================================      change pages from page board
+// ======================================================      page navigation from main page board
 boardContainer.addEventListener('click', (event) => {
-  if (!(config.page === 'Main Page')) return;
-
   const sectionCard = event.target.closest('a');
+  console.log(sectionCard);
   const cardValue = sectionCard.querySelector('.card-text').innerText;
 
-  if (!sectionCard) return;
-  if (!boardContainer.contains(sectionCard)) return;
+  if (config.page !== 'Main Page') return;
+  if (!sectionCard || !boardContainer.contains(sectionCard)) return;
 
-  createCardBoard(cardValue);
+  newCardsBoard(cardValue);
   sidebarItems.forEach((val) => val.classList.remove('active'));
   sidebarItems.forEach((val) => {
     if (val.innerText === cardValue) val.classList.add('active');
   });
+});
+
+// ======================================================      mouseover event on main page cards
+boardContainer.addEventListener('mouseover', (event) => {
+  const sectionCard = event.target.closest('a');
+
+  if (!sectionCard || !boardContainer.contains(sectionCard)) return;
+  sectionCard.classList.add('over-event');
+});
+
+boardContainer.addEventListener('mouseout', (event) => {
+  const sectionCard = event.target.closest('a');
+
+  if (!sectionCard || !boardContainer.contains(sectionCard)) return;
+  sectionCard.classList.remove('over-event');
 });

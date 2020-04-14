@@ -1,13 +1,15 @@
-$bg-color: #f9fafb;
-$train-color: rgba(23, 163, 184, 1);
-$train-color-highlight: rgb(10, 81, 92);
+$light: #f9fafb;
+$train-mode-color: rgba(23, 163, 184, 1);
+$train-mode-color-outline: rgba(23, 163, 184, .3);
+$train-mode-color-highlight: rgb(10, 81, 92);
+$play-mode-color: rgba(233, 84, 32, 1);
 $text-highlight: rgba(233, 84, 32, .6);
-$mediaDeskWidth: 1392px;
-$mediaTabletWidth: 1043px;
-$mediaPhoneWidth: 696px;
+$media-large: 1392px;
+$media-medium: 1043px;
+$media-small: 696px;
 
 body {
-  background-color: $bg-color;
+  background-color: $light;
   font-family: 'Bellota', cursive;
   letter-spacing: 1.5px;
   // font-family: 'Roboto', sans-serif;
@@ -29,25 +31,25 @@ body {
     transition: transform .45s ease-in;
 
     &.active {
-      outline: 9999px solid rgba(23, 163, 184, 0.3);
+      outline: 9999px solid $train-mode-color-outline;
       transform: translateX(370px);
 
-      @media screen and (max-width: $mediaDeskWidth) {
+      @media screen and (max-width: $media-large) {
         transform: translateX(350px);
       }
   
-      @media screen and (max-width: $mediaTabletWidth) {
+      @media screen and (max-width: $media-medium) {
         transform: translateX(320px);
       }
   
-      @media screen and (max-width: $mediaPhoneWidth) {
+      @media screen and (max-width: $media-small) {
         transform: translateX(290px);
       }
     }
 
     .sidebar-item {
       margin-top: 15px;
-      color: white;
+      color: $light;
       text-decoration: none;
       transition: transform .3s ease-in;
 
@@ -58,12 +60,12 @@ body {
 
       &:hover {
         font-weight: 700;
-        color: $train-color-highlight;
+        color: $train-mode-color-highlight;
         transform: translateX(15px);
       }
 
       &.active {
-        color: $train-color-highlight;
+        color: $train-mode-color-highlight;
         font-weight: 700;
         font-size: 1.7rem;
       }
@@ -73,10 +75,11 @@ body {
       padding-right: 40px;
       text-align: right;
       font-size: 2.6rem;
-      color: $bg-color;
+      color: $light;
+      cursor: pointer;
 
       &:hover {
-        color: rgba(233, 84, 32, 1);
+        color: $play-mode-color;
       }
     } 
 
@@ -84,19 +87,19 @@ body {
       margin-right: 10px;
     }
 
-    @media screen and (max-width: $mediaDeskWidth) {
+    @media screen and (max-width: $media-large) {
       width: 350px;
       margin-left: -350px;
       padding-left: 60px;
     }
 
-    @media screen and (max-width: $mediaTabletWidth) {
+    @media screen and (max-width: $media-medium) {
       width: 320px;
       margin-left: -320px;
       padding-left: 50px;
     }
 
-    @media screen and (max-width: $mediaPhoneWidth) {
+    @media screen and (max-width: $media-small) {
       width: 290px;
       margin-left: -290px;
       padding-left: 35px;
@@ -115,11 +118,11 @@ body {
   .toggle-icon {
     margin-right: 50px;
     font-size: 2.2rem;
-    color: $train-color;
+    color: $train-mode-color;
     cursor: pointer;
 
     &:hover {
-      color: $train-color-highlight;
+      color: $play-mode-color;
     }
   }
 
@@ -129,29 +132,29 @@ body {
     margin-top: 10px;
     font-size: 1.4rem;
     font-weight: 700;
-    color: $train-color-highlight;
+    color: $train-mode-color-highlight;
     text-transform: uppercase;
     text-decoration: none;
 
-    @media screen and (max-width: $mediaPhoneWidth) {
+    @media screen and (max-width: $media-small) {
       display: none;
     }
   }
 
   .custom-control-input ~ .custom-control-label::before {
-    border-color: $train-color;
-    background-color: $train-color;
+    border-color: $train-mode-color;
+    background-color: $train-mode-color;
 }
 
-  @media screen and (max-width: $mediaDeskWidth) {
+  @media screen and (max-width: $media-large) {
     width: 990px;
   }
 
-  @media screen and (max-width: $mediaTabletWidth) {
+  @media screen and (max-width: $media-medium) {
     width: 645px;
   }
 
-  @media screen and (max-width: $mediaPhoneWidth) {
+  @media screen and (max-width: $media-small) {
     width: 295px;
   }
 }
@@ -164,6 +167,7 @@ body {
   .card {
     width: 300px;
     height: 275px;
+    color: $light;
     font-size: 1.7rem;
     font-weight: 700;
     line-height: 1;
@@ -177,9 +181,14 @@ body {
       white-space: nowrap;
     }
 
-    .reverse:hover {
-      color: $train-color;
-      text-shadow: 1px -4px 3px #fff;
+    .reverse-icon:hover {
+      color: $train-mode-color;
+      text-shadow: 1px -2px 3px $light;
     }   
   }
+}
+
+.over-event {
+  box-shadow: 0px 1px 8px 0 $light,
+              0px 9px 27px 0 $train-mode-color-highlight;
 }
