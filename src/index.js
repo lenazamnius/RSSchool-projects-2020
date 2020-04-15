@@ -1,10 +1,9 @@
 import './styles/main.scss';
 import CardsList from './cards-list';
-// import { cards, sections } from './cards-object';
-// import Card from './card';
 
 const config = {
   page: 'Main Page',
+  mode: 'train',
 };
 
 const removeSidebar = document.getElementById('cross');
@@ -12,6 +11,7 @@ const addSidebar = document.getElementById('burger');
 const sidebar = document.getElementById('sidebar-menu');
 const sidebarItems = document.querySelectorAll('.sidebar-item');
 const boardContainer = document.getElementById('board-container');
+const toggleSwitch = document.getElementById('toggle');
 let pageBoard = new CardsList(config.page);
 let selectedSidebarItem;
 
@@ -20,7 +20,6 @@ function highlightMenuItem(menuItem) {
   selectedSidebarItem = menuItem;
   selectedSidebarItem.classList.add('active');
 }
-
 
 function newCardsBoard(cardVal) {
   config.page = cardVal;
@@ -54,21 +53,28 @@ sidebar.addEventListener('click', (event) => {
   sidebar.classList.remove('active');
 });
 
-// ======================================================      page navigation from main page board
+// Page navigation from main page board. Sound reproduction on card click. Return card to fron side. 
 boardContainer.addEventListener('click', (event) => {
   const sectionCard = event.target.closest('a');
+  const cardFront = event.target.closest('.card-front');
 
   if (config.page !== 'Main Page') {
-    const reverseIcon = event.target.closest('span');
+    const iconFlipCard = event.target.closest('span');
 
-    if (!sectionCard || !sectionCard.dataset.audioSrc) return;
-    if (!reverseIcon) {
+    if (!cardFront || !sectionCard.dataset.audioSrc) return;
+    if (!iconFlipCard) {
       const audioLink = sectionCard.dataset.audioSrc;
       const sound = new Audio(audioLink);
 
       sound.play();
     } else {
-      console.log('paw!');
+      const cardToFlip = event.target.closest('.flip-card-inner');
+      const cardBackSide = event.target.closest('.flip-card');
+
+      cardToFlip.classList.add('flip-to-back');
+      cardBackSide.addEventListener('mouseleave', (event) => {
+        cardToFlip.classList.remove('flip-to-back');
+      });
     }
   } else {
     if (!sectionCard || !boardContainer.contains(sectionCard)) return;
@@ -85,21 +91,22 @@ boardContainer.addEventListener('click', (event) => {
 
 // ======================================================      mouseover event on main page cards
 boardContainer.addEventListener('mouseover', (event) => {
-  const sectionCard = event.target.closest('a');
+  const enteredCard = (config.page === 'Main Page') ? event.target.closest('a') : event.target.closest('.flip-card-inner');
 
-  if (!sectionCard || !boardContainer.contains(sectionCard)) return;
-  sectionCard.classList.add('over-event');
+  if (!enteredCard || !boardContainer.contains(enteredCard)) return;
+    enteredCard.classList.add('over-event');  
 });
 
 boardContainer.addEventListener('mouseout', (event) => {
-  const sectionCard = event.target.closest('a');
+  const exitCard = (config.page === 'Main Page') 
+                    ? event.target.closest('a') 
+                    : event.target.closest('.flip-card-inner');
 
-  if (!sectionCard || !boardContainer.contains(sectionCard)) return;
-  sectionCard.classList.remove('over-event');
+  if (!exitCard || !boardContainer.contains(exitCard)) return;
+    exitCard.classList.remove('over-event');
 });
 
-// ======================================================      event on toggle switch
-const toggleSwitch = document.getElementById('toggle');
+// ======================================================     animation event on toggle switch
 
 toggleSwitch.addEventListener('click', (event) => {
   const toggle = event.target;
