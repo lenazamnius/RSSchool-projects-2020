@@ -166,12 +166,12 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding-top: 70px;
+  font-size: 1.9rem;
 
   .card {
     width: 300px;
     height: 275px;
     color: $light;
-    font-size: 1.9rem;
     font-weight: 700;
     line-height: 1;
     text-align: center;
@@ -187,11 +187,31 @@ body {
     .reverse-icon:hover {
       color: $train-mode-color;
       text-shadow: 1px -2px 3px $light;
-    }   
+    }  
+  }
+
+  button {
+    min-width: 250px;
+    width: 30%;
+    font-size: 1.8rem;
+    font-weight: 700;
+    border-radius: 100px;
+    outline: none;
   }
 
   .over-event {
     box-shadow: 0px 1px 8px 0 $light,
                 0px 9px 27px 0 $train-mode-color-highlight;
-  } 
+  }
+
+  @media screen and (max-width: $media-small) {
+    font-size: 1.6rem;
+    
+  }
+
+  @media screen and (max-width: $media-extra-small) {
+    .card .card-text {
+      padding-top: 8px;
+    }
+  }
 }

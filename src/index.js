@@ -2,18 +2,26 @@ import './styles/main.scss';
 import CardsList from './cards-list';
 
 const config = {
-  page: 'Main Page',
-  mode: 'train',
+  page: '',
+  mode: '',
 };
 
-const removeSidebar = document.getElementById('cross');
-const addSidebar = document.getElementById('burger');
+const boardContainer = document.getElementById('board-container');
 const sidebar = document.getElementById('sidebar-menu');
 const sidebarItems = document.querySelectorAll('.sidebar-item');
-const boardContainer = document.getElementById('board-container');
+const removeSidebar = document.getElementById('cross');
+const addSidebar = document.getElementById('burger');
 const toggleSwitch = document.getElementById('toggle');
-let pageBoard = new CardsList(config.page);
+const logo = document.getElementById('logo-text');
 let selectedSidebarItem;
+let pageBoard;
+
+function init() {
+  config.page = 'Main Page';
+  config.mode = 'train';
+  pageBoard = new CardsList(config.page, config.mode);
+  boardContainer.appendChild(pageBoard.createTrainBoard());
+}
 
 function highlightMenuItem(menuItem) {
   sidebarItems.forEach((val) => val.classList.remove('active'));
@@ -26,13 +34,26 @@ function newCardsBoard(cardVal) {
 
   while (boardContainer.firstChild) boardContainer.removeChild(boardContainer.firstChild);
 
-  pageBoard = new CardsList(config.page);
-  boardContainer.appendChild(pageBoard.createCardsBoard());
+  pageBoard = new CardsList(config.page, config.mode);
+  boardContainer.appendChild(pageBoard.createTrainBoard());
 }
 
-boardContainer.appendChild(pageBoard.createCardsBoard());
+// Main page initialization
+init();
+highlightMenuItem(sidebarItems[0]);
 
-// ============================================================      add, remove sidebar menu events
+// Navigation to main page on logo click
+logo.addEventListener('click', () => {
+  if (config.page === 'Main Page') return;
+
+  const mainPageLinkElement = document.getElementById('main-page');
+
+  newCardsBoard('Main Page');
+  highlightMenuItem(mainPageLinkElement);
+  config.page = 'Main Page';
+});
+
+// Pop-up and hide events on sidebar menu
 addSidebar.addEventListener('click', () => {
   sidebar.classList.add('active');
 });
@@ -41,7 +62,7 @@ removeSidebar.addEventListener('click', () => {
   sidebar.classList.remove('active');
 });
 
-// =============================================================        page navigation from sidebar
+// Page navigation from sidebar
 sidebar.addEventListener('click', (event) => {
   const menuItem = event.target;
   const menuItemValue = menuItem.innerText;
@@ -53,7 +74,9 @@ sidebar.addEventListener('click', (event) => {
   sidebar.classList.remove('active');
 });
 
-// Page navigation from main page board. Sound reproduction on card click. Return card to fron side. 
+// Page navigation from main page board.
+// Sound reproduction on card click.
+// Return card to front side.
 boardContainer.addEventListener('click', (event) => {
   const sectionCard = event.target.closest('a');
   const cardFront = event.target.closest('.card-front');
@@ -71,8 +94,9 @@ boardContainer.addEventListener('click', (event) => {
       const cardToFlip = event.target.closest('.flip-card-inner');
       const cardBackSide = event.target.closest('.flip-card');
 
+      if (!cardToFlip) return;
       cardToFlip.classList.add('flip-to-back');
-      cardBackSide.addEventListener('mouseleave', (event) => {
+      cardBackSide.addEventListener('mouseleave', () => {
         cardToFlip.classList.remove('flip-to-back');
       });
     }
@@ -89,33 +113,41 @@ boardContainer.addEventListener('click', (event) => {
   }
 });
 
-// ======================================================      mouseover event on main page cards
+// Mouseover, mouseout events on cards
 boardContainer.addEventListener('mouseover', (event) => {
   const enteredCard = (config.page === 'Main Page') ? event.target.closest('a') : event.target.closest('.flip-card-inner');
 
   if (!enteredCard || !boardContainer.contains(enteredCard)) return;
-    enteredCard.classList.add('over-event');  
+
+  enteredCard.classList.add('over-event');
 });
 
 boardContainer.addEventListener('mouseout', (event) => {
-  const exitCard = (config.page === 'Main Page') 
-                    ? event.target.closest('a') 
-                    : event.target.closest('.flip-card-inner');
+  const exitCard = (config.page === 'Main Page')
+    ? event.target.closest('a')
+    : event.target.closest('.flip-card-inner');
 
   if (!exitCard || !boardContainer.contains(exitCard)) return;
-    exitCard.classList.remove('over-event');
+
+  exitCard.classList.remove('over-event');
 });
 
-// ======================================================     animation event on toggle switch
-
+// Animation event on toggle switch
 toggleSwitch.addEventListener('click', (event) => {
   const toggle = event.target;
 
   toggle.classList.toggle('toggle-on');
   toggle.classList.toggle('toggle-off');
+
   if ([...toggle.classList].includes('toggle-off')) {
     toggle.classList.add('toggle-moving');
+
+    // const activeSection = config.page;
+    config.mode = 'play';
+    newCardsBoard(config.page);
   } else {
     toggle.classList.remove('toggle-moving');
+    config.mode = 'train';
+    newCardsBoard(config.page);
   }
 });

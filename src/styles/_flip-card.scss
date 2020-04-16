@@ -30,6 +30,11 @@ a {
         transform: rotateY(180deg);
       }
     }
+
+    @media screen and (max-width: $media-extra-small) {
+      width: 280px;
+      height: 265px;
+    }
   }
 }
 

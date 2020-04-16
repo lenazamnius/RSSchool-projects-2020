@@ -8,6 +8,7 @@
     text-decoration: none;
     border-radius: 100px;
     background-color: darken($train-mode-color, 10%);
+    cursor: pointer;
     transition: all 500ms;
 
     &:hover:not(.toggle-moving) {
