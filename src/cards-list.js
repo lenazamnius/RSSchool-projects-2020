@@ -54,7 +54,7 @@ class CardsList {
         const newCard = new Card(cards[index][0].image, val);
 
         this.cardsList.push(newCard);
-        board.appendChild(newCard.createCard());
+        board.appendChild(newCard.createCard(this.mode));
       });
     } else {
       const sectionIdx = sections.indexOf(this.state);

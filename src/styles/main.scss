@@ -57,12 +57,12 @@ body {
 
       &:hover {
         font-weight: 700;
-        color: $train-mode-color-highlight;
+        color: $text-highlight;
         transform: translateX(15px);
       }
 
       &.active {
-        color: $train-mode-color-highlight;
+        color: $text-highlight;
         font-weight: 700;
         font-size: 1.7rem;
       }
@@ -76,7 +76,7 @@ body {
       cursor: pointer;
 
       &:hover {
-        color: $play-mode-color;
+        color: $text-highlight;
       }
     } 
 
@@ -120,11 +120,10 @@ body {
   .burger-icon {
     margin-right: 50px;
     font-size: 3rem;
-    color: $train-mode-color;
     cursor: pointer;
 
     &:hover {
-      color: $play-mode-color;
+      transform: scale(1.1);
     }
 
     @media screen and (max-width: $media-small) {
@@ -136,7 +135,7 @@ body {
   .logo {
     font-size: 1.4rem;
     font-weight: 700;
-    color: $train-mode-color-highlight;
+    color: $text-highlight;
     text-transform: uppercase;
     text-decoration: none;
 
@@ -201,7 +200,7 @@ body {
 
   .over-event {
     box-shadow: 0px 1px 8px 0 $light,
-                0px 9px 27px 0 $train-mode-color-highlight;
+                0px 9px 27px 0 $hover-shadow-color;
   }
 
   @media screen and (max-width: $media-small) {

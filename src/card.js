@@ -1,17 +1,18 @@
 function createMainHtmlElements(image, text) {
   const cardElementsObject = {};
-
   const cardBody = document.createElement('a');
   const cardImage = document.createElement('img');
   const cardName = document.createElement('div');
   const cardNameText = document.createElement('p');
 
+  // add classes, attributes and values to elements
   cardBody.setAttribute('href', '#cards');
   cardImage.classList.add('card-img-top');
   cardImage.setAttribute('srcset', image);
   cardImage.setAttribute('alt', `image of ${text}`);
   cardNameText.innerHTML = text;
 
+  // add child elements to parent card element
   cardElementsObject.cardBody = cardBody;
   cardElementsObject.cardImage = cardImage;
   cardElementsObject.cardName = cardName;
@@ -28,13 +29,14 @@ class Card {
     this.translation = translation;
   }
 
-  createCard() {
+  createCard(mode) {
     const cardElementsObject = createMainHtmlElements(this.image, this.text);
+    const cardColor = (mode === 'train') ? 'bg-info' : 'bg-primary';
 
     // add classes, attributes and values to elements
     cardElementsObject.cardName.classList.add('card-body');
     cardElementsObject.cardNameText.classList.add('card-text');
-    cardElementsObject.cardBody.classList.add('card', 'bg-info', 'p-2', 'm-4');
+    cardElementsObject.cardBody.classList.add('card', cardColor, 'p-2', 'm-4');
 
     // add child elements to parent card element
     cardElementsObject.cardName.appendChild(cardElementsObject.cardNameText);

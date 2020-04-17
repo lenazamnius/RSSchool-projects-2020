@@ -115,7 +115,9 @@ boardContainer.addEventListener('click', (event) => {
 
 // Mouseover, mouseout events on cards
 boardContainer.addEventListener('mouseover', (event) => {
-  const enteredCard = (config.page === 'Main Page') ? event.target.closest('a') : event.target.closest('.flip-card-inner');
+  const enteredCard = (config.page === 'Main Page')
+    ? event.target.closest('a')
+    : event.target.closest('.flip-card-inner') || event.target.closest('.card-play');
 
   if (!enteredCard || !boardContainer.contains(enteredCard)) return;
 
@@ -125,12 +127,13 @@ boardContainer.addEventListener('mouseover', (event) => {
 boardContainer.addEventListener('mouseout', (event) => {
   const exitCard = (config.page === 'Main Page')
     ? event.target.closest('a')
-    : event.target.closest('.flip-card-inner');
+    : event.target.closest('.flip-card-inner') || event.target.closest('.card-play');
 
   if (!exitCard || !boardContainer.contains(exitCard)) return;
 
   exitCard.classList.remove('over-event');
 });
+
 
 // Animation event on toggle switch
 toggleSwitch.addEventListener('click', (event) => {
@@ -138,11 +141,13 @@ toggleSwitch.addEventListener('click', (event) => {
 
   toggle.classList.toggle('toggle-on');
   toggle.classList.toggle('toggle-off');
+  sidebar.classList.toggle('bg-info');
+  sidebar.classList.toggle('bg-primary');
+  addSidebar.classList.toggle('text-info');
+  addSidebar.classList.toggle('text-primary');
 
   if ([...toggle.classList].includes('toggle-off')) {
     toggle.classList.add('toggle-moving');
-
-    // const activeSection = config.page;
     config.mode = 'play';
     newCardsBoard(config.page);
   } else {
