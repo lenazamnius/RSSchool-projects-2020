@@ -4,22 +4,27 @@ import Card from './card';
 function createBoardHtmlElement(state, mode) {
   const boardElementsObject = {};
   const boardWrapper = document.createElement('div');
-  const resultBoard = document.createElement('div');
+  const pointsBoard = document.createElement('div');
   const cardListWrapper = document.createElement('div');
-  const buttonContainer = document.createElement('div');
-  const button = document.createElement('button');
+  // const buttonContainer = document.createElement('div');
+  // const button = document.createElement('button');
+  const correctAnswer = '<span class="pl-1 pr-3 count-correct">0</span>';
+  const wrongAnswer = '<span class="pl-1 pr-2 count-wrong">0</span>';
 
   if (mode === 'train' || (mode === 'play' && state === 'Main Page')) {
     boardWrapper.classList.add('d-flex', 'flex-wrap', 'justify-content-center');
+    // button.classList.add('start-button');
+    // button.style.display = 'none';
+    // boardWrapper.appendChild(button);
   } else {
-    button.classList.add('button', 'btn-lg', 'btn-primary', 'mt-3', 'mb-5');
-    button.setAttribute('type', 'button');
-    button.innerHTML = 'Start Game <i class="fas fa-play"></i>';
-    buttonContainer.classList.add('game-button', 'd-flex', 'justify-content-center');
+    // button.classList.add('start-button', 'btn-lg', 'btn-primary', 'mt-3', 'mb-5');
+    // button.setAttribute('type', 'button');
+    // button.innerHTML = 'Start Game <i class="fas fa-play pl-3"></i>';
+    // buttonContainer.classList.add('game-button', 'd-flex', 'justify-content-center');
     cardListWrapper.classList.add('d-flex', 'flex-wrap', 'justify-content-center');
-    resultBoard.classList.add('d-flex', 'flex-row-reverse', 'ml-5', 'mr-5');
-    resultBoard.innerHTML = '<i class="fas fa-sun"></i>';
-    buttonContainer.appendChild(button);
+    pointsBoard.classList.add('points-board', 'd-flex', 'align-items-center', 'justify-content-center', 'ml-5', 'mr-5', 'text-danger');
+    pointsBoard.innerHTML = `Score: <i class="fas fa-check text-success pl-3"></i> ${correctAnswer} <i class="fas fa-times text-danger"></i> ${wrongAnswer}`;
+    // buttonContainer.appendChild(button);
   }
 
   // if (state === 'Main Page') {
@@ -27,11 +32,10 @@ function createBoardHtmlElement(state, mode) {
   // } else {
   //   boardWrapper.classList.add('section-board');
   // }
-
   boardElementsObject.boardWrapper = boardWrapper;
-  boardElementsObject.resultBoard = resultBoard;
+  boardElementsObject.pointsBoard = pointsBoard;
   boardElementsObject.cardListWrapper = cardListWrapper;
-  boardElementsObject.buttonContainer = buttonContainer;
+  // boardElementsObject.buttonContainer = buttonContainer;
 
   return boardElementsObject;
 }
@@ -49,7 +53,8 @@ class CardsList {
 
     if (this.state === 'Main Page') {
       board = createBoardHtmlElement(this.state, this.mode).boardWrapper;
-      // if ([...board.classList].includes('section-board')) board.classList.toggle('section-board');
+      // if ([...board.classList].includes('section-board'))
+      // board.classList.toggle('section-board');
       sections.forEach((val, index) => {
         const newCard = new Card(cards[index][0].image, val);
 
@@ -79,9 +84,9 @@ class CardsList {
           this.cardsList.push(newCard);
           boardElements.cardListWrapper.appendChild(newCard.createPlayCard());
         });
-        board.appendChild(boardElements.resultBoard);
+        board.appendChild(boardElements.pointsBoard);
         board.appendChild(boardElements.cardListWrapper);
-        board.appendChild(boardElements.buttonContainer);
+        // board.appendChild(boardElements.buttonContainer);
       }
     }
 

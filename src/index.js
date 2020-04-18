@@ -4,6 +4,7 @@ import CardsList from './cards-list';
 const config = {
   page: '',
   mode: '',
+  game: '',
 };
 
 const boardContainer = document.getElementById('board-container');
@@ -13,12 +14,14 @@ const removeSidebar = document.getElementById('cross');
 const addSidebar = document.getElementById('burger');
 const toggleSwitch = document.getElementById('toggle');
 const logo = document.getElementById('logo-text');
+const startGameButton = document.querySelector('.start-button');
 let selectedSidebarItem;
 let pageBoard;
 
 function init() {
   config.page = 'Main Page';
   config.mode = 'train';
+  config.game = 'off';
   pageBoard = new CardsList(config.page, config.mode);
   boardContainer.appendChild(pageBoard.createTrainBoard());
 }
@@ -48,6 +51,7 @@ logo.addEventListener('click', () => {
 
   const mainPageLinkElement = document.getElementById('main-page');
 
+  startGameButton.classList.add('hidden');
   newCardsBoard('Main Page');
   highlightMenuItem(mainPageLinkElement);
   config.page = 'Main Page';
@@ -68,6 +72,8 @@ sidebar.addEventListener('click', (event) => {
   const menuItemValue = menuItem.innerText;
 
   if (event.target.tagName !== 'A') return;
+  if (menuItemValue === 'Main Page') startGameButton.classList.add('hidden');
+  if (menuItemValue !== 'Main Page' && config.mode === 'play') startGameButton.classList.remove('hidden');
 
   newCardsBoard(menuItemValue);
   highlightMenuItem(menuItem);
@@ -80,25 +86,27 @@ sidebar.addEventListener('click', (event) => {
 boardContainer.addEventListener('click', (event) => {
   const sectionCard = event.target.closest('a');
   const cardFront = event.target.closest('.card-front');
+  // let startGameButton;
 
   if (config.page !== 'Main Page') {
-    const iconFlipCard = event.target.closest('span');
+    if (config.mode === 'train') {
+      const iconFlipCard = event.target.closest('span');
 
-    if (!cardFront || !sectionCard.dataset.audioSrc) return;
-    if (!iconFlipCard) {
-      const audioLink = sectionCard.dataset.audioSrc;
-      const sound = new Audio(audioLink);
+      if (!cardFront || !sectionCard.dataset.audioSrc) return;
+      if (!iconFlipCard) {
+        const audioLink = sectionCard.dataset.audioSrc;
+        const sound = new Audio(audioLink);
 
-      sound.play();
-    } else {
-      const cardToFlip = event.target.closest('.flip-card-inner');
-      const cardBackSide = event.target.closest('.flip-card');
-
-      if (!cardToFlip) return;
-      cardToFlip.classList.add('flip-to-back');
-      cardBackSide.addEventListener('mouseleave', () => {
-        cardToFlip.classList.remove('flip-to-back');
-      });
+        sound.play();
+      } else {
+        const cardToFlip = event.target.closest('.flip-card-inner');
+        const cardBackSide = event.target.closest('.flip-card');
+        if (!cardToFlip) return;
+        cardToFlip.classList.add('flip-to-back');
+        cardBackSide.addEventListener('mouseleave', () => {
+          cardToFlip.classList.remove('flip-to-back');
+        });
+      }
     }
   } else {
     if (!sectionCard || !boardContainer.contains(sectionCard)) return;
@@ -110,6 +118,9 @@ boardContainer.addEventListener('click', (event) => {
     sidebarItems.forEach((val) => {
       if (val.innerText === cardValue) val.classList.add('active');
     });
+    if (config.mode === 'play') {
+      startGameButton.classList.remove('hidden');
+    }
   }
 });
 
@@ -134,6 +145,16 @@ boardContainer.addEventListener('mouseout', (event) => {
   exitCard.classList.remove('over-event');
 });
 
+// const startGameButton = document.querySelector('.start-button');
+// console.log('addEventListener');
+// startGameButton.addEventListener('click', () => {
+//   console.log('clicked');
+//   config.game = 'on';
+//   startGameButton.classList.remove('btn-lg');
+//   startGameButton.classList.add('round-button');
+//   startGameButton.innerHTML = '<i class="fas fa-redo-alt"></i>';
+// });
+
 
 // Animation event on toggle switch
 toggleSwitch.addEventListener('click', (event) => {
@@ -150,9 +171,30 @@ toggleSwitch.addEventListener('click', (event) => {
     toggle.classList.add('toggle-moving');
     config.mode = 'play';
     newCardsBoard(config.page);
+
+    if (config.page !== 'Main Page') startGameButton.classList.remove('hidden');
+    // const startGameButton = document.querySelector('.start-button');
+
+    // startGameButton.addEventListener('click', () => {
+    //   console.log('clicked');
+    //   config.game = 'on';
+    //   startGameButton.classList.remove('btn-lg');
+    //   startGameButton.classList.add('round-button');
+    //   startGameButton.innerHTML = '<i class="fas fa-redo-alt"></i>';
+    // });
   } else {
     toggle.classList.remove('toggle-moving');
     config.mode = 'train';
+    startGameButton.classList.add('hidden');
     newCardsBoard(config.page);
   }
+});
+
+// Event on start game button.
+startGameButton.addEventListener('click', () => {
+  console.log('clicked');
+  config.game = 'on';
+  startGameButton.classList.remove('btn-lg');
+  startGameButton.classList.add('round-button');
+  startGameButton.innerHTML = '<i class="fas fa-redo-alt"></i>';
 });
