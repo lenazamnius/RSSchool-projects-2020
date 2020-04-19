@@ -5,6 +5,7 @@
 body {
   background-color: $light;
   font-family: 'Bellota', cursive;
+  font-weight: 700;
   letter-spacing: 1.5px;
 }
 
@@ -56,14 +57,12 @@ body {
       }
 
       &:hover {
-        font-weight: 700;
         color: $text-highlight;
         transform: translateX(15px);
       }
 
       &.active {
         color: $text-highlight;
-        font-weight: 700;
         font-size: 1.7rem;
       }
     }
@@ -113,16 +112,50 @@ body {
     min-width: 250px;
     width: 30%;
     font-size: 1.8rem;
-    font-weight: 700;
     border-radius: 100px;
     outline: none;
   }
 
-  .round-button {
+  .repeat-button {
     width: 1px;
     min-width: 65px;
     height: 65px;
     font-size: 1.9rem;
+    border-radius: 100px;
+    outline: none;
+  }
+
+  .result-text {
+    font-size: 2rem;
+    color: $play-mode-color;
+
+    @media screen and (max-width: $media-small) {
+      font-size: 1.6rem;
+    }
+  }
+
+  .result-image {
+    width: 30%;
+
+    img {
+      width: 100%;
+    }
+
+    @media screen and (max-width: $media-large) {
+      width: 35%;
+    }
+  
+    @media screen and (max-width: $media-medium) {
+      width: 50%;
+    }
+  
+    @media screen and (max-width: $media-small) {
+      width: 60%;
+    }
+  
+    @media screen and (max-width: $media-extra-small) {
+      width: 80%;
+    }
   }
 
   .hidden {
@@ -154,7 +187,6 @@ body {
 
   .logo {
     font-size: 1.4rem;
-    font-weight: 700;
     color: $text-highlight;
     text-transform: uppercase;
     text-decoration: none;
@@ -191,7 +223,6 @@ body {
     width: 300px;
     height: 275px;
     color: $light;
-    font-weight: 700;
     line-height: 1;
     text-align: center;
     text-decoration: none;
@@ -206,7 +237,13 @@ body {
     .reverse-icon:hover {
       color: $train-mode-color;
       text-shadow: 1px -2px 3px $light;
-    }  
+    } 
+  }
+
+  .set-as-background {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .over-event {
@@ -214,12 +251,22 @@ body {
                 0px 9px 27px 0 $hover-shadow-color;
   }
 
+  @media screen and (max-width: $media-large) {
+    padding-top: 55px;
+  }
+
+  @media screen and (max-width: $media-medium) {
+    padding-top: 45px;
+  }
+
   @media screen and (max-width: $media-small) {
+    padding-top: 35px;
     font-size: 1.6rem;
-    
   }
 
   @media screen and (max-width: $media-extra-small) {
+    padding-top: 25px;
+
     .card .card-text {
       padding-top: 8px;
     }

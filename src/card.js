@@ -95,13 +95,9 @@ class Card {
     const cardElementsObject = createMainHtmlElements(this.image);
 
     // add classes, attributes and values to elements
-    cardElementsObject.cardName.classList.add('card-body');
-    cardElementsObject.cardName.style.backgroundImage = `url(${this.image})`;
-    cardElementsObject.cardBody.classList.add('card', 'card-play', 'bg-secondary', 'm-4');
+    cardElementsObject.cardBody.style.backgroundImage = `url(${this.image})`;
+    cardElementsObject.cardBody.classList.add('card', 'card-play', 'bg-secondary', 'm-4', 'set-as-background');
     cardElementsObject.cardBody.setAttribute('id', this.text);
-
-    // add child element to parent card element
-    cardElementsObject.cardBody.appendChild(cardElementsObject.cardName);
 
     return cardElementsObject.cardBody;
   }

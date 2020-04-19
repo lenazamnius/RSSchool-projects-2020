@@ -1,11 +1,6 @@
 import './styles/main.scss';
 import CardsList from './cards-list';
-
-const config = {
-  page: '',
-  mode: '',
-  game: '',
-};
+import { cards, sections } from './cards-object';
 
 const boardContainer = document.getElementById('board-container');
 const sidebar = document.getElementById('sidebar-menu');
@@ -15,8 +10,24 @@ const addSidebar = document.getElementById('burger');
 const toggleSwitch = document.getElementById('toggle');
 const logo = document.getElementById('logo-text');
 const startGameButton = document.querySelector('.start-button');
+const repeatSoundButton = document.querySelector('.repeat-button');
+const resultBoard = document.getElementById('result-board');
+const resultSingElement = document.querySelector('.result-text');
+const resultImageElement = document.querySelector('.result-image');
+const correctSound = new Audio('audio/correct.mp3');
+const errorSound = new Audio('audio/error.mp3');
+const winSound = new Audio('audio/success.mp3');
+const failureSound = new Audio('audio/failure.mp3');
+
+const config = {
+  page: '',
+  mode: '',
+  game: '',
+};
+let audioArr = [];
 let selectedSidebarItem;
 let pageBoard;
+let cardId;
 
 function init() {
   config.page = 'Main Page';
@@ -41,6 +52,18 @@ function newCardsBoard(cardVal) {
   boardContainer.appendChild(pageBoard.createTrainBoard());
 }
 
+function randomizeArray(array) {
+  const swap = (arr, idx1, idx2) => {
+    ([arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]]);
+  };
+
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    swap(array, i, j);
+  }
+  return array;
+}
+
 // Main page initialization
 init();
 highlightMenuItem(sidebarItems[0]);
@@ -52,6 +75,7 @@ logo.addEventListener('click', () => {
   const mainPageLinkElement = document.getElementById('main-page');
 
   startGameButton.classList.add('hidden');
+  repeatSoundButton.classList.add('hidden');
   newCardsBoard('Main Page');
   highlightMenuItem(mainPageLinkElement);
   config.page = 'Main Page';
@@ -72,8 +96,15 @@ sidebar.addEventListener('click', (event) => {
   const menuItemValue = menuItem.innerText;
 
   if (event.target.tagName !== 'A') return;
-  if (menuItemValue === 'Main Page') startGameButton.classList.add('hidden');
-  if (menuItemValue !== 'Main Page' && config.mode === 'play') startGameButton.classList.remove('hidden');
+  if (menuItemValue === 'Main Page') {
+    startGameButton.classList.add('hidden');
+    repeatSoundButton.classList.add('hidden');
+  }
+  if (menuItemValue !== 'Main Page' && config.mode === 'play') {
+    startGameButton.classList.remove('hidden');
+    repeatSoundButton.classList.add('hidden');
+    audioArr = [];
+  }
 
   newCardsBoard(menuItemValue);
   highlightMenuItem(menuItem);
@@ -86,7 +117,6 @@ sidebar.addEventListener('click', (event) => {
 boardContainer.addEventListener('click', (event) => {
   const sectionCard = event.target.closest('a');
   const cardFront = event.target.closest('.card-front');
-  // let startGameButton;
 
   if (config.page !== 'Main Page') {
     if (config.mode === 'train') {
@@ -107,6 +137,70 @@ boardContainer.addEventListener('click', (event) => {
           cardToFlip.classList.remove('flip-to-back');
         });
       }
+    }
+    if (config.mode === 'play' && config.game === 'on') {
+      const clickedCard = event.target.closest('.card-play');
+      const wrongPointsElement = document.querySelector('.count-wrong');
+      const correctPointsElement = document.querySelector('.count-correct');
+      const playBoard = document.querySelector('.play-board');
+      const image = document.createElement('img');
+      let wrongScore = Number(wrongPointsElement.innerHTML);
+      let correctScore = Number(correctPointsElement.innerHTML);
+      let currentSound;
+      let resultSign;
+      let finishSound;
+
+      if (!clickedCard) return;
+      cardId = clickedCard.getAttribute('id');
+
+      const soundsValuesArr = [];
+      audioArr.forEach((val) => soundsValuesArr.push(val.word));
+      if (!soundsValuesArr.includes(cardId)) return;
+
+      // Game function
+      if (cardId === audioArr[0].word) {
+        audioArr.shift();
+        correctScore += 1;
+        correctPointsElement.innerHTML = correctScore;
+        correctSound.play();
+        clickedCard.style.opacity = '0.5';
+        if (audioArr.length > 0) {
+          currentSound = new Audio(audioArr[0].sound);
+          setTimeout(() => { currentSound.play(); }, 600);
+        } else {
+          playBoard.classList.add('hidden');
+          repeatSoundButton.classList.add('hidden');
+
+          resultSign = `You've got ${wrongScore} errors!`;
+          resultSingElement.innerHTML = resultSign;
+
+          if (wrongScore > 0) {
+            finishSound = failureSound;
+            image.setAttribute('srcset', 'images/failure.jpg');
+          } else {
+            finishSound = winSound;
+            image.setAttribute('srcset', 'images/success.jpg');
+          }
+
+          resultImageElement.appendChild(image);
+          resultBoard.classList.remove('hidden');
+          finishSound.play();
+          // Reset page
+          config.game = 'off';
+          config.page = 'Main Page';
+          setTimeout(() => {
+            resultSingElement.innerHTML = '';
+            resultImageElement.removeChild(image);
+            resultBoard.classList.add('hidden');
+            newCardsBoard(config.page);
+          }, 2800);
+        }
+      } else {
+        wrongScore += 1;
+        wrongPointsElement.innerHTML = wrongScore;
+        errorSound.play();
+      }
+      // game function END
     }
   } else {
     if (!sectionCard || !boardContainer.contains(sectionCard)) return;
@@ -145,17 +239,6 @@ boardContainer.addEventListener('mouseout', (event) => {
   exitCard.classList.remove('over-event');
 });
 
-// const startGameButton = document.querySelector('.start-button');
-// console.log('addEventListener');
-// startGameButton.addEventListener('click', () => {
-//   console.log('clicked');
-//   config.game = 'on';
-//   startGameButton.classList.remove('btn-lg');
-//   startGameButton.classList.add('round-button');
-//   startGameButton.innerHTML = '<i class="fas fa-redo-alt"></i>';
-// });
-
-
 // Animation event on toggle switch
 toggleSwitch.addEventListener('click', (event) => {
   const toggle = event.target;
@@ -172,29 +255,45 @@ toggleSwitch.addEventListener('click', (event) => {
     config.mode = 'play';
     newCardsBoard(config.page);
 
-    if (config.page !== 'Main Page') startGameButton.classList.remove('hidden');
-    // const startGameButton = document.querySelector('.start-button');
-
-    // startGameButton.addEventListener('click', () => {
-    //   console.log('clicked');
-    //   config.game = 'on';
-    //   startGameButton.classList.remove('btn-lg');
-    //   startGameButton.classList.add('round-button');
-    //   startGameButton.innerHTML = '<i class="fas fa-redo-alt"></i>';
-    // });
+    if (config.page !== 'Main Page') {
+      // repeatSoundButton.classList.add('hidden');
+      startGameButton.classList.remove('hidden');
+    }
   } else {
     toggle.classList.remove('toggle-moving');
     config.mode = 'train';
+    audioArr = [];
     startGameButton.classList.add('hidden');
+    repeatSoundButton.classList.add('hidden');
     newCardsBoard(config.page);
   }
 });
 
 // Event on start game button.
 startGameButton.addEventListener('click', () => {
-  console.log('clicked');
   config.game = 'on';
-  startGameButton.classList.remove('btn-lg');
-  startGameButton.classList.add('round-button');
-  startGameButton.innerHTML = '<i class="fas fa-redo-alt"></i>';
+  startGameButton.classList.add('hidden');
+  repeatSoundButton.classList.remove('hidden');
+
+  // create array of sounds function
+  const sectionIdx = sections.indexOf(config.page);
+
+  cards[sectionIdx].forEach((val) => {
+    const audioObj = {};
+
+    audioObj.word = val.word;
+    audioObj.sound = val.audioSrc;
+    audioArr.push(audioObj);
+  });
+
+  randomizeArray(audioArr);
+  // create array of sounds function END
+
+  const firstSound = new Audio(audioArr[0].sound);
+  setTimeout(() => { firstSound.play(); }, 1000);
+});
+
+repeatSoundButton.addEventListener('click', () => {
+  const repeatSound = new Audio(audioArr[0].sound);
+  repeatSound.play();
 });
