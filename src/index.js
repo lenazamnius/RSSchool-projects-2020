@@ -2,6 +2,7 @@ import './styles/main.scss';
 import CardsList from './cards-list';
 import { cards, sections } from './cards-object';
 
+const appWrapper = document.querySelector('.app-wrapper');
 const boardContainer = document.getElementById('board-container');
 const sidebar = document.getElementById('sidebar-menu');
 const sidebarItems = document.querySelectorAll('.sidebar-item');
@@ -82,7 +83,12 @@ logo.addEventListener('click', () => {
 });
 
 // Pop-up and hide events on sidebar menu
-addSidebar.addEventListener('click', () => {
+appWrapper.addEventListener('click', () => {
+  sidebar.classList.remove('active');
+});
+
+addSidebar.addEventListener('click', (event) => {
+  event.stopPropagation();
   sidebar.classList.add('active');
 });
 
@@ -176,10 +182,10 @@ boardContainer.addEventListener('click', (event) => {
 
           if (wrongScore > 0) {
             finishSound = failureSound;
-            image.setAttribute('srcset', 'images/failure.jpg');
+            image.setAttribute('srcset', 'images/failure.png');
           } else {
             finishSound = winSound;
-            image.setAttribute('srcset', 'images/success.jpg');
+            image.setAttribute('srcset', 'images/success.png');
           }
 
           resultImageElement.appendChild(image);

@@ -1,4 +1,4 @@
-const sections = ['Action (set A)', 'Action (set B)', 'Animal (set A)', 'Animal (set B)', 'Clothes', 'Emotions', 'Shapes', 'Vehicle'];
+const sections = ['Action - set A', 'Action - set B', 'Animal - set A', 'Animal - set B', 'Clothes', 'Emotions', 'Shapes', 'Vehicle'];
 
 const cards = [
   [
