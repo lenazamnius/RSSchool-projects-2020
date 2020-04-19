@@ -1,0 +1,288 @@
+@import 'variables';
+@import 'toggle-game-mode';
+@import 'flip-card';
+
+body {
+  background-color: $light;
+  font-family: 'Bellota', cursive;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.app-wrapper {
+  position: relative;
+
+  .sidebar-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 370px;
+    height: 100vh;
+    margin-left: -370px;
+    padding: 40px 20px 0 70px;    
+    font-size: 1.6rem;
+    z-index: 10;
+    -webkit-transition: -webkit-transform .45s ease-in;
+    transition: -webkit-transform .45s ease-in;
+    transition: transform .45s ease-in;
+    transition: transform .45s ease-in, -webkit-transform .45s ease-in;
+
+    &.active {
+      outline: 9999px solid $train-mode-color-outline;
+      -webkit-transform: translateX(370px);
+      transform: translateX(370px);
+
+      @media screen and (max-width: $media-large) {
+        -webkit-transform: translateX(350px);
+        transform: translateX(350px);
+      }
+  
+      @media screen and (max-width: $media-medium) {
+        -webkit-transform: translateX(320px);
+        transform: translateX(320px);
+      }
+  
+      @media screen and (max-width: $media-small) {
+        -webkit-transform: translateX(300px);
+        transform: translateX(300px);
+      }
+
+      @media screen and (max-width: $media-extra-small) {
+        -webkit-transform: translateX(100vw);
+        transform: translateX(100vw);
+      }
+    }
+
+    .sidebar-item {
+      margin-top: 15px;
+      color: $light;
+      text-decoration: none;
+      -webkit-transition: -webkit-transform .3s ease-in;
+      transition: -webkit-transform .3s ease-in;
+      transition: transform .3s ease-in;
+      transition: transform .3s ease-in, -webkit-transform .3s ease-in;
+
+      &:first-of-type {
+        margin-bottom: 10px;
+        margin-left: 40px;
+      }
+
+      &:hover {
+        color: $text-highlight;
+        -webkit-transform: translateX(15px);
+        transform: translateX(15px);
+      }
+
+      &.active {
+        color: $text-highlight;
+        font-size: 1.7rem;
+      }
+    }
+
+    .sidebar-cross {
+      padding-right: 40px;
+      text-align: right;
+      font-size: 2.6rem;
+      color: $light;
+      cursor: pointer;
+
+      &:hover {
+        color: $text-highlight;
+      }
+    } 
+
+    .fa-paw {
+      margin-right: 10px;
+    }
+
+    @media screen and (max-width: $media-large) {
+      width: 350px;
+      margin-left: -350px;
+      padding-left: 60px;
+    }
+
+    @media screen and (max-width: $media-medium) {
+      width: 320px;
+      margin-left: -320px;
+      padding-left: 50px;
+    }
+
+    @media screen and (max-width: $media-small) {
+      width: 300px;
+      margin-left: -300px;
+      padding-left: 35px;
+    }
+
+    @media screen and (max-width: $media-extra-small) {
+      width: 100vw;
+      margin-left: -100vw;
+      padding-left: 35px;
+    }
+  }
+
+  .start-button {
+    min-width: 250px;
+    width: 30%;
+    font-size: 1.8rem;
+    border-radius: 100px;
+    outline: none;
+  }
+
+  .repeat-button {
+    width: 1px;
+    min-width: 65px;
+    height: 65px;
+    font-size: 1.9rem;
+    border-radius: 100px;
+    outline: none;
+  }
+
+  .result-text {
+    font-size: 2rem;
+    color: $play-mode-color;
+
+    @media screen and (max-width: $media-small) {
+      font-size: 1.6rem;
+    }
+  }
+
+  .result-image {
+    width: 30%;
+
+    img {
+      width: 100%;
+    }
+
+    @media screen and (max-width: $media-large) {
+      width: 35%;
+    }
+  
+    @media screen and (max-width: $media-medium) {
+      width: 50%;
+    }
+  
+    @media screen and (max-width: $media-small) {
+      width: 60%;
+    }
+  
+    @media screen and (max-width: $media-extra-small) {
+      width: 80%;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+}
+
+.header-container {
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  width: 1340px;
+  height: 100px;
+  margin: 0 auto;
+  padding-top: 45px;
+
+  .burger-icon {
+    margin-right: 50px;
+    font-size: 3rem;
+    cursor: pointer;
+
+    &:hover {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+
+    @media screen and (max-width: $media-small) {
+      margin-right: 5px;
+      font-size: 2.7rem;
+    }
+  }
+
+  .logo {
+    font-size: 1.4rem;
+    color: $text-highlight;
+    text-transform: uppercase;
+    text-decoration: none;
+
+    @media screen and (max-width: $media-small) {
+      display: none;
+    }
+  }
+  
+  @media screen and (max-width: $media-large) {
+    width: 990px;
+  }
+
+  @media screen and (max-width: $media-medium) {
+    width: 645px;
+  }
+
+  @media screen and (max-width: $media-small) {
+    width: 295px;
+  }
+
+  @media screen and (max-width: $media-extra-small) {
+    width: 265px;
+  }
+}
+
+.board-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-top: 70px;
+  font-size: 1.9rem;
+
+  .card {
+    width: 300px;
+    height: 275px;
+    color: $light;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    
+    .card-text {
+      max-width: 270px;
+      overflow-y: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .reverse-icon:hover {
+      color: $train-mode-color;
+      text-shadow: 1px -2px 3px $light;
+    } 
+  }
+
+  .set-as-background {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .over-event {
+    box-shadow: 0px 1px 8px 0 $light,
+                0px 9px 27px 0 $hover-shadow-color;
+  }
+
+  @media screen and (max-width: $media-large) {
+    padding-top: 55px;
+  }
+
+  @media screen and (max-width: $media-medium) {
+    padding-top: 45px;
+  }
+
+  @media screen and (max-width: $media-small) {
+    padding-top: 35px;
+    font-size: 1.6rem;
+  }
+
+  @media screen and (max-width: $media-extra-small) {
+    padding-top: 25px;
+
+    .card .card-text {
+      padding-top: 8px;
+    }
+  }
+}
