@@ -22,25 +22,33 @@ body {
     padding: 40px 20px 0 70px;    
     font-size: 1.6rem;
     z-index: 10;
+    -webkit-transition: -webkit-transform .45s ease-in;
+    transition: -webkit-transform .45s ease-in;
     transition: transform .45s ease-in;
+    transition: transform .45s ease-in, -webkit-transform .45s ease-in;
 
     &.active {
       outline: 9999px solid $train-mode-color-outline;
+      -webkit-transform: translateX(370px);
       transform: translateX(370px);
 
       @media screen and (max-width: $media-large) {
+        -webkit-transform: translateX(350px);
         transform: translateX(350px);
       }
   
       @media screen and (max-width: $media-medium) {
+        -webkit-transform: translateX(320px);
         transform: translateX(320px);
       }
   
       @media screen and (max-width: $media-small) {
+        -webkit-transform: translateX(300px);
         transform: translateX(300px);
       }
 
       @media screen and (max-width: $media-extra-small) {
+        -webkit-transform: translateX(100vw);
         transform: translateX(100vw);
       }
     }
@@ -49,7 +57,10 @@ body {
       margin-top: 15px;
       color: $light;
       text-decoration: none;
+      -webkit-transition: -webkit-transform .3s ease-in;
+      transition: -webkit-transform .3s ease-in;
       transition: transform .3s ease-in;
+      transition: transform .3s ease-in, -webkit-transform .3s ease-in;
 
       &:first-of-type {
         margin-bottom: 10px;
@@ -58,6 +69,7 @@ body {
 
       &:hover {
         color: $text-highlight;
+        -webkit-transform: translateX(15px);
         transform: translateX(15px);
       }
 
@@ -107,10 +119,6 @@ body {
       padding-left: 35px;
     }
   }
-
-  // .sidebar-outline {
-  //   flex-basis: 100%;
-  // }
 
   .start-button {
     min-width: 250px;
@@ -168,6 +176,7 @@ body {
 }
 
 .header-container {
+  -webkit-box-pack: justify;
   justify-content: space-between;
   width: 1340px;
   height: 100px;
@@ -180,6 +189,7 @@ body {
     cursor: pointer;
 
     &:hover {
+      -webkit-transform: scale(1.1);
       transform: scale(1.1);
     }
 

@@ -37,7 +37,7 @@ class CardsList {
       board = createBoardHtmlElement(this.state, this.mode).boardWrapper;
 
       sections.forEach((val, index) => {
-        const newCard = new Card(cards[index][0].image, val);
+        const newCard = new Card(cards[index][3].image, val);
 
         board.appendChild(newCard.createCard(this.mode));
       });
@@ -50,7 +50,6 @@ class CardsList {
 
         section.forEach((val) => {
           const newCard = new Card(val.image, val.word, val.audioSrc, val.translation);
-
 
           board.appendChild(newCard.createFlipCard());
         });

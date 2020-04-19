@@ -9,6 +9,7 @@
     border-radius: 100px;
     background-color: darken($train-mode-color, 10%);
     cursor: pointer;
+    -webkit-transition: all 500ms;
     transition: all 500ms;
 
     &:hover:not(.toggle-moving) {
@@ -38,6 +39,7 @@
       color: $train-mode-color-highlight;
       background-color: $train-mode-color;
       border: 2px solid $light;
+      -webkit-transition: all 500ms;
       transition: all 500ms;
 
       @media screen and (max-width: $media-small) {
@@ -68,6 +70,7 @@
       content: 'Play';
       color: $light;
       border-radius: 5px 50px 50px 5px;
+      -webkit-transform: translate(100%, 0);
       transform: translate(100%, 0);
       
     }
@@ -78,10 +81,23 @@
 
     &:after {
       background-color: darken($play-mode-color, 5%);
+      -webkit-transition: color 0s,
+                  border-radius 500ms,          
+                  background-color 500ms,
+                  -webkit-transform 500ms;
+      transition: color 0s,
+                  border-radius 500ms,          
+                  background-color 500ms,
+                  -webkit-transform 500ms;
       transition: color 0s,
                   transform 500ms,
                   border-radius 500ms,          
                   background-color 500ms;
+      transition: color 0s,
+                  transform 500ms,
+                  border-radius 500ms,          
+                  background-color 500ms,
+                  -webkit-transform 500ms;
     }
   }
   

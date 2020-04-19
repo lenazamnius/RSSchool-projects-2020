@@ -53,16 +53,17 @@ function newCardsBoard(cardVal) {
   boardContainer.appendChild(pageBoard.createTrainBoard());
 }
 
-function randomizeArray(array) {
-  const swap = (arr, idx1, idx2) => {
-    ([arr[idx1], arr[idx2]] = [arr[idx2], arr[idx1]]);
-  };
+function randomizeArray(a) {
+  const temp = a;
 
-  for (let i = array.length - 1; i > 0; i -= 1) {
+  for (let i = temp.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
-    swap(array, i, j);
+    const x = temp[i];
+    temp[i] = temp[j];
+    temp[j] = x;
   }
-  return array;
+
+  return temp;
 }
 
 // Main page initialization
@@ -120,6 +121,7 @@ sidebar.addEventListener('click', (event) => {
 // Page navigation from main page board.
 // Sound reproduction on card click.
 // Return card to front side.
+// Game logic
 boardContainer.addEventListener('click', (event) => {
   const sectionCard = event.target.closest('a');
   const cardFront = event.target.closest('.card-front');
@@ -137,19 +139,21 @@ boardContainer.addEventListener('click', (event) => {
       } else {
         const cardToFlip = event.target.closest('.flip-card-inner');
         const cardBackSide = event.target.closest('.flip-card');
+
         if (!cardToFlip) return;
+
         cardToFlip.classList.add('flip-to-back');
-        cardBackSide.addEventListener('mouseleave', () => {
-          cardToFlip.classList.remove('flip-to-back');
-        });
+        cardBackSide.addEventListener('mouseleave', () => cardToFlip.classList.remove('flip-to-back'));
       }
     }
+
     if (config.mode === 'play' && config.game === 'on') {
       const clickedCard = event.target.closest('.card-play');
       const wrongPointsElement = document.querySelector('.count-wrong');
       const correctPointsElement = document.querySelector('.count-correct');
       const playBoard = document.querySelector('.play-board');
       const image = document.createElement('img');
+      const soundsValuesArr = [];
       let wrongScore = Number(wrongPointsElement.innerHTML);
       let correctScore = Number(correctPointsElement.innerHTML);
       let currentSound;
@@ -157,19 +161,20 @@ boardContainer.addEventListener('click', (event) => {
       let finishSound;
 
       if (!clickedCard) return;
-      cardId = clickedCard.getAttribute('id');
 
-      const soundsValuesArr = [];
+      cardId = clickedCard.getAttribute('id');
       audioArr.forEach((val) => soundsValuesArr.push(val.word));
+
       if (!soundsValuesArr.includes(cardId)) return;
 
-      // Game function
+      // Game logic
       if (cardId === audioArr[0].word) {
-        audioArr.shift();
+        clickedCard.style.opacity = '0.5';
         correctScore += 1;
         correctPointsElement.innerHTML = correctScore;
+        audioArr.shift();
         correctSound.play();
-        clickedCard.style.opacity = '0.5';
+
         if (audioArr.length > 0) {
           currentSound = new Audio(audioArr[0].sound);
           setTimeout(() => { currentSound.play(); }, 600);
@@ -191,7 +196,8 @@ boardContainer.addEventListener('click', (event) => {
           resultImageElement.appendChild(image);
           resultBoard.classList.remove('hidden');
           finishSound.play();
-          // Reset page
+
+          // Reset and move to main page
           config.game = 'off';
           config.page = 'Main Page';
           setTimeout(() => {
@@ -206,7 +212,7 @@ boardContainer.addEventListener('click', (event) => {
         wrongPointsElement.innerHTML = wrongScore;
         errorSound.play();
       }
-      // game function END
+      // Game logic END
     }
   } else {
     if (!sectionCard || !boardContainer.contains(sectionCard)) return;
@@ -218,9 +224,8 @@ boardContainer.addEventListener('click', (event) => {
     sidebarItems.forEach((val) => {
       if (val.innerText === cardValue) val.classList.add('active');
     });
-    if (config.mode === 'play') {
-      startGameButton.classList.remove('hidden');
-    }
+
+    if (config.mode === 'play') startGameButton.classList.remove('hidden');
   }
 });
 
@@ -261,14 +266,11 @@ toggleSwitch.addEventListener('click', (event) => {
     config.mode = 'play';
     newCardsBoard(config.page);
 
-    if (config.page !== 'Main Page') {
-      // repeatSoundButton.classList.add('hidden');
-      startGameButton.classList.remove('hidden');
-    }
+    if (config.page !== 'Main Page') startGameButton.classList.remove('hidden');
   } else {
-    toggle.classList.remove('toggle-moving');
-    config.mode = 'train';
     audioArr = [];
+    config.mode = 'train';
+    toggle.classList.remove('toggle-moving');
     startGameButton.classList.add('hidden');
     repeatSoundButton.classList.add('hidden');
     newCardsBoard(config.page);
