@@ -40,7 +40,7 @@ function init() {
   config.mode = 'train';
   config.game = 'off';
   pageBoard = new CardsList(config.page, config.mode);
-  boardContainer.appendChild(pageBoard.createTrainBoard());
+  boardContainer.appendChild(pageBoard.createCardsBoard());
 }
 
 function highlightMenuItem(menuItem) {
@@ -55,7 +55,7 @@ function newCardsBoard(cardVal) {
   while (boardContainer.firstChild) boardContainer.removeChild(boardContainer.firstChild);
 
   pageBoard = new CardsList(config.page, config.mode);
-  boardContainer.appendChild(pageBoard.createTrainBoard());
+  boardContainer.appendChild(pageBoard.createCardsBoard());
 }
 
 function randomizeArray(a) {

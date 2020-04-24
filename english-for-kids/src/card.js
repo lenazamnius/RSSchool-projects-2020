@@ -1,26 +1,3 @@
-function createMainHtmlElements(image, text) {
-  const cardElementsObject = {};
-  const cardBody = document.createElement('a');
-  const cardImage = document.createElement('img');
-  const cardName = document.createElement('div');
-  const cardNameText = document.createElement('p');
-
-  // add classes, attributes and values to elements
-  cardBody.setAttribute('href', '#cards');
-  cardImage.classList.add('card-img-top');
-  cardImage.setAttribute('srcset', image);
-  cardImage.setAttribute('alt', `image of ${text}`);
-  cardNameText.innerHTML = text;
-
-  // add child elements to parent card element
-  cardElementsObject.cardBody = cardBody;
-  cardElementsObject.cardImage = cardImage;
-  cardElementsObject.cardName = cardName;
-  cardElementsObject.cardNameText = cardNameText;
-
-  return cardElementsObject;
-}
-
 class Card {
   constructor(image, text, audio, translation) {
     this.image = image;
@@ -30,7 +7,7 @@ class Card {
   }
 
   createCard(mode) {
-    const cardElementsObject = createMainHtmlElements(this.image, this.text);
+    const cardElementsObject = this.createMainHtmlElements();
     const cardColor = (mode === 'train') ? 'bg-info' : 'bg-primary';
 
     // add classes, attributes and values to elements
@@ -47,7 +24,7 @@ class Card {
   }
 
   createFlipCard() {
-    const cardElementsObject = createMainHtmlElements(this.image, this.text);
+    const cardElementsObject = this.createMainHtmlElements();
     const cardFlipOuter = document.createElement('div');
     const cardFlipInner = document.createElement('div');
     const cardFront = document.createElement('div');
@@ -92,7 +69,7 @@ class Card {
   }
 
   createPlayCard() {
-    const cardElementsObject = createMainHtmlElements(this.image);
+    const cardElementsObject = this.createMainHtmlElements();
 
     // add classes, attributes and values to elements
     cardElementsObject.cardBody.style.backgroundImage = `url(${this.image})`;
@@ -100,6 +77,29 @@ class Card {
     cardElementsObject.cardBody.setAttribute('id', this.text);
 
     return cardElementsObject.cardBody;
+  }
+
+  createMainHtmlElements() {
+    const cardElementsObject = {};
+    const cardBody = document.createElement('a');
+    const cardImage = document.createElement('img');
+    const cardName = document.createElement('div');
+    const cardNameText = document.createElement('p');
+
+    // add classes, attributes and values to elements
+    cardBody.setAttribute('href', '#cards');
+    cardImage.classList.add('card-img-top');
+    cardImage.setAttribute('srcset', this.image);
+    cardImage.setAttribute('alt', `image of ${this.text}`);
+    cardNameText.innerHTML = this.text;
+
+    // add child elements to parent card element
+    cardElementsObject.cardBody = cardBody;
+    cardElementsObject.cardImage = cardImage;
+    cardElementsObject.cardName = cardName;
+    cardElementsObject.cardNameText = cardNameText;
+
+    return cardElementsObject;
   }
 }
 
