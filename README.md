@@ -1,2 +1,3 @@
-# English-for-kids
-Application for children to learn English words for RSSchool front-end course
+# lenazamnius-RS2020Q1
+
+This is privat Lena Zamnius repository for projects at RSSchool front-end course (spring / summer 2020).
