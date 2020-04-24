@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lenazamnius/English-for-kids.git"
+    "url": "git+https://github.com/rolling-scopes-school/lenazamnius-RS2020Q1/tree/english-for-kids.git"
   },
   "author": "Lena Zamnius",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lenazamnius/English-for-kids/issues"
+    "url": "https://github.com/rolling-scopes-school/lenazamnius-RS2020Q1/tree/english-for-kids/issues"
   },
-  "homepage": "https://github.com/lenazamnius/English-for-kids#readme",
+  "homepage": "https://github.com/rolling-scopes-school/lenazamnius-RS2020Q1/tree/english-for-kids#readme",
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
