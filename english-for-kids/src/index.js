@@ -2,7 +2,7 @@ import './styles/main.scss';
 import CardsList from './cards-list';
 import { cards, sections } from './cards-object';
 
-const appWrapper = document.querySelector('.app-wrapper');
+const appWrapper = document.querySelector('#app-wrapper');
 const boardContainer = document.getElementById('board-container');
 const sidebar = document.getElementById('sidebar-menu');
 const sidebarItems = document.querySelectorAll('.sidebar-item');
@@ -13,8 +13,9 @@ const logo = document.getElementById('logo-text');
 const startGameButton = document.querySelector('.start-button');
 const repeatSoundButton = document.querySelector('.repeat-button');
 const resultBoard = document.getElementById('result-board');
-const resultSingElement = document.querySelector('.result-text');
+const resultSignElement = document.querySelector('.result-text');
 const resultImageElement = document.querySelector('.result-image');
+const image = document.createElement('img');
 const correctSound = new Audio('audio/correct.mp3');
 const errorSound = new Audio('audio/error.mp3');
 const winSound = new Audio('audio/success.mp3');
@@ -25,10 +26,14 @@ const config = {
   mode: '',
   game: '',
 };
+const soundsValuesArr = [];
 let audioArr = [];
 let selectedSidebarItem;
 let pageBoard;
 let cardId;
+let currentSound;
+let resultSign;
+let finishSound;
 
 function init() {
   config.page = 'Main Page';
@@ -64,6 +69,66 @@ function randomizeArray(a) {
   }
 
   return temp;
+}
+
+function actionOnCardClick(iconFlipCard, card, evt) {
+  if (!iconFlipCard) {
+    const audioLink = card.dataset.audioSrc;
+    const sound = new Audio(audioLink);
+
+    sound.play();
+  } else {
+    const cardToFlip = evt.target.closest('.flip-card-inner');
+    const cardBackSide = evt.target.closest('.flip-card');
+
+    if (!cardToFlip) return;
+
+    cardToFlip.classList.add('flip-to-back');
+    cardBackSide.addEventListener('mouseleave', () => cardToFlip.classList.remove('flip-to-back'));
+  }
+}
+
+function setGameEndImageAndSound(wrongScoreNum) {
+  if (wrongScoreNum > 0) {
+    finishSound = failureSound;
+    image.setAttribute('srcset', 'images/failure.png');
+  } else {
+    finishSound = winSound;
+    image.setAttribute('srcset', 'images/success.png');
+  }
+}
+
+function resetMoveToMainPage(newImageElement, imageElement, board) {
+  config.game = 'off';
+  config.page = 'Main Page';
+  setTimeout(() => {
+    resultSignElement.innerHTML = '';
+    imageElement.removeChild(newImageElement);
+    board.classList.add('hidden');
+    newCardsBoard(config.page);
+  }, 2800);
+}
+
+function renderMainPage(card) {
+  const cardValue = card.querySelector('.card-text').innerText;
+
+  newCardsBoard(cardValue);
+  sidebarItems.forEach((val) => val.classList.remove('active'));
+  sidebarItems.forEach((val) => {
+    if (val.innerText === cardValue) val.classList.add('active');
+  });
+
+  if (config.mode === 'play') startGameButton.classList.remove('hidden');
+}
+
+function showGameEndBoard(currentBoard, wrongScore) {
+  currentBoard.classList.add('hidden');
+  repeatSoundButton.classList.add('hidden');
+  resultSign = `You've got ${wrongScore} errors!`;
+  resultSignElement.innerHTML = resultSign;
+  setGameEndImageAndSound(wrongScore);
+  resultImageElement.appendChild(image);
+  resultBoard.classList.remove('hidden');
 }
 
 // Main page initialization
@@ -131,20 +196,8 @@ boardContainer.addEventListener('click', (event) => {
       const iconFlipCard = event.target.closest('span');
 
       if (!cardFront || !sectionCard.dataset.audioSrc) return;
-      if (!iconFlipCard) {
-        const audioLink = sectionCard.dataset.audioSrc;
-        const sound = new Audio(audioLink);
 
-        sound.play();
-      } else {
-        const cardToFlip = event.target.closest('.flip-card-inner');
-        const cardBackSide = event.target.closest('.flip-card');
-
-        if (!cardToFlip) return;
-
-        cardToFlip.classList.add('flip-to-back');
-        cardBackSide.addEventListener('mouseleave', () => cardToFlip.classList.remove('flip-to-back'));
-      }
+      actionOnCardClick(iconFlipCard, sectionCard, event);
     }
 
     if (config.mode === 'play' && config.game === 'on') {
@@ -152,13 +205,8 @@ boardContainer.addEventListener('click', (event) => {
       const wrongPointsElement = document.querySelector('.count-wrong');
       const correctPointsElement = document.querySelector('.count-correct');
       const playBoard = document.querySelector('.play-board');
-      const image = document.createElement('img');
-      const soundsValuesArr = [];
       let wrongScore = Number(wrongPointsElement.innerHTML);
       let correctScore = Number(correctPointsElement.innerHTML);
-      let currentSound;
-      let resultSign;
-      let finishSound;
 
       if (!clickedCard) return;
 
@@ -179,53 +227,20 @@ boardContainer.addEventListener('click', (event) => {
           currentSound = new Audio(audioArr[0].sound);
           setTimeout(() => { currentSound.play(); }, 600);
         } else {
-          playBoard.classList.add('hidden');
-          repeatSoundButton.classList.add('hidden');
-
-          resultSign = `You've got ${wrongScore} errors!`;
-          resultSingElement.innerHTML = resultSign;
-
-          if (wrongScore > 0) {
-            finishSound = failureSound;
-            image.setAttribute('srcset', 'images/failure.png');
-          } else {
-            finishSound = winSound;
-            image.setAttribute('srcset', 'images/success.png');
-          }
-
-          resultImageElement.appendChild(image);
-          resultBoard.classList.remove('hidden');
+          showGameEndBoard(playBoard, wrongScore);
           finishSound.play();
-
-          // Reset and move to main page
-          config.game = 'off';
-          config.page = 'Main Page';
-          setTimeout(() => {
-            resultSingElement.innerHTML = '';
-            resultImageElement.removeChild(image);
-            resultBoard.classList.add('hidden');
-            newCardsBoard(config.page);
-          }, 2800);
+          resetMoveToMainPage(image, resultImageElement, resultBoard);
         }
       } else {
         wrongScore += 1;
         wrongPointsElement.innerHTML = wrongScore;
         errorSound.play();
       }
-      // Game logic END
     }
   } else {
     if (!sectionCard || !boardContainer.contains(sectionCard)) return;
 
-    const cardValue = sectionCard.querySelector('.card-text').innerText;
-
-    newCardsBoard(cardValue);
-    sidebarItems.forEach((val) => val.classList.remove('active'));
-    sidebarItems.forEach((val) => {
-      if (val.innerText === cardValue) val.classList.add('active');
-    });
-
-    if (config.mode === 'play') startGameButton.classList.remove('hidden');
+    renderMainPage(sectionCard);
   }
 });
 
