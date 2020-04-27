@@ -1,15 +1,32 @@
+$main-green-color: rgb(120, 194, 173);
+$main-red-color: rgb(243, 150, 154);
+$light-text-color: rgb(255, 255, 255);
+$dark-text-color: rgb(136, 136, 136);
+$transparent: rgba(255, 255, 255, 0);
 $media-small: 450px;
 
+html, 
 body {
-  font: 400 1.6rem 'Roboto';
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font: 400 1.5rem 'Roboto';
 }
 
 #app-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   .navbar {
     height: 110px;
 
     .navbar-brand h1 {
-      color: rgb(255, 255, 255);
+      color: $light-text-color;
       font-weight: 700;
       font-size: 2.5rem;
       letter-spacing: 1.2px;
@@ -60,10 +77,10 @@ body {
     }
 
     .input-message {
-      height: 40px;
+      height: 30px;
 
       #inputted-word {
-        color: rgb(243, 150, 154);
+        color: $main-red-color;
         letter-spacing: 1.1px;
       }
 
@@ -72,31 +89,102 @@ body {
       }
     }
 
-    .swiper-container {
-      width: 100%;
-      height: 100%;
+    .swiper-outer-container {
+      position: relative;
+      padding: 0 30px 80px 30px;
 
-      .swiper-slide {
-        height: 400px;
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
-        border: 1px solid darkgreen;
+      .swiper-container {
   
-        /* Center slide text vertically */
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
+        .swiper-slide {
+          height: 500px;
+          text-align: center;
+          font-size: 18px;
+          background: $main-green-color;
+    
+          /* Center slide text vertically */
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
+          -webkit-justify-content: center;
+          justify-content: center;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          -webkit-align-items: center;
+          align-items: center;
+        }
+      }
+
+      .swiper-pagination {
+        left: 0;
+        right: 0;
+        margin: 20px auto 30px auto;
+  
+        .swiper-pagination-bullet {
+          width: 9px;
+          height: 9px;
+          margin-right: 8px;
+          background: $main-green-color;
+          outline-color: $transparent;
+        }
+      }
+  
+      .swiper-button-next {
+        right: 0;
+      }
+  
+      .swiper-button-prev {
+        left: 0;
+      }
+  
+      .swiper-button-next,
+      .swiper-button-prev  {
+        color: $dark-text-color;
+        outline-color: $transparent;
+  
+        &:hover {
+          color: $main-red-color;
+        }
       }
     }
+
+    @media (min-width: 575.98px) { max-width: 640px; }
+
+    @media (min-width: 767.98px) { max-width: 870px; }
+
+    @media (min-width: 991.98px) { max-width: 1100px; }
+
+    @media (min-width: 1199.98px) { max-width: 1330px; }
+  }
+
+  footer.footer {
+    width: 100%;
+    height: 75px;
+    padding: 0 3rem 0 4.5rem;
+    font-size: 1.3rem;
+    background: url(/images/rs-icon.png) no-repeat 40px center;
+    background-size: 29px;
+    opacity: 0.9;
+
+    .github-link a {
+      color: $light-text-color;
+      text-decoration: none;
+      
+      &:hover {
+        color: $main-red-color;
+      }
+    }
+
+    @media (man-width: 767.98px) { 
+      font-size: 1.2rem; 
+    }
+
+    @media (max-width: 575.98px) { 
+      padding: 0 1rem 0 4.2rem;
+      font-size: 1.1rem;
+      background-size: 24px;
+     }
   }
 }
