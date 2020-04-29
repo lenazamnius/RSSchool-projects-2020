@@ -18,8 +18,8 @@ class MovieSlide {
     // add classes, attributes and values to elements
     slideCard.classList.add('swiper-slide', 'd-flex', 'flex-column');
     movieTitle.setAttribute('href', `https://www.imdb.com/title/${this.id}`);
-    movieTitle.setAttribute('target', `_blank`);
-    movieTitle.classList.add('title', 'p-3', 'text-muted', 'font-weight-bold');
+    movieTitle.setAttribute('target', '_blank');
+    movieTitle.classList.add('title', 'p-3', 'font-weight-bold');
     movieTitle.innerHTML = this.title;
     moviePoster.classList.add('card-body');
     moviePoster.style.backgroundImage = `url(${this.poster})`;
@@ -27,9 +27,9 @@ class MovieSlide {
     movieYear.innerHTML = this.year;
     movieRating.classList.add('rating', 'px-3', 'pb-4', 'text-warning');
     movieRating.setAttribute('data-id', this.id);
-    movieRating.innerHTML = star;
+    movieRating.innerHTML = `${star} ${this.rating}`;
 
-    // create slide
+    // create slide element
     slideCard.appendChild(movieTitle);
     slideCard.appendChild(moviePoster);
     slideCard.appendChild(movieYear);
@@ -40,6 +40,3 @@ class MovieSlide {
 }
 
 export default MovieSlide;
-
-// http://www.omdbapi.com/?apikey=3b910c7f&i=tt3896198&
-// https://www.imdb.com/title/<imdbID'> to get a link to the movie

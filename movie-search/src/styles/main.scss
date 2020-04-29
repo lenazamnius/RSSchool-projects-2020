@@ -96,7 +96,7 @@ body {
       .swiper-container {
   
         .swiper-slide {
-          height: 500px;
+          // height: 500px;
           text-align: center;
           font-size: 18px;
           // background: $main-green-color;
@@ -118,10 +118,11 @@ body {
           .title {
             width: 100%;
             font-size: 1.6rem;
-            text-decoration: none;
+            color: $dark-text-color;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            text-decoration: none;
 
             &:hover {
               color: $main-red-color;
@@ -129,7 +130,11 @@ body {
           }
 
           .card-body {
-            width: 250px
+            width: 250px;
+            height: 400px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
           }
         }
       }
@@ -158,12 +163,21 @@ body {
   
       .swiper-button-next,
       .swiper-button-prev  {
+        top: 40%;
         color: $dark-text-color;
         outline-color: $transparent;
   
         &:hover {
           color: $main-red-color;
         }
+
+        @media (max-width: 575.98px) {
+          display: none;
+        }
+      }
+
+      @media (max-width: 575.98px) {
+        padding: 0 0 65px 0;
       }
     }
 
