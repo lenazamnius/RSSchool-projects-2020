@@ -43,6 +43,7 @@ body {
   }
   
   .container {
+    height: 100%;
 
     .form-control {
       width: calc(100% - 105px);
@@ -91,6 +92,7 @@ body {
 
     .swiper-outer-container {
       position: relative;
+      min-height: 500px;
       padding: 0 30px 80px 30px;
 
       .swiper-container {

@@ -7,12 +7,9 @@ const btnSearch = document.getElementById('btn-search');
 const swiperWrapper = document.getElementById('swiper-wrapper');
 const inputMessage = document.getElementById('input-message');
 
-const moviesData = [];
-const moviesRating = [];
-let inputString = 'cat';
+let inputString = 'flower';
 let message = false;
 
-window.onresize = swiperInitialization;
 
 function createSwiper(slidersAmount, space) {
   const swiper = new Swiper('.swiper-container', {
@@ -33,7 +30,6 @@ function createSwiper(slidersAmount, space) {
 }
 
 function swiperInitialization() {
-  console.log('swiperInitialization')
   const windowWidth = window.innerWidth;
 
   if (windowWidth < 630) {
@@ -47,7 +43,7 @@ function swiperInitialization() {
   }
 }
 
-function createNewSlide(id, title, poster, year, rating = 7) {
+function createNewSlide(id, title, poster, year, rating = 10) {
   const newSlideObj = new MovieSlide(id, title, poster, year, rating);
   const newCardHtmlElement = newSlideObj.createSlideHtmlElements();
 
@@ -70,72 +66,45 @@ function deleteInputMessage() {
   innerMessage.remove();
 }
 
+async function renderSwiper(inputStr) {
+  const response = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&s=${inputStr}`);
+  const movies = await response.json();
+  // console.log('--- 2 get movies', movies);
 
-// const fetchId = async (id) => {
-//   const response = await fetch(`http://www.omdbapi.com/?apikey=3b910c7f&type=movie&i=${id}`);
-
-//   if (!response.ok) return;
-
-//   const data = await response.json();
-//   console.log('get rating');
-//   return data.imdbRating;
-// };
-
-const fetchMovie = async (inputStr) => {
-  if(message) deleteInputMessage();
-
-  const response = await fetch(`http://www.omdbapi.com/?apikey=3b910c7f&type=movie&s=${inputStr}`);
-
-  if (!response.ok) return;
-
-  const data = await response.json();
-
-  if (data.Response === 'False') {
-    inputWord.innerHTML = inputString;
+  if (movies.Response === 'False') {
+    createInputMessage(inputStr);
   } else {
-    data.Search.forEach((movie) => {
-      // const movieId = movie.imdbID;
-      // movie.Rating = fetchId(movieId);
-      // .then((res) => {
-      //   console.log('update arr');
-      //   movie.Rating = res;
-      // })
-      moviesData.push(movie);
-    });
+    if (message) deleteInputMessage();
+    swiperWrapper.innerHTML = '';
+
+    await Promise.all(movies.Search.map(async (movie) => {
+      const movieResponse = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&i=${movie.imdbID}`);
+      const rating = await movieResponse.json();
+      const newCard = createNewSlide(movie.imdbID, movie.Title, movie.Poster, movie.Year, rating.imdbRating);
+
+      swiperWrapper.appendChild(newCard);
+    }));
+
+    swiperInitialization();
   }
 }
 
-fetchMovie(inputString)
-.then(() => {
-  moviesData.forEach((movie) => {
-    const newCard = createNewSlide(movie.imdbID, movie.Title, movie.Poster, movie.Year, movie.Rating);
-    swiperWrapper.appendChild(newCard);
-  })
-  swiperInitialization();
-})
-
+renderSwiper(inputString);
+window.onresize = swiperInitialization;
 
 // event on enter input and on press search button
-input.addEventListener('keypress', function(event) {
-  if(!message) return;
+input.addEventListener('keypress', function eventFn(event) {
+  if (!message) return;
   if (event.key === 'Enter') {
     event.preventDefault();
     inputString = this.value;
-
-    fetchMovie(inputString)
-    .catch(() => {
-      createInputMessage(inputString);
-    })
+    renderSwiper(inputString);
   }
 });
 
-btnSearch.addEventListener('click',  function() {
-  if(!message && !input.value) return;
+btnSearch.addEventListener('click', () => {
+  if (!message && !input.value) return;
+
   inputString = input.value;
-
-  fetchMovie(inputString)
-  .catch(() => {
-    createInputMessage(inputString);
-  })
+  renderSwiper(inputString);
 });
-
