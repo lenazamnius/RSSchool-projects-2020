@@ -2,12 +2,13 @@ import './styles/main.scss';
 
 import MovieSlide from './movie-slide';
 
+const yandexAPIKey = 'trnsl.1.1.20200504T064520Z.e1d33f74b883176a.a15696bdad0036d0f2f9a019f51db4f0ae1cf1b0';
 const input = document.getElementById('input');
 const btnSearch = document.getElementById('btn-search');
 const swiperWrapper = document.getElementById('swiper-wrapper');
 const inputMessage = document.getElementById('input-message');
 
-let inputString = 'flower';
+let inputString = 'goal';
 let message = false;
 
 
@@ -53,6 +54,7 @@ function createNewSlide(id, title, poster, year, rating = 10) {
 function createInputMessage(string) {
   const p = document.createElement('p');
   const text = `No results for "<span id="inputted-word">${string}</span>"`;
+
   p.setAttribute('id', 'inner-message');
   p.innerHTML = text;
   message = true;
@@ -67,12 +69,17 @@ function deleteInputMessage() {
 }
 
 async function renderSwiper(inputStr) {
-  const response = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&s=${inputStr}`);
+  const requestTranslate = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${yandexAPIKey}&text=${inputStr}&lang=en`;
+  const responseTranslate = await fetch(`${requestTranslate}`);
+  const word = await responseTranslate.json();
+
+  const response = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&s=${word.text[0]}`);
   const movies = await response.json();
   // console.log('--- 2 get movies', movies);
 
   if (movies.Response === 'False') {
-    createInputMessage(inputStr);
+    if (message) deleteInputMessage();
+    createInputMessage(word.text[0]);
   } else {
     if (message) deleteInputMessage();
     swiperWrapper.innerHTML = '';
@@ -108,3 +115,14 @@ btnSearch.addEventListener('click', () => {
   inputString = input.value;
   renderSwiper(inputString);
 });
+
+
+// async function translateInput(inputWord) {
+//   const requestTranslate = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${yandexAPIKey}&text=${inputWord}&lang=en`;
+//   const response = await fetch(`${requestTranslate}`);
+//   const word = await response.json();
+
+//   console.log(word.text[0]);
+// }
+
+// translateInput(inputString);
