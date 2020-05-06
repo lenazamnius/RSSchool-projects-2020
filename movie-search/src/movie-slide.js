@@ -14,7 +14,7 @@ class MovieSlide {
     const movieYear = document.createElement('div');
     const movieRating = document.createElement('div');
     const star = this.rating < 6.5 ? '<i class="fas fa-star-half-alt"></i>' : '<i class="fas fa-star"></i>';
-    const poster = this.poster === 'N/A' ? 'url(/images/default-poster.png)' : `url(${this.poster})`;
+    const poster = this.poster === 'N/A' ? 'url(images/default-poster.png)' : `url(${this.poster})`;
 
     // add classes, attributes and values to elements
     slideCard.classList.add('swiper-slide', 'd-flex', 'flex-column');

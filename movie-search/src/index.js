@@ -1,48 +1,20 @@
 import './styles/main.scss';
 
+import mySwiper from './my-swiper';
 import MovieSlide from './movie-slide';
 
 const yandexAPIKey = 'trnsl.1.1.20200504T064520Z.e1d33f74b883176a.a15696bdad0036d0f2f9a019f51db4f0ae1cf1b0';
 const input = document.getElementById('input');
 const btnSearch = document.getElementById('btn-search');
-const swiperWrapper = document.getElementById('swiper-wrapper');
 const inputMessage = document.getElementById('input-message');
+const deleteInput = document.getElementById('delete-input');
+const loader = document.getElementById('loader');
 
-let inputString = 'goal';
-let message = false;
-
-
-function createSwiper(slidersAmount, space) {
-  const swiper = new Swiper('.swiper-container', {
-    slidesPerView: slidersAmount,
-    spaceBetween: space,
-    loop: true,
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-  });
-
-  return swiper;
-}
-
-function swiperInitialization() {
-  const windowWidth = window.innerWidth;
-
-  if (windowWidth < 630) {
-    createSwiper(1, 0);
-  } else if (windowWidth < 880) {
-    createSwiper(2, 10);
-  } else if (windowWidth < 1130) {
-    createSwiper(3, 10);
-  } else {
-    createSwiper(4, 15);
-  }
-}
+const config = {
+  inputString: 'cat',
+  message: false,
+  massageTranslate: '',
+};
 
 function createNewSlide(id, title, poster, year, rating = 10) {
   const newSlideObj = new MovieSlide(id, title, poster, year, rating);
@@ -53,76 +25,83 @@ function createNewSlide(id, title, poster, year, rating = 10) {
 
 function createInputMessage(string) {
   const p = document.createElement('p');
-  const text = `No results for "<span id="inputted-word">${string}</span>"`;
+  const text = !config.massageTranslate
+    ? `No results for "<span id="inputted-word">${string}</span>"`
+    : `Show results for "<span id="inputted-word">${string}</span>"`;
 
   p.setAttribute('id', 'inner-message');
   p.innerHTML = text;
-  message = true;
+  config.message = true;
   inputMessage.appendChild(p);
 }
 
 function deleteInputMessage() {
   const innerMessage = document.getElementById('inner-message');
 
-  message = false;
+  config.message = false;
+  config.massageTranslate = '';
   innerMessage.remove();
 }
 
 async function renderSwiper(inputStr) {
+  if (config.message) deleteInputMessage();
+
   const requestTranslate = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${yandexAPIKey}&text=${inputStr}&lang=en`;
   const responseTranslate = await fetch(`${requestTranslate}`);
   const word = await responseTranslate.json();
 
+  config.massageTranslate = word.lang === 'ru-en' ? 'ru' : '';
+
   const response = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&s=${word.text[0]}`);
   const movies = await response.json();
-  // console.log('--- 2 get movies', movies);
 
   if (movies.Response === 'False') {
-    if (message) deleteInputMessage();
+    config.massageTranslate = '';
+    loader.classList.add('hidden');
     createInputMessage(word.text[0]);
   } else {
-    if (message) deleteInputMessage();
-    swiperWrapper.innerHTML = '';
+    if (!config.massageTranslate && config.message) deleteInputMessage();
+
+    mySwiper.removeAllSlides();
 
     await Promise.all(movies.Search.map(async (movie) => {
       const movieResponse = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&i=${movie.imdbID}`);
       const rating = await movieResponse.json();
-      const newCard = createNewSlide(movie.imdbID, movie.Title, movie.Poster, movie.Year, rating.imdbRating);
+      const movieInfo = [movie.imdbID, movie.Title, movie.Poster, movie.Year];
+      const newCard = createNewSlide(...movieInfo, rating.imdbRating);
 
-      swiperWrapper.appendChild(newCard);
+      mySwiper.appendSlide(newCard);
     }));
 
-    swiperInitialization();
+    loader.classList.add('hidden');
+
+    if (config.massageTranslate === 'ru') createInputMessage(word.text[0]);
+
+    mySwiper.update();
   }
 }
 
-renderSwiper(inputString);
-window.onresize = swiperInitialization;
+renderSwiper(config.inputString);
 
 // event on enter input and on press search button
 input.addEventListener('keypress', function eventFn(event) {
-  if (!message) return;
+  if (!config.message) return;
   if (event.key === 'Enter') {
     event.preventDefault();
-    inputString = this.value;
-    renderSwiper(inputString);
+    loader.classList.remove('hidden');
+    config.inputString = this.value;
+    renderSwiper(config.inputString);
   }
 });
 
 btnSearch.addEventListener('click', () => {
-  if (!message && !input.value) return;
+  if (!config.message && !input.value) return;
 
-  inputString = input.value;
-  renderSwiper(inputString);
+  loader.classList.remove('hidden');
+  config.inputString = input.value;
+  renderSwiper(config.inputString);
 });
 
-
-// async function translateInput(inputWord) {
-//   const requestTranslate = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${yandexAPIKey}&text=${inputWord}&lang=en`;
-//   const response = await fetch(`${requestTranslate}`);
-//   const word = await response.json();
-
-//   console.log(word.text[0]);
-// }
-
-// translateInput(inputString);
+deleteInput.addEventListener('click', () => {
+  input.value = '';
+});
