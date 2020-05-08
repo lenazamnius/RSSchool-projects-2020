@@ -1,9 +1,14 @@
 import Swiper from 'swiper';
 
 const mySwiper = new Swiper('.swiper-container', {
-  slidesPerView: 4,
-  spaceBetween: 15,
+  slidesPerView: 1,
+  spaceBetween: 0,
   observer: true,
+  initialSlide: 1,
+  // centeredSlides: true,
+  // centeredSlidesBounds: true,
+  centerInsufficientSlides: true,
+  updateOnImagesReady: true,
   pagination: {
     el: '.swiper-pagination',
     clickable: true,
@@ -13,10 +18,6 @@ const mySwiper = new Swiper('.swiper-container', {
     prevEl: '.swiper-button-prev',
   },
   breakpoints: {
-    290: {
-      slidesPerView: 1,
-      spaceBetween: 0,
-    },
     630: {
       slidesPerView: 2,
       spaceBetween: 10,
