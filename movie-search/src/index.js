@@ -11,13 +11,14 @@ const deleteInput = document.getElementById('delete-input');
 const loader = document.getElementById('loader');
 
 const config = {
-  inputString: 'devil',
+  inputString: 'bicycle',
   requestPage: 1,
   message: false,
   massageTranslate: '',
 };
 
 let moviesArr = [];
+let message;
 
 function createNewSlide(id, title, poster, year, rating = 10) {
   const newSlideObj = new MovieSlide(id, title, poster, year, rating);
@@ -26,16 +27,16 @@ function createNewSlide(id, title, poster, year, rating = 10) {
   return newCardHtmlElement;
 }
 
-function createInputMessage(string) {
+function createInputMessage(string, errorText) {
   const p = document.createElement('p');
   const text = !config.massageTranslate
-    ? `No results were found for "<span id="inputted-word">${string}</span>"`
+    ? `No results for "<span id="inputted-word">${string}.</span>" ${errorText}`
     : `Show results for "<span id="inputted-word">${string}</span>"`;
 
   p.setAttribute('id', 'inner-message');
   p.innerHTML = text;
-  config.message = true;
   inputMessage.appendChild(p);
+  config.message = true;
 }
 
 function deleteInputMessage() {
@@ -76,13 +77,24 @@ async function fillSwiper() {
   moviesArr = [];
 }
 
-async function addSlides() {
+async function appendSlides() {
+  if (config.message) {
+    message = document.getElementById('inner-message');
+    message.classList.add('hidden');
+  }
+
+  loader.classList.remove('hidden');
   await fetchMovies(config.inputString, config.requestPage)
     .then((resMovie) => {
-      resMovie.Search.forEach((val) => moviesArr.push(val));
-    });
+      if (resMovie.Response !== 'False') {
+        resMovie.Search.forEach((val) => moviesArr.push(val));
+      }
+    })
+    .catch((err) => { throw new Error(err); });
 
   await fillSwiper();
+  loader.classList.add('hidden');
+  if (config.message) message.classList.remove('hidden');
 }
 
 async function renderSwiper(inputStr) {
@@ -99,20 +111,17 @@ async function renderSwiper(inputStr) {
       if (resMovie.Response === 'False') {
         config.massageTranslate = '';
         loader.classList.add('hidden');
-        createInputMessage(config.inputString);
+        createInputMessage(config.inputString, resMovie.Error);
+      } else {
+        resMovie.Search.forEach((val) => moviesArr.push(val));
+        mySwiper.removeAllSlides();
       }
-      resMovie.Search.forEach((val) => moviesArr.push(val));
     })
-    .catch((err) => {
-      // console.log('No result for this input');
-      throw err;
-    });
+    .catch((err) => { throw new Error(err); });
 
-  if (!config.massageTranslate && config.message) deleteInputMessage();
-
-  mySwiper.removeAllSlides();
   await fillSwiper();
   loader.classList.add('hidden');
+
   if (config.massageTranslate === 'ru') createInputMessage(config.inputString);
 }
 
@@ -125,6 +134,7 @@ input.addEventListener('keypress', function eventFn(event) {
     event.preventDefault();
     loader.classList.remove('hidden');
     config.inputString = this.value;
+    config.requestPage = 1;
     renderSwiper(config.inputString);
   }
 });
@@ -134,6 +144,7 @@ btnSearch.addEventListener('click', () => {
 
   loader.classList.remove('hidden');
   config.inputString = input.value;
+  config.requestPage = 1;
   renderSwiper(config.inputString);
 });
 
@@ -143,6 +154,6 @@ deleteInput.addEventListener('click', () => {
 
 mySwiper.on('slideNextTransitionStart', () => {
   if (mySwiper.isEnd) {
-    addSlides();
+    appendSlides();
   }
 });

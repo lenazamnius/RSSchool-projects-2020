@@ -14,7 +14,16 @@ class MovieSlide {
     const movieYear = document.createElement('div');
     const movieRating = document.createElement('div');
     const star = this.rating < 6.5 ? '<i class="fas fa-star-half-alt"></i>' : '<i class="fas fa-star"></i>';
-    const poster = this.poster === 'N/A' ? 'url(images/default-poster.png)' : `url(${this.poster})`;
+    const testImg = document.createElement('img');
+
+    if (this.poster === 'N/A') {
+      moviePoster.style.backgroundImage = 'url(images/default-poster.png)';
+    } else {
+      testImg.src = `${this.poster}`;
+      testImg.onload = () => { moviePoster.style.backgroundImage = `url(${this.poster})`; };
+      testImg.onerror = () => { moviePoster.style.backgroundImage = 'url(images/default-poster.png)'; };
+      testImg.remove();
+    }
 
     // add classes, attributes and values to elements
     slideCard.classList.add('swiper-slide', 'd-flex', 'flex-column');
@@ -23,7 +32,6 @@ class MovieSlide {
     movieTitle.classList.add('title', 'p-3', 'font-weight-bold');
     movieTitle.innerHTML = this.title;
     moviePoster.classList.add('card-body');
-    moviePoster.style.backgroundImage = poster;
     movieYear.classList.add('year', 'p-3');
     movieYear.innerHTML = this.year;
     movieRating.classList.add('rating', 'px-3', 'pb-4', 'text-warning');

@@ -3,10 +3,9 @@ import Swiper from 'swiper';
 const mySwiper = new Swiper('.swiper-container', {
   slidesPerView: 1,
   spaceBetween: 0,
-  observer: true,
   initialSlide: 1,
-  // centeredSlides: true,
-  // centeredSlidesBounds: true,
+  speed: 500,
+  observer: true,
   centerInsufficientSlides: true,
   updateOnImagesReady: true,
   pagination: {
