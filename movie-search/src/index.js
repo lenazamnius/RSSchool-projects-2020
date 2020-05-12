@@ -2,12 +2,19 @@ import './styles/main.scss';
 
 import mySwiper from './my-swiper';
 import MovieSlide from './movie-slide';
+import {
+  createBoard,
+  keyDownEvent,
+  keyUpEvent,
+  eventsOnMousedown,
+  eventsOnMouseup} from './keyboard';
 
 const yandexAPIKey = 'trnsl.1.1.20200504T064520Z.e1d33f74b883176a.a15696bdad0036d0f2f9a019f51db4f0ae1cf1b0';
 const input = document.getElementById('input');
 const btnSearch = document.getElementById('btn-search');
 const inputMessage = document.getElementById('input-message');
 const deleteInput = document.getElementById('delete-input');
+const keyboardBtn = document.getElementById('keyboard');
 const loader = document.getElementById('loader');
 
 const config = {
@@ -18,6 +25,7 @@ const config = {
 };
 
 let moviesArr = [];
+let keyboardContainer;
 let message;
 
 function createNewSlide(id, title, poster, year, rating = 10) {
@@ -150,6 +158,7 @@ btnSearch.addEventListener('click', () => {
 
 deleteInput.addEventListener('click', () => {
   input.value = '';
+  if (config.message) deleteInputMessage();
 });
 
 mySwiper.on('slideNextTransitionStart', () => {
@@ -157,3 +166,19 @@ mySwiper.on('slideNextTransitionStart', () => {
     appendSlides();
   }
 });
+
+keyboardBtn.addEventListener('click', (event) => {
+  const keyboardIcon = event.target.closest('.input-group-text');
+  keyboard.classList.toggle('visible');
+  if ([...keyboardIcon.classList].includes('visible')) {
+    createBoard();
+    keyboardContainer = document.querySelector('.keyboard-container');
+    document.addEventListener('keydown', (event) => keyDownEvent(event));
+    document.addEventListener('keyup', (event) => keyUpEvent(event));
+    keyboardContainer.addEventListener('mousedown', (event) => eventsOnMousedown(event));
+    keyboardContainer.addEventListener('mouseup', (event) => eventsOnMouseup(event));
+  } else {
+    const keyboardWrap = document.querySelector('.keyboard-wrapper');
+    keyboardWrap.remove();
+  }
+})
