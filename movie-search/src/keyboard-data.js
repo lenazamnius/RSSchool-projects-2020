@@ -168,7 +168,7 @@ const keys = [
     type: 'action', code: 'ControlLeft', boardValue: 'ctrl',
   },
   {
-    type: 'action', code: 'MetaLeft', boardValue: 'win',
+    type: 'action', code: 'Lang', boardValue: 'lang',
   },
   {
     type: 'action', code: 'AltLeft', boardValue: 'alt',

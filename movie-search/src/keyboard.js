@@ -4,10 +4,9 @@ import {
   arrNoShiftSymbols,
   arrSymbolsRu,
   arrSymbolsEn,
-} from './keys-data';
+} from './keyboard-data';
 
 const config = {
-  // language: localStorage.getItem('lang') || 'en',
   language: 'en',
   capsLock: false,
 };
@@ -27,7 +26,7 @@ function createKey(value, code, type, valueRu, valueShift) {
   }
 
   switch (value) {
-    case 'tab' || 'del' || 'ctrl' || 'win' || 'alt':
+    case 'tab' || 'del' || 'ctrl' || 'lang' || 'alt':
       key.classList.add('special', 'key-item');
       break;
     case 'backspace':
@@ -63,7 +62,7 @@ function createBoard() {
   boardContainer.classList.add('keyboard-container');
   boardWrapper.appendChild(text);
   text.classList.add('footnote');
-  text.innerText = 'Change language with combination "ctrl + alt" or special key\n Press keyboard icon to remove keyboard';
+  text.innerText = 'Change language with combination "ctrl + alt" or special key "lang"\n Press keyboard icon to remove keyboard';
 
   for (let i = 0; i < keys.length; i += 1) {
     keyCode = keys[i].code;
@@ -142,11 +141,13 @@ function toggleLang() {
   }
 
   config.language = curLang;
-  localStorage.setItem('lang', curLang);
 }
 
 function keyDownEvent(event) {
   const pressedKey = document.querySelector(`#${event.code}`);
+
+  if (!pressedKey) return;
+
   const pressedKeyId = pressedKey.getAttribute('id');
   const pressedKeyVal = pressedKey.innerText;
   const keysSymbol = document.querySelectorAll('[data-type=symbol]');
@@ -164,7 +165,6 @@ function keyDownEvent(event) {
       const inputText = input.value;
       input.value = inputText.slice(0, -1);
     }
-    if (pressedKeyId === 'Enter') input.value += '\n';
     if (pressedKeyId === 'CapsLock') capsLock(keysSymbol, pressedKey);
     if (pressedKeyId.startsWith('Shift')) shift(keysSymbol, arrShiftSymbols, 'up', 'down');
     if (event.ctrlKey && event.altKey) toggleLang();
@@ -173,6 +173,9 @@ function keyDownEvent(event) {
 
 function keyUpEvent(event) {
   const pressedKey = document.querySelector(`#${event.code}`);
+
+  if (!pressedKey) return;
+
   const pressedKeyId = pressedKey.getAttribute('id');
   const keysSymbol = document.querySelectorAll('[data-type=symbol]');
 
@@ -201,6 +204,7 @@ function eventsOnMousedown() {
       const inputText = input.value;
       input.value = inputText.slice(0, -1);
     }
+    if (pressedKey.getAttribute('id') === 'Lang') toggleLang();
     if (pressedKey.getAttribute('id') === 'CapsLock') capsLock(keysSymbol, pressedKey);
     if (pressedKey.getAttribute('id').startsWith('Shift')) shift(keysSymbol, arrShiftSymbols, 'up', 'down');
   }

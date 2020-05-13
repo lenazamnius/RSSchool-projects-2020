@@ -133,27 +133,29 @@ async function renderSwiper(inputStr) {
   if (config.massageTranslate === 'ru') createInputMessage(config.inputString);
 }
 
+function renderRequestResult(inputStr){
+  loader.classList.remove('hidden');
+  config.inputString = inputStr;
+  config.requestPage = 1;
+  renderSwiper(config.inputString);
+}
+
+// render swiper with first request on page load
 renderSwiper(config.inputString);
 
-// event on enter input and on press search button
+// press event on enter key and on search button
 input.addEventListener('keypress', function eventFn(event) {
   if (!config.message) return;
   if (event.key === 'Enter') {
     event.preventDefault();
-    loader.classList.remove('hidden');
-    config.inputString = this.value;
-    config.requestPage = 1;
-    renderSwiper(config.inputString);
+    renderRequestResult(this.value);
   }
 });
 
 btnSearch.addEventListener('click', () => {
   if (!config.message && !input.value) return;
 
-  loader.classList.remove('hidden');
-  config.inputString = input.value;
-  config.requestPage = 1;
-  renderSwiper(config.inputString);
+  renderRequestResult(input.value);
 });
 
 deleteInput.addEventListener('click', () => {
@@ -168,14 +170,27 @@ mySwiper.on('slideNextTransitionStart', () => {
 });
 
 keyboardBtn.addEventListener('click', (event) => {
+  
   const keyboardIcon = event.target.closest('.input-group-text');
   keyboard.classList.toggle('visible');
   if ([...keyboardIcon.classList].includes('visible')) {
     createBoard();
     keyboardContainer = document.querySelector('.keyboard-container');
-    document.addEventListener('keydown', (event) => keyDownEvent(event));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        renderRequestResult(input.value);
+      }
+      keyDownEvent(event)
+    });
     document.addEventListener('keyup', (event) => keyUpEvent(event));
-    keyboardContainer.addEventListener('mousedown', (event) => eventsOnMousedown(event));
+    keyboardContainer.addEventListener('mousedown', (event) => {
+      if (event.target.innerHTML === 'enter') {
+        event.preventDefault();
+        renderRequestResult(input.value);
+      }
+      eventsOnMousedown(event)
+    });
     keyboardContainer.addEventListener('mouseup', (event) => eventsOnMouseup(event));
   } else {
     const keyboardWrap = document.querySelector('.keyboard-wrapper');
