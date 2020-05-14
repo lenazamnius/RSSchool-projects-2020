@@ -6,6 +6,7 @@ import {
   arrSymbolsEn,
 } from './keyboard-data';
 
+const input = document.getElementById('input');
 const config = {
   language: 'en',
   capsLock: false,
@@ -40,7 +41,7 @@ function createKey(value, code, type, valueRu, valueShift) {
       break;
     default:
       key.classList.add('key-item');
-    }
+  }
 
   return key;
 }
@@ -184,14 +185,14 @@ function keyUpEvent(event) {
   if (pressedKeyId.startsWith('Shift')) shift(keysSymbol, arrNoShiftSymbols, 'down', 'up');
 }
 
-function eventsOnMousedown() {
+function eventsOnMousedown(event) {
   const pressedKey = event.target;
   const pressedKeyVal = pressedKey.innerText;
   const pressedKeyId = pressedKey.getAttribute('id');
   const keysSymbol = document.querySelectorAll('[data-type=symbol]');
-  
+
   setAnimation(pressedKey, pressedKeyId);
-  
+
   if (![...event.target.classList].includes('key-item')) return;
   if (pressedKey.dataset.type === 'symbol') {
     if (pressedKey.getAttribute('id') === 'Tab') {
@@ -210,14 +211,20 @@ function eventsOnMousedown() {
   }
 }
 
-function eventsOnMouseup() {
+function eventsOnMouseup(event) {
   const pressedKey = event.target;
   const keysSymbol = document.querySelectorAll('[data-type=symbol]');
-  
+
   event.target.classList.remove('active', 'on-press');
 
   if (![...event.target.classList].includes('key-item')) return;
   if (pressedKey.getAttribute('id').startsWith('Shift')) shift(keysSymbol, arrNoShiftSymbols, 'down', 'up');
 }
 
-export {createBoard, keyDownEvent, keyUpEvent, eventsOnMousedown, eventsOnMouseup};
+export {
+  createBoard,
+  keyDownEvent,
+  keyUpEvent,
+  eventsOnMousedown,
+  eventsOnMouseup,
+};

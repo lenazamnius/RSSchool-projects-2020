@@ -7,15 +7,16 @@ import {
   keyDownEvent,
   keyUpEvent,
   eventsOnMousedown,
-  eventsOnMouseup} from './keyboard';
+  eventsOnMouseup,
+} from './keyboard';
 
 const yandexAPIKey = 'trnsl.1.1.20200504T064520Z.e1d33f74b883176a.a15696bdad0036d0f2f9a019f51db4f0ae1cf1b0';
-const input = document.getElementById('input');
 const btnSearch = document.getElementById('btn-search');
 const inputMessage = document.getElementById('input-message');
 const deleteInput = document.getElementById('delete-input');
 const keyboardBtn = document.getElementById('keyboard');
 const loader = document.getElementById('loader');
+const input = document.getElementById('input');
 
 const config = {
   inputString: 'bicycle',
@@ -133,7 +134,7 @@ async function renderSwiper(inputStr) {
   if (config.massageTranslate === 'ru') createInputMessage(config.inputString);
 }
 
-function renderRequestResult(inputStr){
+function renderRequestResult(inputStr) {
   loader.classList.remove('hidden');
   config.inputString = inputStr;
   config.requestPage = 1;
@@ -170,30 +171,33 @@ mySwiper.on('slideNextTransitionStart', () => {
 });
 
 keyboardBtn.addEventListener('click', (event) => {
-  
   const keyboardIcon = event.target.closest('.input-group-text');
-  keyboard.classList.toggle('visible');
+  keyboardIcon.classList.toggle('visible');
   if ([...keyboardIcon.classList].includes('visible')) {
     createBoard();
     keyboardContainer = document.querySelector('.keyboard-container');
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
+
+    document.addEventListener('keydown', (eventKeydown) => {
+      if (eventKeydown.key === 'Enter') {
+        eventKeydown.preventDefault();
         renderRequestResult(input.value);
       }
-      keyDownEvent(event)
+      keyDownEvent(eventKeydown);
     });
-    document.addEventListener('keyup', (event) => keyUpEvent(event));
-    keyboardContainer.addEventListener('mousedown', (event) => {
-      if (event.target.innerHTML === 'enter') {
-        event.preventDefault();
+
+    document.addEventListener('keyup', (eventKeyup) => keyUpEvent(eventKeyup));
+
+    keyboardContainer.addEventListener('mousedown', (eventMousedown) => {
+      if (eventMousedown.target.innerHTML === 'enter') {
+        eventMousedown.preventDefault();
         renderRequestResult(input.value);
       }
-      eventsOnMousedown(event)
+      eventsOnMousedown(eventMousedown);
     });
-    keyboardContainer.addEventListener('mouseup', (event) => eventsOnMouseup(event));
+
+    keyboardContainer.addEventListener('mouseup', (eventMouseup) => eventsOnMouseup(eventMouseup));
   } else {
     const keyboardWrap = document.querySelector('.keyboard-wrapper');
     keyboardWrap.remove();
   }
-})
+});
