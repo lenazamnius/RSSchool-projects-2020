@@ -215,5 +215,9 @@ for (let i = 0; i < keys.length; i += 1) {
 }
 
 export {
-  keys, arrShiftSymbols, arrNoShiftSymbols, arrSymbolsRu, arrSymbolsEn,
+  keys,
+  arrShiftSymbols,
+  arrNoShiftSymbols,
+  arrSymbolsRu,
+  arrSymbolsEn,
 };

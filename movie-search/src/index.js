@@ -1,4 +1,5 @@
-import './styles/main.scss';
+// import './styles/main.scss';
+import '../src/assets/styles/main.scss';
 
 import mySwiper from './my-swiper';
 import MovieSlide from './movie-slide';
@@ -18,10 +19,10 @@ const keyboardBtn = document.getElementById('keyboard');
 const loader = document.getElementById('loader');
 const input = document.getElementById('input');
 
-const config = {
+const store = {
   inputString: 'bicycle',
   requestPage: 1,
-  message: false,
+  isMessage: false,
   massageTranslate: '',
 };
 
@@ -29,8 +30,9 @@ let moviesArr = [];
 let keyboardContainer;
 let message;
 
-function createNewSlide(id, title, poster, year, rating = 10) {
-  const newSlideObj = new MovieSlide(id, title, poster, year, rating);
+function createNewSlide(movieInfo) {
+  const {id, title, poster, year, movRating} = movieInfo;
+  const newSlideObj = new MovieSlide(id, title, poster, year, movRating);
   const newCardHtmlElement = newSlideObj.createSlideHtmlElements();
 
   return newCardHtmlElement;
@@ -38,21 +40,21 @@ function createNewSlide(id, title, poster, year, rating = 10) {
 
 function createInputMessage(string, errorText) {
   const p = document.createElement('p');
-  const text = !config.massageTranslate
+  const text = !store.massageTranslate
     ? `No results for "<span id="inputted-word">${string}.</span>" ${errorText}`
     : `Show results for "<span id="inputted-word">${string}</span>"`;
 
   p.setAttribute('id', 'inner-message');
   p.innerHTML = text;
   inputMessage.appendChild(p);
-  config.message = true;
+  store.isMessage = true;
 }
 
 function deleteInputMessage() {
   const innerMessage = document.getElementById('inner-message');
 
-  config.message = false;
-  config.massageTranslate = '';
+  store.isMessage = false;
+  store.massageTranslate = '';
   innerMessage.remove();
 }
 
@@ -67,7 +69,7 @@ async function translateInput(word) {
 async function fetchMovies(word, page) {
   const response = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&s=${word}&page=${page}`);
   const movies = await response.json();
-  config.requestPage += 1;
+  store.requestPage += 1;
 
   return movies;
 }
@@ -76,8 +78,14 @@ async function fillSwiper() {
   await Promise.all(moviesArr.map(async (movie) => {
     const movieResponse = await fetch(`https://www.omdbapi.com/?apikey=3b910c7f&type=movie&i=${movie.imdbID}`);
     const rating = await movieResponse.json();
-    const movieInfo = [movie.imdbID, movie.Title, movie.Poster, movie.Year];
-    const newCard = createNewSlide(...movieInfo, rating.imdbRating);
+    const movieInfo = {
+      id: movie.imdbID,
+      title: movie.Title,
+      poster: movie.Poster,
+      year: movie.Year,
+      movRating: rating.imdbRating,
+    };
+    const newCard = createNewSlide(movieInfo);
 
     mySwiper.appendSlide(newCard);
     mySwiper.update();
@@ -87,82 +95,66 @@ async function fillSwiper() {
 }
 
 async function appendSlides() {
-  if (config.message) {
+  if (store.isMessage) {
     message = document.getElementById('inner-message');
     message.classList.add('hidden');
   }
 
   loader.classList.remove('hidden');
-  await fetchMovies(config.inputString, config.requestPage)
+  await fetchMovies(store.inputString, store.requestPage)
     .then((resMovie) => {
       if (resMovie.Response !== 'False') {
         resMovie.Search.forEach((val) => moviesArr.push(val));
       }
     })
-    .catch((err) => { throw new Error(err); });
+    .catch((err) => {
+      throw new Error(err);
+    });
 
   await fillSwiper();
   loader.classList.add('hidden');
-  if (config.message) message.classList.remove('hidden');
+  if (store.isMessage) message.classList.remove('hidden');
 }
 
 async function renderSwiper(inputStr) {
-  if (config.message) deleteInputMessage();
+  if (store.isMessage) deleteInputMessage();
 
   await translateInput(inputStr)
     .then((res) => {
-      config.inputString = res.text[0];
-      config.massageTranslate = res.lang === 'ru-en' ? 'ru' : '';
+      store.inputString = res.text[0];
+      store.massageTranslate = res.lang === 'ru-en' ? 'ru' : '';
     });
 
-  await fetchMovies(config.inputString, config.requestPage)
+  await fetchMovies(store.inputString, store.requestPage)
     .then((resMovie) => {
       if (resMovie.Response === 'False') {
-        config.massageTranslate = '';
+        store.massageTranslate = '';
         loader.classList.add('hidden');
-        createInputMessage(config.inputString, resMovie.Error);
+        createInputMessage(store.inputString, resMovie.Error);
       } else {
         resMovie.Search.forEach((val) => moviesArr.push(val));
         mySwiper.removeAllSlides();
       }
     })
-    .catch((err) => { throw new Error(err); });
+    .catch((err) => {
+      throw new Error(err);
+    });
 
   await fillSwiper();
   loader.classList.add('hidden');
 
-  if (config.massageTranslate === 'ru') createInputMessage(config.inputString);
+  if (store.massageTranslate === 'ru') createInputMessage(store.inputString);
 }
 
 function renderRequestResult(inputStr) {
   loader.classList.remove('hidden');
-  config.inputString = inputStr;
-  config.requestPage = 1;
-  renderSwiper(config.inputString);
+  store.inputString = inputStr;
+  store.requestPage = 1;
+  renderSwiper(store.inputString);
 }
 
 // render swiper with first request on page load
-renderSwiper(config.inputString);
-
-// press event on enter key and on search button
-input.addEventListener('keypress', function eventFn(event) {
-  if (!config.message) return;
-  if (event.key === 'Enter') {
-    event.preventDefault();
-    renderRequestResult(this.value);
-  }
-});
-
-btnSearch.addEventListener('click', () => {
-  if (!config.message && !input.value) return;
-
-  renderRequestResult(input.value);
-});
-
-deleteInput.addEventListener('click', () => {
-  input.value = '';
-  if (config.message) deleteInputMessage();
-});
+renderSwiper(store.inputString);
 
 mySwiper.on('slideNextTransitionStart', () => {
   if (mySwiper.isEnd) {
@@ -170,6 +162,27 @@ mySwiper.on('slideNextTransitionStart', () => {
   }
 });
 
+// events on enter key and on search button
+input.addEventListener('keypress', function eventFn(event) {
+  if (!store.isMessage) return;
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    renderRequestResult(this.value);
+  }
+});
+
+btnSearch.addEventListener('click', () => {
+  if (!store.isMessage && !input.value) return;
+
+  renderRequestResult(input.value);
+});
+
+deleteInput.addEventListener('click', () => {
+  input.value = '';
+  if (store.isMessage) deleteInputMessage();
+});
+
+// events on virtual keyboard
 keyboardBtn.addEventListener('click', (event) => {
   const keyboardIcon = event.target.closest('.input-group-text');
   keyboardIcon.classList.toggle('visible');
@@ -185,8 +198,6 @@ keyboardBtn.addEventListener('click', (event) => {
       keyDownEvent(eventKeydown);
     });
 
-    document.addEventListener('keyup', (eventKeyup) => keyUpEvent(eventKeyup));
-
     keyboardContainer.addEventListener('mousedown', (eventMousedown) => {
       if (eventMousedown.target.innerHTML === 'enter') {
         eventMousedown.preventDefault();
@@ -194,10 +205,12 @@ keyboardBtn.addEventListener('click', (event) => {
       }
       eventsOnMousedown(eventMousedown);
     });
-
+    
+    document.addEventListener('keyup', (eventKeyup) => keyUpEvent(eventKeyup));
     keyboardContainer.addEventListener('mouseup', (eventMouseup) => eventsOnMouseup(eventMouseup));
   } else {
     const keyboardWrap = document.querySelector('.keyboard-wrapper');
+
     keyboardWrap.remove();
   }
 });

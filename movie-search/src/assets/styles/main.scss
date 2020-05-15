@@ -54,7 +54,7 @@ body {
         height: 100%;
         padding-left: 55px;
         font-size: 1.4rem;
-        background: url(/images/search.svg) no-repeat 10px center;
+        background: url('../images/search.svg') no-repeat 10px center;
         background-size: 34px;
         border-right: 0;
 
@@ -330,7 +330,7 @@ footer.footer {
   width: 900px;
   height: 380px;
   left: 50%;
-  bottom: 22%;
+  top: 225px;
   margin-left: -450px;
   padding: 10px;
   font: 700 19px 'Roboto', sans-serif;

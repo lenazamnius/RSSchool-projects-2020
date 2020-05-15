@@ -17,11 +17,11 @@ class MovieSlide {
     const testImg = document.createElement('img');
 
     if (this.poster === 'N/A') {
-      moviePoster.style.backgroundImage = 'url(images/default-poster.png)';
+      moviePoster.style.backgroundImage = 'url(../src/assets/images/default-poster.png)';
     } else {
       testImg.src = `${this.poster}`;
       testImg.onload = () => { moviePoster.style.backgroundImage = `url(${this.poster})`; };
-      testImg.onerror = () => { moviePoster.style.backgroundImage = 'url(images/default-poster.png)'; };
+      testImg.onerror = () => { moviePoster.style.backgroundImage = 'url(../src/assets/images/default-poster.png)'; };
       testImg.remove();
     }
 

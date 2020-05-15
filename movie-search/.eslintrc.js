@@ -15,11 +15,14 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'prefer-destructuring': ['error', {
-      'array': false,
-      'object': false
-    }, {
-      'enforceForRenamedProperties': false
-    }]
+    'prefer-destructuring': [
+      'error', {
+        'array': false,
+        'object': false
+      },
+      {
+        'enforceForRenamedProperties': false
+      }
+    ]
   },
 };

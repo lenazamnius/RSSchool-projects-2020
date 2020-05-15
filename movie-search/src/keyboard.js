@@ -7,7 +7,7 @@ import {
 } from './keyboard-data';
 
 const input = document.getElementById('input');
-const config = {
+const store = {
   language: 'en',
   capsLock: false,
 };
@@ -20,9 +20,9 @@ function createKey(value, code, type, valueRu, valueShift) {
 
   if (valueRu) key.setAttribute('data-ru', `${valueRu}`);
   if (valueShift) key.setAttribute('data-shift', `${valueShift}`);
-  if (config.language === 'en') {
+  if (store.language === 'en') {
     key.innerHTML = value;
-  } else if (config.language === 'ru') {
+  } else if (store.language === 'ru') {
     key.innerHTML = key.dataset.ru ? valueRu : value;
   }
 
@@ -87,10 +87,10 @@ function toggleCase(arr, letterCase) {
   arr.forEach((val) => {
     const keyId = val.getAttribute('id');
 
-    if (config.language === 'en' && (keyId.startsWith('Key') || keyId.startsWith('Backquote'))) {
+    if (store.language === 'en' && (keyId.startsWith('Key') || keyId.startsWith('Backquote'))) {
       if (letterCase === 'up') val.classList.add('uppercase');
       if (letterCase === 'down') val.classList.remove('uppercase');
-    } else if (config.language === 'ru' && val.dataset.ru) {
+    } else if (store.language === 'ru' && val.dataset.ru) {
       if (letterCase === 'up') val.classList.add('uppercase');
       if (letterCase === 'down') val.classList.remove('uppercase');
     }
@@ -98,14 +98,14 @@ function toggleCase(arr, letterCase) {
 }
 
 function capsLock(keysSymbol, pressedKey) {
-  if (!config.capsLock) {
+  if (!store.capsLock) {
     pressedKey.classList.add('pressed');
     toggleCase(keysSymbol, 'up');
-    config.capsLock = true;
+    store.capsLock = true;
   } else {
     pressedKey.classList.remove('pressed');
     toggleCase(keysSymbol, 'down');
-    config.capsLock = false;
+    store.capsLock = false;
   }
 }
 
@@ -113,7 +113,7 @@ function shift(keysSymbol, arrSymbols, capsY, capsN) {
   let symbolsShift = [...document.querySelectorAll('[data-shift=true]')];
   let arrSymb = arrSymbols;
 
-  if (config.language === 'ru') {
+  if (store.language === 'ru') {
     symbolsShift = symbolsShift.slice(1).filter((val) => !val.dataset.ru);
     arrSymb = arrSymbols.slice(1);
   }
@@ -122,7 +122,7 @@ function shift(keysSymbol, arrSymbols, capsY, capsN) {
     symbolsShift[i].innerHTML = arrSymb[i];
   }
 
-  if (!config.capsLock) {
+  if (!store.capsLock) {
     toggleCase(keysSymbol, capsY);
   } else {
     toggleCase(keysSymbol, capsN);
@@ -131,7 +131,7 @@ function shift(keysSymbol, arrSymbols, capsY, capsN) {
 
 function toggleLang() {
   const keysLangSymbol = document.querySelectorAll('[data-ru]');
-  const curLang = config.language === 'en' ? 'ru' : 'en';
+  const curLang = store.language === 'en' ? 'ru' : 'en';
 
   for (let i = 0; i < keysLangSymbol.length; i += 1) {
     if (curLang === 'ru') {
@@ -141,7 +141,7 @@ function toggleLang() {
     }
   }
 
-  config.language = curLang;
+  store.language = curLang;
 }
 
 function keyDownEvent(event) {
