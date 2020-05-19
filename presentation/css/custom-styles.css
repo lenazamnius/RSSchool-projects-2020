@@ -11,3 +11,65 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+.small-image {
+  max-width: 50%;
+}
+
+.medium-image {
+  max-width: 80%;
+}
+
+.big-image {
+  max-width: 100%;
+}
+
+.reveal section img {
+  margin: 0px;
+  background: rgba(255, 255, 255, 0);
+  border: none;
+  box-shadow: none;
+}
+
+.react-logo {
+  margin-right: 40px;
+  text-align: left;
+}
+
+.text {
+  padding-right: 10px;
+  text-align: right;
+}
+
+.definition h2 {
+  letter-spacing: 3px;
+}
+
+.reveal h1 {
+  text-shadow: none;
+}
+
+.reveal li {
+  list-style: none;
+}
+
+.arrow {
+  font-size: 6rem;
+}
+
+.conclusion {
+  padding-left: 95px;
+  text-align: left;
+}
+
+.indent {
+  padding-left: 55px;
+}
+
+.highlight-text,
+h2.highlight-text,
+h3.highlight-text,
+.reveal .slides section.topics .fragment.highlight-blue.visible,
+.reveal .slides section.definition .fragment.highlight-blue.visible {
+  color: rgb(97,218,251);
+}
