@@ -1,0 +1,13 @@
+.slide-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.vertical {
+  flex-direction: column;
+}
+
+.horizon {
+  flex-direction: row;
+  justify-content: space-between;
+}
