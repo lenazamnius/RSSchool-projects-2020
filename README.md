@@ -2,7 +2,7 @@
 
 Short presentation about React JavaScript library and its main concepts.
 
-* A link to YouTube video
+* [A link to YouTube video](https://www.youtube.com/watch?v=AkL-XMW8PAc)
 * [A link to Reveal presentation slides](https://react-overview-presentation.netlify.app)
 * [A link to the transcript of the presentation](https://docs.google.com/document/d/1ubV_-5-4oUUL1eZyWmhrbdlPcwsw01k3eMruLLTDyMg/edit?usp=sharing)
 
