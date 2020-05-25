@@ -9,18 +9,48 @@ body {
 }
 
 body {
-  font: 400 2rem 'Source Sans Pro', sans-serif;
+  font: 400 3rem 'Source Sans Pro', sans-serif;
   background: linear-gradient(rgba(255, 255, 255, .25), rgba(42, 161, 152, 0.65)),
               url('../images/default-background-image.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-#app-wrapper {
-  width: 100%;
+.app-wrapper {
   height: 100%;
+  padding: 80px;
   text-align: center;
-  color: $text-color;
+  color: white;
+
+
+  .btn-toolbar.controls {
+    height: 55px;
+
+    button.change-background,
+    button.dropdown-toggle,
+    .dropdown-menu button,
+    .btn-group button {
+      font-size: 1.8rem;
+      padding: 0 15px;
+    }
+  }
+
+  .btn-toolbar.input {
+    height: 55px;
+
+    input.form-control {
+      font-size: 1.8rem;
+      border-right: 0;
+    }
+
+    button.btn {
+      font-size: 1.8rem;
+      border-left: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+  }
 
   .bg-image img {
     width: 400px;
