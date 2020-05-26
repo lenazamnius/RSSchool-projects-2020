@@ -46,6 +46,38 @@ function setLocation() {
   document.getElementById('location').innerHTML = locationString.toUpperCase();
 }
 
+// set current date and time
+function setDateClock() {
+  const now = new Date();
+  let hour = now.getHours();
+  let minute = now.getMinutes();
+  let second = now.getSeconds();
+  const locales = {
+    en: 'en-US',
+    ru: 'ru-Ru',
+    be: 'be',
+    ua: 'uk-UA',
+  };
+  const dateOptions = { month: 'long', day: 'numeric', weekday: 'long' };
+  const dateString = new Intl.DateTimeFormat(locales.en, dateOptions).format(now);
+
+  if (hour.toString().length === 1) hour = `0${hour}`;
+  if (minute.toString().length === 1) minute = `0${minute}`;
+  if (second.toString().length === 1) second = `0${second}`;
+
+  const curDate = dateString.toUpperCase();
+  const curTime = `${hour}:${minute}:${second}`;
+  const dateClockString = `${curDate} <span class="clock">${curTime}</span>`;
+
+
+  return dateClockString;
+}
+
+setInterval(() => {
+  const curTime = setDateClock();
+  document.getElementById('date-clock').innerHTML = curTime;
+}, 1000);
+
 async function setPage() {
   store.locationCountry = '';
   await getLocation();
