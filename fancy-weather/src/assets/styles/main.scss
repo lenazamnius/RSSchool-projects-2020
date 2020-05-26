@@ -5,7 +5,7 @@ $text-color: #B58900;
 html, 
 body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -13,12 +13,14 @@ body {
   background: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)),
               url('../images/default-background-image.jpg');
   background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
 }
 
 .app-wrapper {
-  height: 100%;
-  padding: 80px;
+  // height: 100%;
+  height: 100vh;
+  // padding: 80px;
   text-align: center;
   color: white;
 
@@ -32,30 +34,42 @@ body {
       button.dropdown-toggle,
       .dropdown-menu button,
       .btn-group button {
-        font-size: 1.8rem;
+        font-size: 1.85rem;
         padding: 0 15px;
+
+        @media (max-width: 991.98px) { font-size: 1.7rem; }
+        @media (max-width: 767.98px) { font-size: 1.5rem; }
       }
     }
   
     .btn-toolbar.input {
       height: 55px;
       
-  
-      input.form-control {
-        font-size: 1.8rem;
-        border-right: 0;
-        border: 1px solid rgb(42, 161, 152);
-      }
-  
-      button.btn {
-        font-size: 1.8rem;
-        border-left: 0;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-  
-    }
+      .input-group {
 
+        input.form-control {
+          font-size: 1.85rem;
+          border-right: 0;
+          border: 1px solid rgb(42, 161, 152);
+  
+          @media (max-width: 991.98px) { font-size: 1.7rem; }
+          @media (max-width: 767.98px) { font-size: 1.5rem; }
+        }
+    
+        button.btn {
+          font-size: 1.85rem;
+          border-left: 0;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+  
+          @media (max-width: 991.98px) { font-size: 1.7rem; }
+          @media (max-width: 767.98px) { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 991.98px) { width: 80%; }
+        @media (max-width: 575.98px) { width: 100%; }
+      }
+    }
   }
 
   .main-wrapper {
@@ -63,6 +77,11 @@ body {
     .forecast-wrapper {
       background-color: rgba(42, 161, 152, .1);
 
+      .clock {
+        margin-left: 20px;
+        font-size: 2.7rem;
+        color: rgb(131, 148, 150);
+      }
     }
 
     .location-wrapper {
@@ -73,6 +92,11 @@ body {
         .map-frame {
           width: 400px;
           height: 380px;
+
+          @media (max-width: 991.98px) {
+            width: 100%;
+            height: calc(100vw - 20px);
+          }
         }
       }
 
