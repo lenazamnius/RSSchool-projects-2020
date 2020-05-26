@@ -111,26 +111,74 @@ async function getWeather(requestWeatherObj) {
 
   try {
     const response = await fetch(url);
-    forecast = await response.json();
+    if (response.ok) {
+      forecast = await response.json();
+    } else {
+      const errorText = await response.json();
+      throw (errorText.message);
+    }
   } catch (e) {
-    console.log(e.message);
+    console.log(e);
   }
   return forecast;
 }
 
 // function showForecastOnPage(responseObj) {
+//   const feelsTemp = obj.feels_like[1].max;
+//   const humidity = obj.humidity[1].max;
+//   const temp = obj.temp[1].max;
+//   const weatherCode = obj.weather_code.value;
+//   const windSpeed = obj.wind_speed[1].max;
 
+//   console.log(feelsTemp, 'feelsTemp');
+//   console.log('------------------');
+//   console.log(humidity, 'humidity');
+//   console.log('------------------');
+//   console.log(temp, 'temp');
+//   console.log('------------------');
+//   console.log(weatherCode, 'weatherCode');
+//   console.log('------------------');
+//   console.log(windSpeed, 'windSpeed');
 // }
+// const forecastDAtaArr = [];
+
+function getDataFromForecast(obj, index) {
+  let weatherCode;
+  let feelsTemp;
+  let humidity;
+  let temp;
+  let windSpeed;
+  let observationDate;
+
+  if (index > 0) {
+    observationDate = obj.observation_time.value;
+    weatherCode = obj.weather_code.value;
+    temp = obj.temp[1].max;
+  } else {
+    feelsTemp = obj.feels_like[1].max;
+    humidity = obj.humidity[1].max;
+    temp = obj.temp[1].max;
+    weatherCode = obj.weather_code.value;
+    windSpeed = obj.wind_speed[1].max;
+  }
+
+  console.log(weatherCode, feelsTemp, humidity, temp, windSpeed, observationDate);
+}
 
 async function setPage() {
   store.locationCountry = '';
   await getLocation();
-  await setLocation();
-  await endForecastDateIso(3);
+  setLocation();
+  endForecastDateIso(3);
   await getWeather(weatherUrlValuesObj)
-    .then((res) => {
-      res.forEach((obj) => console.log(obj));
-    });
+    .then((resData) => {
+      resData.forEach((obj, index) => {
+        // forecastDAtaArr.push();
+        getDataFromForecast(obj, index);
+
+      });
+    })
+    .catch((e) => console.log(e));
 }
 
 setPage();
