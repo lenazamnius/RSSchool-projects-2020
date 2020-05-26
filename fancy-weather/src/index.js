@@ -78,10 +78,59 @@ setInterval(() => {
   document.getElementById('date-clock').innerHTML = curTime;
 }, 1000);
 
+// get forecast end date
+function endForecastDate(date, endDay) {
+  const copy = new Date(Number(date));
+
+  copy.setDate(date.getDate() + endDay);
+
+  return copy;
+}
+
+function endForecastDateIso(endDay) {
+  const todayDAte = new Date();
+  const endDate = endForecastDate(todayDAte, endDay);
+  const andDateIso = endDate.toISOString().split('T');
+
+  weatherUrlValuesObj.endTime = andDateIso[0];
+}
+
+// get weather
+async function getWeather(requestWeatherObj) {
+  const {
+    time,
+    endTime,
+    lat,
+    lon,
+    unit,
+    values,
+    apiKey,
+  } = requestWeatherObj;
+  const url = `https://api.climacell.co/v3/weather/forecast/${time}?lat=${lat}&lon=${lon}&unit_system=${unit}&start_time=now&end_time=${endTime}&fields=${values}&apikey=${apiKey}`;
+  let forecast;
+
+  try {
+    const response = await fetch(url);
+    forecast = await response.json();
+  } catch (e) {
+    console.log(e.message);
+  }
+  return forecast;
+}
+
+// function showForecastOnPage(responseObj) {
+
+// }
+
 async function setPage() {
   store.locationCountry = '';
   await getLocation();
   await setLocation();
+  await endForecastDateIso(3);
+  await getWeather(weatherUrlValuesObj)
+    .then((res) => {
+      res.forEach((obj) => console.log(obj));
+    });
 }
 
 setPage();
