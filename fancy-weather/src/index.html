@@ -8,22 +8,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/solar/bootstrap.min.css">
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
   <link rel="icon" type="image/png" sizes="32x32" href="../src/assets/favicon.ico">
 </head>
 <body>
   
-  <div class="app-wrapper d-flex  flex-column"  id="app-wrapper">
-    <div class="controls-wrapper d-flex justify-content-between p-5 border border-info rounded-sm">
+  <div class="app-wrapper d-flex flex-column"  id="app-wrapper">
+    <div class="controls-wrapper d-flex justify-content-between flex-column-reverse flex-lg-row p-5 rounded-sm">
 
-      <div class="btn-toolbar controls" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-toolbar controls " role="toolbar" aria-label="Toolbar with button groups">
         
-        <div class="btn-group mr-2" role="group" aria-label="First group">
-          <button type="button" class="change-background btn btn-primary">1</button>
+        <div class="btn-group mr-3" role="group" aria-label="First group">
+          <button type="button" class="change-background btn btn-success"><i class="fas fa-sync-alt"></i></button>
         </div>
 
         <div class="btn-group mr-3" role="group">
-          <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">En</button>
+          <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">En</button>
           <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
             <button class="dropdown-item">Ru</button>
             <button class="dropdown-item">Be</button>
@@ -31,29 +31,32 @@
         </div>
 
         <div class="btn-group" role="group" aria-label="Third group">
-          <button type="button" class="btn btn-primary">C</button>
-          <button type="button" class="btn btn-primary">Fn</button>
+          <button type="button" class="btn btn-success">C</button>
+          <button type="button" class="btn btn-success">Fn</button>
         </div>
       </div>
         
-      <div class="btn-toolbar input" role="toolbar" aria-label="Toolbar with button groups">
+      <div class="btn-toolbar input mb-5 mb-lg-0" role="toolbar" aria-label="Toolbar with button groups">
         <div class="input-group">
           <input type="text" class="form-control" id='input' placeholder="find your city" aria-label="Recipient's username" aria-describedby="basic-addon2">
-          <button class="btn btn-secondary" type="submit" id='btn-search'>Search</button>
+          <button class="btn btn-success" type="submit" id='btn-search'>Search</button>
         </div>
       </div>
     </div>
 
-    <div class="main-wrapper d-flex flex-grow-1 mt-2">
-      <div class="forecast-wrapper flex-grow-1 border border-info rounded-lg mr-2 p-5">
+    <div class="main-wrapper d-flex flex-column flex-lg-row flex-grow-1 mt-2">
+      <div class="forecast-wrapper flex-grow-1  rounded-lg mr-0 mr-lg-2 p-5">
         <div class="bg-image"></div>
         <div id="location">City Country</div>
         <div id="digital-clock">Date Time</div>
         <div id="forecast-today">Today Forecast</div>
         <div id="forecast-future">Future Forecast</div>
       </div>
-      <div class="map-wrapper border border-info rounded-lg p-5">
-        <div id="coordinates">
+      <div class="location-wrapper d-flex flex-column  rounded-lg p-4">
+        <div class="map">
+          <div class="map-frame border border-success rounded-lg"></div>
+        </div>
+        <div class="coordinates" id="coordinates">
           <ul>
             <li>latitude: <span id="latitude"></span></li>
             <li>longitude: <span id="longitude"></span></li>
