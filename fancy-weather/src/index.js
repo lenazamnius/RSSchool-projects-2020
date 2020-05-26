@@ -24,6 +24,32 @@ const weatherUrlValuesObj = {
   apiKey: apiKeys.weather,
 };
 
+const weatherDescription = {
+  rain_heavy: 'Substantial rain',
+  rain: 'Rain',
+  rain_light: 'Light rain',
+  freezing_rain_heavy: 'Substantial freezing rain',
+  freezing_rain: 'Freezing rain',
+  freezing_rain_light: 'Light freezing rain',
+  freezing_drizzle: 'Light freezing rain falling in fine pieces',
+  drizzle: 'Light rain falling in very fine drops',
+  ice_pellets_heavy: 'Substantial ice pellets',
+  ice_pellets: 'Ice pellets',
+  ice_pellets_light: 'Light ice pellets',
+  snow_heavy: 'Substantial snow',
+  snow: 'Snow',
+  snow_light: 'Light snow',
+  flurries: 'Flurries',
+  tstorm: 'Thunderstorm conditions',
+  fog_light: 'Light fog',
+  fog: 'Fog',
+  cloudy: 'Cloudy',
+  mostly_cloudy: 'Mostly cloudy',
+  partly_cloudy: 'Partly cloudy',
+  mostly_clear: 'Mostly clear',
+  clear: 'Clear, sunny',
+};
+
 // get and set location
 async function getLocation() {
   const response = await fetch('http://ipinfo.io/?token=f8a9f65202941f');
@@ -123,46 +149,33 @@ async function getWeather(requestWeatherObj) {
   return forecast;
 }
 
-// function showForecastOnPage(responseObj) {
-//   const feelsTemp = obj.feels_like[1].max;
-//   const humidity = obj.humidity[1].max;
-//   const temp = obj.temp[1].max;
-//   const weatherCode = obj.weather_code.value;
-//   const windSpeed = obj.wind_speed[1].max;
+const curTemp = document.getElementById('temp');
+const weatherIcon = document.getElementById('weather-icon');
+const weatherType = document.getElementById('weather-type');
+const feelsTemp = document.getElementById('feels-like');
+const feelsTempUnit = document.getElementById('feels-unit');
+const windSpeed = document.getElementById('wind-speed');
+const windSpeedUnit = document.getElementById('wind-unit');
+const humidity = document.getElementById('humidity');
 
-//   console.log(feelsTemp, 'feelsTemp');
-//   console.log('------------------');
-//   console.log(humidity, 'humidity');
-//   console.log('------------------');
-//   console.log(temp, 'temp');
-//   console.log('------------------');
-//   console.log(weatherCode, 'weatherCode');
-//   console.log('------------------');
-//   console.log(windSpeed, 'windSpeed');
-// }
-// const forecastDAtaArr = [];
-
-function getDataFromForecast(obj, index) {
-  let weatherCode;
-  let feelsTemp;
-  let humidity;
-  let temp;
-  let windSpeed;
-  let observationDate;
-
+function setDataFromForecast(obj, index) {
   if (index > 0) {
-    observationDate = obj.observation_time.value;
-    weatherCode = obj.weather_code.value;
-    temp = obj.temp[1].max;
+    // observationDate = obj.observation_time.value;
+    // weatherCode = obj.weather_code.value;
+    // temp = obj.temp[1].max;
+    console.log('hi');
   } else {
-    feelsTemp = obj.feels_like[1].max;
-    humidity = obj.humidity[1].max;
-    temp = obj.temp[1].max;
-    weatherCode = obj.weather_code.value;
-    windSpeed = obj.wind_speed[1].max;
-  }
+    const weatherCode = obj.weather_code.value;
 
-  console.log(weatherCode, feelsTemp, humidity, temp, windSpeed, observationDate);
+    weatherType.innerHTML = weatherDescription[weatherCode];
+    curTemp.innerHTML = Math.round(obj.temp[1].max.value);
+    weatherIcon.src = `/src/assets/images/${obj.weather_code.value}.svg`;
+    feelsTemp.innerHTML = obj.feels_like[1].max.value - 2;
+    feelsTempUnit.innerHTML = obj.feels_like[1].max.units;
+    windSpeed.innerHTML = obj.wind_speed[1].max.value;
+    windSpeedUnit.innerHTML = obj.wind_speed[1].max.units;
+    humidity.innerHTML = obj.humidity[1].max.value;
+  }
 }
 
 async function setPage() {
@@ -174,8 +187,7 @@ async function setPage() {
     .then((resData) => {
       resData.forEach((obj, index) => {
         // forecastDAtaArr.push();
-        getDataFromForecast(obj, index);
-
+        setDataFromForecast(obj, index);
       });
     })
     .catch((e) => console.log(e));
