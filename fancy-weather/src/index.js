@@ -50,6 +50,13 @@ const weatherDescription = {
   clear: 'Clear, sunny',
 };
 
+const locales = {
+  en: 'en-US',
+  ru: 'ru-Ru',
+  ua: 'uk-UA',
+  be: 'be-By',
+};
+
 // get and set location
 async function getLocation() {
   const response = await fetch('http://ipinfo.io/?token=f8a9f65202941f');
@@ -78,12 +85,6 @@ function setDateClock() {
   let hour = now.getHours();
   let minute = now.getMinutes();
   let second = now.getSeconds();
-  const locales = {
-    en: 'en-US',
-    ru: 'ru-Ru',
-    be: 'be',
-    ua: 'uk-UA',
-  };
   const dateOptions = { month: 'long', day: 'numeric', weekday: 'long' };
   const dateString = new Intl.DateTimeFormat(locales.en, dateOptions).format(now);
 
@@ -162,6 +163,7 @@ const futureTemp = document.querySelectorAll('.future-temp');
 const futureWeatherIcon = document.querySelectorAll('.future-weather-icon');
 
 function setDataFromForecast(obj, index) {
+  console.log(obj);
   const weatherCode = obj.weather_code.value;
   const tempValue = Math.round(obj.temp[1].max.value);
 
@@ -181,7 +183,7 @@ function setDataFromForecast(obj, index) {
     weatherType.innerHTML = weatherDescription[weatherCode];
     curTemp.innerHTML = tempValue;
     weatherIcon.src = `/src/assets/images/${weatherCode}.svg`;
-    feelsTemp.innerHTML = Math.round(obj.feels_like[1].max.value - 2);
+    feelsTemp.innerHTML = Math.round(obj.feels_like[1].max.value);
     feelsTempUnit.innerHTML = obj.feels_like[1].max.units;
     windSpeed.innerHTML = obj.wind_speed[1].max.value;
     windSpeedUnit.innerHTML = obj.wind_speed[1].max.units;
@@ -193,7 +195,7 @@ function setDataFromForecast(obj, index) {
 async function getCoordinates(cityInput) {
   const requestString = cityInput.split(' ').join(',');
   try {
-    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${requestString}&key=${apiKeys.coordinates}`);
+    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${requestString}&language=${locales.be}&key=${apiKeys.coordinates}`);
     const resultsObj = await response.json();
     const cityObj = resultsObj.results[0];
     const locationName = cityObj.formatted.split(', ');
@@ -202,7 +204,6 @@ async function getCoordinates(cityInput) {
     weatherUrlValuesObj.lon = cityObj.geometry.lng;
     store.locationCity = locationName[0];
     store.locationCountry = locationName[locationName.length - 1];
-    console.log(cityObj);
   } catch (e) {
     console.log(e);
   }
