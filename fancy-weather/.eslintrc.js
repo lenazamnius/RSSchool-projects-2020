@@ -24,6 +24,13 @@ module.exports = {
       {
         'enforceForRenamedProperties': false
       }
-    ]
+    ],
+    'no-param-reassign': [
+      'error',
+      {
+        'props': true,
+        'ignorePropertyModificationsFor': ['val']
+      }
+    ],
   },
 };

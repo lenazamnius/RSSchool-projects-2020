@@ -157,26 +157,57 @@ const feelsTempUnit = document.getElementById('feels-unit');
 const windSpeed = document.getElementById('wind-speed');
 const windSpeedUnit = document.getElementById('wind-unit');
 const humidity = document.getElementById('humidity');
+const weekDay = document.querySelectorAll('.week-day');
+const futureTemp = document.querySelectorAll('.future-temp');
+const futureWeatherIcon = document.querySelectorAll('.future-weather-icon');
 
 function setDataFromForecast(obj, index) {
-  if (index > 0) {
-    // observationDate = obj.observation_time.value;
-    // weatherCode = obj.weather_code.value;
-    // temp = obj.temp[1].max;
-    console.log('hi');
-  } else {
-    const weatherCode = obj.weather_code.value;
+  const weatherCode = obj.weather_code.value;
+  const tempValue = Math.round(obj.temp[1].max.value);
 
+  if (index > 0) {
+    weekDay.forEach((val, idx) => {
+      const weekName = new Date(obj.observation_time.value).toLocaleString('en-US', { weekday: 'long' });
+
+      if (index === idx + 1) val.innerHTML = weekName;
+    });
+    futureTemp.forEach((val, idx) => {
+      if (index === idx + 1) val.innerHTML = tempValue;
+    });
+    futureWeatherIcon.forEach((val, idx) => {
+      if (index === idx + 1) val.src = `/src/assets/images/${weatherCode}.svg`;
+    });
+  } else {
     weatherType.innerHTML = weatherDescription[weatherCode];
-    curTemp.innerHTML = Math.round(obj.temp[1].max.value);
-    weatherIcon.src = `/src/assets/images/${obj.weather_code.value}.svg`;
-    feelsTemp.innerHTML = obj.feels_like[1].max.value - 2;
+    curTemp.innerHTML = tempValue;
+    weatherIcon.src = `/src/assets/images/${weatherCode}.svg`;
+    feelsTemp.innerHTML = Math.round(obj.feels_like[1].max.value - 2);
     feelsTempUnit.innerHTML = obj.feels_like[1].max.units;
     windSpeed.innerHTML = obj.wind_speed[1].max.value;
     windSpeedUnit.innerHTML = obj.wind_speed[1].max.units;
     humidity.innerHTML = obj.humidity[1].max.value;
   }
 }
+
+// get input city coordinates
+async function getCoordinates(cityInput) {
+  const requestString = cityInput.split(' ').join(',');
+  try {
+    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${requestString}&key=${apiKeys.coordinates}`);
+    const resultsObj = await response.json();
+    const cityObj = resultsObj.results[0];
+    const locationName = cityObj.formatted.split(', ');
+
+    weatherUrlValuesObj.lat = cityObj.geometry.lat;
+    weatherUrlValuesObj.lon = cityObj.geometry.lng;
+    store.locationCity = locationName[0];
+    store.locationCountry = locationName[locationName.length - 1];
+    console.log(cityObj);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 async function setPage() {
   store.locationCountry = '';
@@ -186,7 +217,19 @@ async function setPage() {
   await getWeather(weatherUrlValuesObj)
     .then((resData) => {
       resData.forEach((obj, index) => {
-        // forecastDAtaArr.push();
+        setDataFromForecast(obj, index);
+      });
+    })
+    .catch((e) => console.log(e));
+}
+
+async function updatePage(inputString) {
+  await getCoordinates(inputString);
+  setLocation();
+  endForecastDateIso(3);
+  await getWeather(weatherUrlValuesObj)
+    .then((resData) => {
+      resData.forEach((obj, index) => {
         setDataFromForecast(obj, index);
       });
     })
@@ -194,3 +237,20 @@ async function setPage() {
 }
 
 setPage();
+
+const btnSearch = document.getElementById('btn-search');
+const input = document.getElementById('input');
+
+input.addEventListener('keypress', function eventFn(event) {
+  if (!this.value) return;
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    updatePage(this.value);
+  }
+});
+
+btnSearch.addEventListener('click', () => {
+  if (!input.value) return;
+
+  updatePage(input.value);
+});
