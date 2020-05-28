@@ -9,26 +9,42 @@ body {
 }
 
 body {
-  font: 400 3rem 'Source Sans Pro', sans-serif;
-  background: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)),
-              url('../images/default-background-image.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  font: 400 2.8rem 'Source Sans Pro', sans-serif;
+  background-color: #073642;
+  // background: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)),
+  //             url('../images/default-background-image.jpg');
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: cover;
 }
 
 .app-wrapper {
-  // height: 100vh;
-  padding: 50px 10%;
+  max-width: 1400px;
+  margin: 50px auto;
   text-align: center;
   color: white;
 
   .controls-wrapper {
     width: 100%;
-    background-color: rgba(42, 161, 152, .1);
+    background-color: rgba(42, 161, 152, .3);
 
     .btn-toolbar.controls {
       height: 55px;
+
+      .dropdown-menu.show {
+        min-width: 5.5rem;
+        background-color: #1f7972;
+
+        .dropdown-item {
+          color: #FDF6E3;
+
+          &:hover {
+            color: #002b36;
+            font-weight: 800;
+            background: none;
+          }
+        }
+      }
   
       button.change-background,
       button.dropdown-toggle,
@@ -75,19 +91,21 @@ body {
   .main-wrapper {
 
     .forecast-wrapper {
-      background-color: rgba(42, 161, 152, .1);
+      background-color: rgba(42, 161, 152, .3);
 
       .date-clock {
 
         .clock {
           margin-left: 20px;
           font-size: 2.7rem;
-          color: rgb(131, 148, 150);
-  
+          // color: rgb(131, 148, 150);
+          
+          @media (max-width: 991.98px) { font-size: 2.3rem; }
           @media (max-width: 767.98px) { font-size: 2rem; }
           @media (max-width: 575.98px) { font-size: 1.9rem; }
         }
 
+        @media (max-width: 991.98px) { font-size: 2.5rem; }
         @media (max-width: 767.98px) { font-size: 2.3rem; }
         @media (max-width: 575.98px) { font-size: 1.9rem; }
       }
@@ -102,9 +120,9 @@ body {
         height: 100%;
 
         .temperature {
-          font-size: 18rem;
+          font-size: 15rem;
           font-weight: 700;
-          color: rgb(131, 148, 150);
+          // color: #FDF6E3;
 
           @media (max-width: 991.98px) { font-size: 12rem; }
           @media (max-width: 767.98px) { font-size: 10rem; }
@@ -123,6 +141,8 @@ body {
           .weather-icon{
             width: 220px;
             opacity: 0.75;
+
+           @media (max-width: 767.98px) { width: 150px; }
           }
         }
 
@@ -134,6 +154,7 @@ body {
             .future-temp {
               margin-bottom: 0;
               font-size: 5rem;
+              // color: #FDF6E3;
             }
 
             .future-weather-icon{
@@ -146,30 +167,20 @@ body {
     }
 
     .location-wrapper {
-      min-width: 400px;
-      background-color: rgba(42, 161, 152, .1);
+      width: 400px;
+      background-color: rgba(42, 161, 152, .3);
 
       .map {
-        // margin: 0 auto;
 
         .map-frame {
           width: 100%;
           height: 380px;
 
-          @media (max-width: 991.98px) {
-            width: 80%;
-            height: calc(100vw - 300px);
-          }
+          @media (max-width: 991.98px) { height: calc(100vw - 400px);}
 
-          @media (max-width: 767.98px) {
-            width: 90%;
-            height: calc(100vw - 200px);
-          }
+          @media (max-width: 767.98px) { height: calc(100vw - 300px); }
 
-          @media (max-width: 575.98px) {
-            width: 100%;
-            height: calc(100vw - 100px);
-          }
+          @media (max-width: 575.98px) { height: calc(100vw - 150px); }
         }
       }
 
@@ -184,19 +195,65 @@ body {
           font-size: 1.3rem;
         }
       }
+
+      @media (max-width: 1199.98px) { width: 100%;}
     }
   }
 
-  @media (max-width: 1365.98px) { padding: 50px 5%; }
+  // .loader {
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 50%;
 
-  @media (max-width: 1199.98px) { padding: 50px 4%; }
+  //   span{
+  //     display: inline-block;
+  //     width: 13px;
+  //     height: 13px;
+  //     border-radius: 100%;
+  //     background-color: rgb(42, 161, 152);
+  //     margin: 10px 5px;
+  //     opacity: 0;
+  //   }
+    
+  //   span:nth-child(1) {
+  //     animation: opacitychange 1.5s ease-in-out infinite;
+  //   }
+    
+  //   span:nth-child(2) {
+  //     animation: opacitychange 1.5s ease-in-out 0.33s infinite;
+  //   }
+    
+  //   span:nth-child(3) {
+  //     animation: opacitychange 1.5s ease-in-out 0.66s infinite;
+  //   }
+    
+  //   @keyframes opacitychange {
+  //     0%, 100%{
+  //       opacity: 0;
+  //     }
+    
+  //     60%{
+  //       opacity: 1;
+  //     }
+  //   }
 
-  @media (max-width: 991.98px) {
-    height: 100%;
-    padding: 35px 3%;
-  }
+  // }
 
-  @media (max-width: 767.98px) { padding: 20px 2%; }
+  @media (max-width: 1365.98px) { margin: 50px 50px; }
 
-  @media (max-width: 575.98px) { padding: 5px 1%; }
+  @media (max-width: 1199.98px) { margin: 50px 40px; }
+
+  @media (max-width: 991.98px) { margin: 35px 30px; }
+
+  @media (max-width: 767.98px) { margin: 15px 20px; }
+
+  @media (max-width: 575.98px) { margin: 5px 5px; }
 }
+
+// .hidden {
+//   display: none;
+// }
+
+// .alert {
+//   position: absolute;
+// }
