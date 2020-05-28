@@ -1,15 +1,16 @@
 import './assets/styles/main.scss';
 
+import {
+  apiKeys,
+  weatherDescription,
+  locales,
+  dateOptions,
+} from './constants';
+
 const { getName } = require('country-list');
 
-const apiKeys = {
-  weather: 'qztMuAVTzLn0I1nWyyB7S0PMiGRt24ls',
-  coordinates: '5e1ed30a88d24dd2a60ea5bfbb8bd5ec',
-  images: 'gGuVte5R6MvjxTzaSgS0RqB0iiyKb9QXr0kjIZPZnFM',
-};
-
 const store = {
-  lang: 'en',
+  lang: locales.en,
   locationCity: '',
   locationCountry: '',
 };
@@ -24,42 +25,29 @@ const weatherUrlValuesObj = {
   apiKey: apiKeys.weather,
 };
 
-const weatherDescription = {
-  rain_heavy: 'Substantial rain',
-  rain: 'Rain',
-  rain_light: 'Light rain',
-  freezing_rain_heavy: 'Substantial freezing rain',
-  freezing_rain: 'Freezing rain',
-  freezing_rain_light: 'Light freezing rain',
-  freezing_drizzle: 'Light freezing rain falling in fine pieces',
-  drizzle: 'Light rain falling in very fine drops',
-  ice_pellets_heavy: 'Substantial ice pellets',
-  ice_pellets: 'Ice pellets',
-  ice_pellets_light: 'Light ice pellets',
-  snow_heavy: 'Substantial snow',
-  snow: 'Snow',
-  snow_light: 'Light snow',
-  flurries: 'Flurries',
-  tstorm: 'Thunderstorm conditions',
-  fog_light: 'Light fog',
-  fog: 'Fog',
-  cloudy: 'Cloudy',
-  mostly_cloudy: 'Mostly cloudy',
-  partly_cloudy: 'Partly cloudy',
-  mostly_clear: 'Mostly clear',
-  clear: 'Clear, sunny',
-};
-
-const locales = {
-  en: 'en-US',
-  ru: 'ru-Ru',
-  ua: 'uk-UA',
-  be: 'be-By',
-};
+// const loader = document.getElementById('loader');
+const btnSearch = document.getElementById('btn-search');
+const input = document.getElementById('input');
+const dropDownPanel = document.getElementById('dropdown-menu');
+const switchLandBtn = document.getElementById('btnGroupDrop1');
+const curTemp = document.getElementById('temp');
+const weatherIcon = document.getElementById('weather-icon');
+const weatherType = document.getElementById('weather-type');
+const feelsTemp = document.getElementById('feels-like');
+const feelsTempUnit = document.getElementById('feels-unit');
+const windSpeed = document.getElementById('wind-speed');
+const windSpeedUnit = document.getElementById('wind-unit');
+const humidity = document.getElementById('humidity');
+const weekDay = document.querySelectorAll('.week-day');
+const futureTemps = document.querySelectorAll('.future-temp');
+const futureWeatherIcons = document.querySelectorAll('.future-weather-icon');
+const celsiusBtn = document.getElementById('celsius-btn');
+const fahrenheitBtn = document.getElementById('fahrenheit-btn');
+const backgroundImageBtn = document.getElementById('background');
 
 // get and set location
-async function getLocation() {
-  const response = await fetch('http://ipinfo.io/?token=f8a9f65202941f');
+async function getCurLocation() {
+  const response = await fetch(`http://ipinfo.io/?token=${apiKeys.curLocation}`);
   const location = await response.json();
   const coordinatesArr = location.loc.split(',');
 
@@ -72,7 +60,7 @@ async function getLocation() {
 }
 
 function setLocation() {
-  const locationString = `${store.locationCity} ${store.locationCountry}`;
+  const locationString = `${store.locationCity}, ${store.locationCountry}`;
 
   document.getElementById('latitude').innerHTML = weatherUrlValuesObj.lat;
   document.getElementById('longitude').innerHTML = weatherUrlValuesObj.lon;
@@ -80,13 +68,12 @@ function setLocation() {
 }
 
 // set current date and time
-function setDateClock() {
+function setDateClock(lang) {
   const now = new Date();
+  const dateString = new Date(now).toLocaleString(lang, dateOptions);
   let hour = now.getHours();
   let minute = now.getMinutes();
   let second = now.getSeconds();
-  const dateOptions = { month: 'long', day: 'numeric', weekday: 'long' };
-  const dateString = new Intl.DateTimeFormat(locales.en, dateOptions).format(now);
 
   if (hour.toString().length === 1) hour = `0${hour}`;
   if (minute.toString().length === 1) minute = `0${minute}`;
@@ -96,14 +83,13 @@ function setDateClock() {
   const curTime = `${hour}:${minute}:${second}`;
   const dateClockString = `${curDate} <span class="clock">${curTime}</span>`;
 
-
   return dateClockString;
 }
 
 setInterval(() => {
-  const curTime = setDateClock();
+  const curTime = setDateClock(store.lang);
   document.getElementById('date-clock').innerHTML = curTime;
-}, 1000);
+}, 500);
 
 // get forecast end date
 function endForecastDate(date, endDay) {
@@ -144,45 +130,31 @@ async function getWeather(requestWeatherObj) {
       const errorText = await response.json();
       throw (errorText.message);
     }
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) { return e; }
+
   return forecast;
 }
 
-const curTemp = document.getElementById('temp');
-const weatherIcon = document.getElementById('weather-icon');
-const weatherType = document.getElementById('weather-type');
-const feelsTemp = document.getElementById('feels-like');
-const feelsTempUnit = document.getElementById('feels-unit');
-const windSpeed = document.getElementById('wind-speed');
-const windSpeedUnit = document.getElementById('wind-unit');
-const humidity = document.getElementById('humidity');
-const weekDay = document.querySelectorAll('.week-day');
-const futureTemp = document.querySelectorAll('.future-temp');
-const futureWeatherIcon = document.querySelectorAll('.future-weather-icon');
-
-function setDataFromForecast(obj, index) {
-  console.log(obj);
+function setDataFromForecast(obj, index, lang) {
   const weatherCode = obj.weather_code.value;
   const tempValue = Math.round(obj.temp[1].max.value);
 
   if (index > 0) {
     weekDay.forEach((val, idx) => {
-      const weekName = new Date(obj.observation_time.value).toLocaleString('en-US', { weekday: 'long' });
+      const weekName = new Date(obj.observation_time.value).toLocaleString(lang, { weekday: 'long' });
 
       if (index === idx + 1) val.innerHTML = weekName;
     });
-    futureTemp.forEach((val, idx) => {
+    futureTemps.forEach((val, idx) => {
       if (index === idx + 1) val.innerHTML = tempValue;
     });
-    futureWeatherIcon.forEach((val, idx) => {
-      if (index === idx + 1) val.src = `/src/assets/images/${weatherCode}.svg`;
+    futureWeatherIcons.forEach((val, idx) => {
+      if (index === idx + 1) val.src = `../src/assets/images/${weatherCode}.svg`;
     });
   } else {
     weatherType.innerHTML = weatherDescription[weatherCode];
     curTemp.innerHTML = tempValue;
-    weatherIcon.src = `/src/assets/images/${weatherCode}.svg`;
+    weatherIcon.src = `../src/assets/images/${weatherCode}.svg`;
     feelsTemp.innerHTML = Math.round(obj.feels_like[1].max.value);
     feelsTempUnit.innerHTML = obj.feels_like[1].max.units;
     windSpeed.innerHTML = obj.wind_speed[1].max.value;
@@ -191,67 +163,130 @@ function setDataFromForecast(obj, index) {
   }
 }
 
-// get input city coordinates
-async function getCoordinates(cityInput) {
-  const requestString = cityInput.split(' ').join(',');
+async function getImage() {
   try {
-    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${requestString}&language=${locales.be}&key=${apiKeys.coordinates}`);
-    const resultsObj = await response.json();
-    const cityObj = resultsObj.results[0];
-    const locationName = cityObj.formatted.split(', ');
-
-    weatherUrlValuesObj.lat = cityObj.geometry.lat;
-    weatherUrlValuesObj.lon = cityObj.geometry.lng;
-    store.locationCity = locationName[0];
-    store.locationCountry = locationName[locationName.length - 1];
+    const response = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=pattern&client_id=${apiKeys.images}`);
+    if (response.ok) {
+      const image = await response.json();
+      const imageUrl = image.urls.raw;
+      document.body.style.background = `linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)), url('${imageUrl}') center center no-repeat`;
+      document.body.style.backgroundSize = 'cover';
+    } else {
+      throw Error('Rate Limit Exceeded');
+    }
+    // preload(imageUrl);
   } catch (e) {
     console.log(e);
   }
 }
 
+// get input city coordinates
+async function getCoordinates(cityInput, lang) {
+  const requestString = cityInput.split(' ').join(',');
+
+  try {
+    const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${requestString}&language=${lang}&key=${apiKeys.coordinates}`);
+
+    if (response.ok) {
+      const resultsObj = await response.json();
+
+      if (resultsObj.total_results) {
+        const cityObj = resultsObj.results[0];
+        const locationName = cityObj.formatted.split(', ');
+
+        weatherUrlValuesObj.lat = cityObj.geometry.lat;
+        weatherUrlValuesObj.lon = cityObj.geometry.lng;
+        store.locationCity = locationName[0];
+        store.locationCountry = locationName[locationName.length - 1];
+      } else {
+        console.log('No results for such a place. Try a different input.');
+      }
+    } else {
+      const errorText = await response.json();
+      throw (errorText.status.message);
+    }
+  } catch (e) { console.log(e); }
+}
+
+async function updateWeatherOnPage() {
+  await getWeather(weatherUrlValuesObj)
+    .then((resData) => {
+      resData.forEach((obj, index) => {
+        setDataFromForecast(obj, index, store.lang);
+      });
+    })
+    .catch((e) => e);
+}
 
 async function setPage() {
   store.locationCountry = '';
-  await getLocation();
+  // await getImage();
+  await getCurLocation();
   setLocation();
   endForecastDateIso(3);
-  await getWeather(weatherUrlValuesObj)
-    .then((resData) => {
-      resData.forEach((obj, index) => {
-        setDataFromForecast(obj, index);
-      });
-    })
-    .catch((e) => console.log(e));
+  updateWeatherOnPage();
 }
 
-async function updatePage(inputString) {
-  await getCoordinates(inputString);
+async function updatePageOnRequest(inputString) {
+  // await getImage();
+  await getCoordinates(inputString, store.lang);
   setLocation();
   endForecastDateIso(3);
-  await getWeather(weatherUrlValuesObj)
-    .then((resData) => {
-      resData.forEach((obj, index) => {
-        setDataFromForecast(obj, index);
-      });
-    })
-    .catch((e) => console.log(e));
+  updateWeatherOnPage();
 }
 
+// page initialization
 setPage();
 
-const btnSearch = document.getElementById('btn-search');
-const input = document.getElementById('input');
-
+// events with input form
 input.addEventListener('keypress', function eventFn(event) {
   if (!this.value) return;
   if (event.key === 'Enter') {
     event.preventDefault();
-    updatePage(this.value);
+    updatePageOnRequest(this.value);
   }
 });
 
 btnSearch.addEventListener('click', () => {
   if (!input.value) return;
 
-  updatePage(input.value);
+  updatePageOnRequest(input.value);
+});
+
+// change weather forecast units
+celsiusBtn.addEventListener('click', () => {
+  if (weatherUrlValuesObj.unit === 'si') return;
+
+  weatherUrlValuesObj.unit = 'si';
+  updateWeatherOnPage();
+});
+
+fahrenheitBtn.addEventListener('click', () => {
+  if (weatherUrlValuesObj.unit === 'us') return;
+
+  weatherUrlValuesObj.unit = 'us';
+  updateWeatherOnPage();
+});
+
+backgroundImageBtn.addEventListener('click', () => {
+  // getImage();
+});
+
+// event on change lang button
+dropDownPanel.addEventListener('click', (event) => {
+  const selectedLang = event.target.innerHTML;
+
+  switch (selectedLang.toLowerCase()) {
+    case 'ru':
+      store.lang = locales.ru;
+      break;
+    case 'ua':
+      store.lang = locales.ua;
+      break;
+    default:
+      store.lang = locales.en;
+  }
+
+  updateWeatherOnPage();
+  switchLandBtn.innerHTML = selectedLang;
 });
