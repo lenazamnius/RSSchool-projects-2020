@@ -47,7 +47,7 @@ const backgroundImageBtn = document.getElementById('background');
 
 // get and set location
 async function getCurLocation() {
-  const response = await fetch(`http://ipinfo.io/?token=${apiKeys.curLocation}`);
+  const response = await fetch(`https://ipinfo.io/?token=${apiKeys.curLocation}`);
   const location = await response.json();
   const coordinatesArr = location.loc.split(',');
 

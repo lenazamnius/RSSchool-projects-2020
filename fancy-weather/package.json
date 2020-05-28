@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.9.6",
-    "country-list": "^2.2.0"
+    "country-list": "^2.2.0",
+    "netlify-cli": "^2.52.0"
   }
 }
