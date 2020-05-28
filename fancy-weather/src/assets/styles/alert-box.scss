@@ -1,0 +1,34 @@
+.alert {
+  position: absolute;
+  top: 35%;
+  left: 72%;
+  margin-top: -150px;
+  margin-left: -175px;
+  width: 350px;
+  font-size: 1.9rem;
+  text-align: left;
+  overflow: hidden;
+  z-index: 100;
+
+  @media (max-width: 991.98px) {
+    top: 39%;
+    left: 50%;
+    font-size: 1.7rem;
+  }
+  
+  @media (max-width: 425.98px){
+    width: 250px;
+    margin-left: -125px;
+  }
+}
+
+.alert-dismissible {
+  padding-right: 2.9rem;
+
+  @media (max-width: 991.98px) { padding-right: 2rem; }
+}
+
+.close {
+  font-size: 1.8rem;
+  opacity: .6;
+}
