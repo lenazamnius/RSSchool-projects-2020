@@ -12,6 +12,11 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../src/assets/favicon.ico">
 </head>
 <body>
+
+  <div class="alert alert-dismissible alert-primary hidden" id="alert">
+    <button type="button" class="close"  id="alert-close">&times;</button>
+    <span id="error-message">Here will be my error message</span>
+  </div>
   
   <div class="app-wrapper d-flex flex-column"  id="app-wrapper">
     <div class="controls-wrapper d-flex justify-content-between flex-column-reverse flex-lg-row p-3 p-md-4 p-lg-5 rounded-sm">
@@ -54,31 +59,31 @@
         <div class="forecast-container d-flex flex-column" id="forecast">
           <div class="d-flex flex-grow-1" id="forecast-today">
             <div class="temperature flex-grow-1" id="temp">15</div>
-            <div class="weather-data">
-              <img class="weather-icon" id="weather-icon" src="/src/assets/images/rain.svg" alt="">
-              <p class="weather-type  pl-4" id="weather-type">rain</p>
-              <p class="feels-like  pl-4">feels like: <span id="feels-like">12</span> <span id="feels-unit">C</span></p>
-              <p class="wind-speed  pl-4">wind speed: <span id="wind-speed">2</span> <span id="wind-unit">m/s</span></p>
-              <p class="humidity  pl-4">humidity: <span id="humidity">60</span> %</p>
+            <div class="weather-data pr-0 pr-sm-3 pr-lg-4">
+              <img class="weather-icon" id="weather-icon" src="/src/assets/images/clear.svg" alt="">
+              <p class="weather-type pl-2 pl-md-4" id="weather-type">clear</p>
+              <p class="feels-like pl-2 pl-md-4">feels like: <span id="feels-like">12</span> <span id="feels-unit">C</span></p>
+              <p class="wind-speed pl-2 pl-md-4">wind speed: <span id="wind-speed">2</span> <span id="wind-unit">m/s</span></p>
+              <p class="humidity pl-2 pl-md-4">humidity: <span id="humidity">60</span> %</p>
             </div>
           </div>
-          <div class="forecast-future d-flex flex-column flex-md-row mt-3 mt-md-0" id="forecast-future">
-            <div class="forecast-future-item d-flex flex-column pr-5 p-2">
-              <div class="week-day" id="week-day">monday</div>
+          <div class="forecast-future d-flex flex-column flex-lg-row mt-4 mt-md-3" id="forecast-future">
+            <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
+              <div class="week-day" id="week-day">Monday</div>
               <div class="forecast-container d-flex justify-content-center">
                 <p class="future-temp align-self-end pr-2" id="future-temp">5</p>
                 <img class="future-weather-icon" id="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
               </div>
             </div>
-            <div class="forecast-future-item d-flex flex-column pr-5 p-2">
-              <div class="week-day" id="week-day">monday</div>
+            <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
+              <div class="week-day" id="week-day">Tuesday</div>
               <div class="forecast-container d-flex justify-content-center">
                 <p class="future-temp align-self-end pr-2" id="future-temp">5</p>
                 <img class="future-weather-icon" id="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
               </div>
             </div>
-            <div class="forecast-future-item d-flex flex-column pr-5 p-2">
-              <div class="week-day" id="week-day">monday</div>
+            <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
+              <div class="week-day" id="week-day">Thursday</div>
               <div class="forecast-container d-flex justify-content-center">
                 <p class="future-temp align-self-end pr-2" id="future-temp">5</p>
                 <img class="future-weather-icon" id="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
@@ -106,11 +111,6 @@
       <span></span>
       <span></span>
       <span></span>
-    </div> -->
-
-    <!-- <div class="alert alert-dismissible alert-success">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
     </div> -->
 
   </div>

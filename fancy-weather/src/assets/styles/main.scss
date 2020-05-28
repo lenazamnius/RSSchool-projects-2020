@@ -1,6 +1,12 @@
-$bg-color: #073642;
-$text-color: #B58900;
+@import 'alert-box';
 
+$bg-color: #073642;
+$bg-color-light: rgba(42, 161, 152, .3);
+$border-color: rgb(42, 161, 152);
+$dropdown-color: #1f7972;
+$hover-color: #002b36;
+$text-color: #FFFFFF;
+$icon-color: #FDF6E3;
 
 html, 
 body {
@@ -10,7 +16,7 @@ body {
 
 body {
   font: 400 2.8rem 'Source Sans Pro', sans-serif;
-  background-color: #073642;
+  background-color: $bg-color;
   // background: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)),
   //             url('../images/default-background-image.jpg');
   // background-repeat: no-repeat;
@@ -21,25 +27,26 @@ body {
 .app-wrapper {
   max-width: 1400px;
   margin: 50px auto;
+  padding: 0 10px;
   text-align: center;
-  color: white;
+  color: $text-color;
 
   .controls-wrapper {
     width: 100%;
-    background-color: rgba(42, 161, 152, .3);
+    background-color: $bg-color-light;
 
     .btn-toolbar.controls {
       height: 55px;
 
       .dropdown-menu.show {
         min-width: 5.5rem;
-        background-color: #1f7972;
+        background-color: $dropdown-color;
 
         .dropdown-item {
-          color: #FDF6E3;
+          color: $icon-color;
 
           &:hover {
-            color: #002b36;
+            color: $hover-color;
             font-weight: 800;
             background: none;
           }
@@ -66,7 +73,7 @@ body {
         input.form-control {
           font-size: 1.85rem;
           border-right: 0;
-          border: 1px solid rgb(42, 161, 152);
+          border: 1px solid $border-color;
   
           @media (max-width: 991.98px) { font-size: 1.7rem; }
           @media (max-width: 767.98px) { font-size: 1.5rem; }
@@ -91,14 +98,13 @@ body {
   .main-wrapper {
 
     .forecast-wrapper {
-      background-color: rgba(42, 161, 152, .3);
+      background-color: $bg-color-light;
 
       .date-clock {
 
         .clock {
           margin-left: 20px;
           font-size: 2.7rem;
-          // color: rgb(131, 148, 150);
           
           @media (max-width: 991.98px) { font-size: 2.3rem; }
           @media (max-width: 767.98px) { font-size: 2rem; }
@@ -122,11 +128,10 @@ body {
         .temperature {
           font-size: 15rem;
           font-weight: 700;
-          // color: #FDF6E3;
 
           @media (max-width: 991.98px) { font-size: 12rem; }
-          @media (max-width: 767.98px) { font-size: 10rem; }
-          @media (max-width: 575.98px) { font-size: 8rem; }
+          @media (max-width: 575.98px) { font-size: 9rem; }
+          @media (max-width: 475.98px) { font-size: 6rem; }
         }
 
         .weather-data {
@@ -138,28 +143,43 @@ body {
             margin-bottom: 0;
           }
 
-          .weather-icon{
+          .weather-icon {
             width: 220px;
             opacity: 0.75;
 
-           @media (max-width: 767.98px) { width: 150px; }
+           @media (max-width: 767.98px) { 
+             padding-left: 10px;
+             width: 150px;
+           }
+           @media (max-width: 575.98px) { width: 120px; }
           }
+
+          @media (max-width: 767.98px) { font-size: 1.3rem; }
+          @media (max-width: 575.98px) { font-size: 1.15rem; }
         }
 
         .forecast-future {
           font-size: 3rem;
+          border-top: 0;
 
           .forecast-future-item {
 
             .future-temp {
               margin-bottom: 0;
               font-size: 5rem;
-              // color: #FDF6E3;
+
+              @media (max-width: 991.98px) { font-size: 5.5rem; }
             }
 
             .future-weather-icon{
               width: 100px;
               opacity: 0.75;
+            }
+
+            @media (max-width: 991.98px) {
+              font-size: 2.8rem;
+              border: 1px solid $border-color;
+              border-radius: 0.3rem;
             }
           }
         }
@@ -168,7 +188,7 @@ body {
 
     .location-wrapper {
       width: 400px;
-      background-color: rgba(42, 161, 152, .3);
+      background-color: $bg-color-light;
 
       .map {
 
@@ -177,9 +197,7 @@ body {
           height: 380px;
 
           @media (max-width: 991.98px) { height: calc(100vw - 400px);}
-
           @media (max-width: 767.98px) { height: calc(100vw - 300px); }
-
           @media (max-width: 575.98px) { height: calc(100vw - 150px); }
         }
       }
@@ -210,7 +228,7 @@ body {
   //     width: 13px;
   //     height: 13px;
   //     border-radius: 100%;
-  //     background-color: rgb(42, 161, 152);
+  //     background-color: $border-color;
   //     margin: 10px 5px;
   //     opacity: 0;
   //   }
@@ -240,20 +258,12 @@ body {
   // }
 
   @media (max-width: 1365.98px) { margin: 50px 50px; }
-
   @media (max-width: 1199.98px) { margin: 50px 40px; }
-
   @media (max-width: 991.98px) { margin: 35px 30px; }
-
   @media (max-width: 767.98px) { margin: 15px 20px; }
-
   @media (max-width: 575.98px) { margin: 5px 5px; }
 }
 
-// .hidden {
-//   display: none;
-// }
-
-// .alert {
-//   position: absolute;
-// }
+.hidden {
+  display: none;
+}
