@@ -19,7 +19,7 @@
   </div>
   
   <div class="app-wrapper d-flex flex-column"  id="app-wrapper">
-    <div class="controls-wrapper d-flex justify-content-between flex-column-reverse flex-lg-row p-3 p-md-4 p-lg-4 rounded-sm">
+    <div class="controls-wrapper d-flex justify-content-between flex-column-reverse flex-lg-row p-3 p-md-4 p-lg-5 rounded-sm">
 
       <div class="btn-toolbar controls d-flex justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
         
@@ -37,15 +37,15 @@
         </div>
 
         <div class="btn-group" role="group" aria-label="Third group">
-          <button type="button" class="btn btn-success" id="celsius-btn">C</button>
-          <button type="button" class="btn btn-success" id="fahrenheit-btn">Fn</button>
+          <button type="button" class="btn btn-success" id="celsius-btn">°C</button>
+          <button type="button" class="btn btn-success" id="fahrenheit-btn">°F</button>
         </div>
       </div>
         
       <form class="btn-toolbar input justify-content-center mb-5 mb-lg-0 pt-4 pt-lg-0" onsubmit="return false;" autocomplete="off" role="toolbar" aria-label="Toolbar with button groups">
         <div class="input-group">
-          <input type="text" class="form-control" id='input' placeholder="find your city" aria-label="Recipient's username" aria-describedby="basic-addon2">
-          <button class="btn btn-success" type="submit" id='btn-search'>Search</button>
+          <input type="text" class="form-control" id='input' data-i18n="placeholder" placeholder="Find your city" aria-label="Recipient's username" aria-describedby="basic-addon2">
+          <button class="btn btn-success" type="submit" id='btn-search' data-i18n="search">Search</button>
         </div>
       </form>
     </div>
@@ -62,9 +62,9 @@
             <div class="weather-data pr-0 pr-sm-3 pr-lg-4">
               <img class="weather-icon" id="weather-icon" src="/src/assets/images/clear.svg" alt="">
               <p class="weather-type pl-2 pl-md-4" id="weather-type">clear</p>
-              <p class="feels-like pl-2 pl-md-4">Feels Like: <span id="feels-like">12</span> <span id="feels-unit">C</span></p>
-              <p class="humidity pl-2 pl-md-4">Humidity: <span id="humidity">60</span> %</p>
-              <p class="wind-speed pl-2 pl-md-4">Wind Speed: <span id="wind-speed">2</span> <span id="wind-unit">m/s</span></p>
+              <p class="feels-like pl-2 pl-md-4"><span data-i18n="feelsText">Feels Like:  </span><span id="feels-temp">12</span> <span id="feels-unit">C</span></p>
+              <p class="humidity pl-2 pl-md-4"><span data-i18n="humidity">Humidity: </span><span id="humidity">60</span> %</p>
+              <p class="wind-speed pl-2 pl-md-4"><span data-i18n="windSpeed">Wind Speed: </span><span id="wind-speed">2</span> <span id="wind-unit">m/s</span></p>
             </div>
           </div>
           <div class="forecast-future d-flex flex-column flex-lg-row mt-4 mt-md-3" id="forecast-future">
@@ -99,8 +99,8 @@
         </div>
         <div class="coordinates mb-0 mb-lg-3 mt-3 mt-xl-0" id="coordinates">
           <ul>
-            <li>latitude: <span id="latitude"></span></li>
-            <li>longitude: <span id="longitude"></span></li>
+            <li><span data-i18n="latitude">latitude: </span><span id="latitude"></span></li>
+            <li><span data-i18n="longitude">longitude: </span><span id="longitude"></span></li>
           </ul>
         </div>
       </div>

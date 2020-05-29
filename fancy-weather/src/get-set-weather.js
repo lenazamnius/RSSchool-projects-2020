@@ -1,7 +1,7 @@
 const curTemp = document.getElementById('temp');
 const weatherIcon = document.getElementById('weather-icon');
 const weatherType = document.getElementById('weather-type');
-const feelsTemp = document.getElementById('feels-like');
+const feelsTemp = document.getElementById('feels-temp');
 const feelsTempUnit = document.getElementById('feels-unit');
 const windSpeed = document.getElementById('wind-speed');
 const windSpeedUnit = document.getElementById('wind-unit');
@@ -41,7 +41,7 @@ async function getWeather(requestWeatherObj) {
   return forecast;
 }
 
-function setDataFromForecast(obj, index, lang, weatherDescriptionObj) {
+function setDataFromForecast(obj, index, lang, weatherDescription) {
   const weatherCode = obj.weather_code.value;
   const tempValue = Math.round(obj.temp[1].max.value);
 
@@ -58,7 +58,7 @@ function setDataFromForecast(obj, index, lang, weatherDescriptionObj) {
       if (index === idx + 1) val.src = `../src/assets/images/${weatherCode}.svg`;
     });
   } else {
-    weatherType.innerHTML = weatherDescriptionObj[weatherCode];
+    weatherType.innerHTML = weatherDescription[weatherCode];
     curTemp.innerHTML = tempValue;
     weatherIcon.src = `../src/assets/images/${weatherCode}.svg`;
     feelsTemp.innerHTML = Math.round(obj.feels_like[0].min.value);

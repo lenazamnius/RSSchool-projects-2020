@@ -6,9 +6,13 @@
   margin-left: -175px;
   width: 350px;
   font-size: 1.9rem;
-  text-align: left;
+  text-align: center;
   overflow: hidden;
   z-index: 100;
+
+  .error-message {
+    padding-right: 1rem;
+  }
 
   @media (max-width: 991.98px) {
     top: 39%;
@@ -20,12 +24,6 @@
     width: 250px;
     margin-left: -125px;
   }
-}
-
-.alert-dismissible {
-  padding-right: 2.9rem;
-
-  @media (max-width: 991.98px) { padding-right: 2rem; }
 }
 
 .close {

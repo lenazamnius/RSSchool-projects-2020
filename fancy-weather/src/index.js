@@ -1,8 +1,11 @@
 import './assets/styles/main.scss';
 
+import en from './assets/translations/en';
+import ru from './assets/translations/ru';
+import ua from './assets/translations/ua';
+
 import {
   apiKeys,
-  weatherDescription,
   locales,
   dateOptions,
 } from './constants';
@@ -20,6 +23,7 @@ import {
 const { getName } = require('country-list');
 
 const store = {
+  translate: en,
   lang: locales.en,
   locationCity: '',
   locationCountry: '',
@@ -47,6 +51,7 @@ const alertDismiss = document.getElementById('alert-close');
 const celsiusBtn = document.getElementById('celsius-btn');
 const fahrenheitBtn = document.getElementById('fahrenheit-btn');
 const backgroundImageBtn = document.getElementById('background');
+const textToTranslate = document.querySelectorAll('[data-i18n]');
 
 function showAlert(message) {
   alertMessage.innerHTML = message;
@@ -60,7 +65,7 @@ function preloader(url) {
 
   preloaderImg.addEventListener('load', () => {
     bgElement.classList.remove('bg-loading');
-    bgElement.style.background = `linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)), url('${url}') center center no-repeat`;
+    bgElement.style.background = `linear-gradient(rgba(0, 0, 0, .65), rgba(5, 40, 49, 0.85)), url('${url}') center center no-repeat`;
     document.body.style.backgroundSize = 'cover';
     preloaderImg = null;
   });
@@ -69,14 +74,17 @@ function preloader(url) {
 async function getSetImage() {
   try {
     const response = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=pattern&client_id=${apiKeys.images}`);
+
     if (response.ok) {
       const image = await response.json();
-      console.log(image);
       const imageUrl = image.urls.regular;
 
       preloader(imageUrl);
     } else {
-      throw Error('Rate Limit Exceeded');
+      // throw Error;
+      const errorText = 'Fetch image limit exceeded';
+
+      showAlert(errorText);
     }
   } catch (e) { showAlert(e); }
 }
@@ -134,6 +142,16 @@ async function getCoordinates(cityInput, lang) {
   } catch (e) { showAlert(e); }
 }
 
+function translatePage() {
+  textToTranslate.forEach((val) => {
+    if (val.dataset.i18n === 'placeholder') {
+      val.setAttribute('placeholder', store.translate[val.dataset.i18n]);
+    } else {
+      val.innerHTML = store.translate[val.dataset.i18n];
+    }
+  });
+}
+
 async function translateLocationName(city, lang) {
   try {
     const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${city}&language=${lang}&key=${apiKeys.coordinates}`);
@@ -163,7 +181,7 @@ async function updateWeatherOnPage() {
   await getWeather(weatherUrlValuesObj)
     .then((resData) => {
       resData.forEach((obj, index) => {
-        setDataFromForecast(obj, index, store.lang, weatherDescription);
+        setDataFromForecast(obj, index, store.lang, store.translate);
       });
     })
     .catch((e) => showAlert(e));
@@ -172,15 +190,16 @@ async function updateWeatherOnPage() {
 
 async function setPage() {
   store.locationCountry = '';
-  // await getSetImage();
+  await getSetImage();
   await getCurLocation();
   setLocation();
+  translatePage();
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
   updateWeatherOnPage();
 }
 
 async function updatePageOnRequest(inputString) {
-  // await getSetImage();
+  await getSetImage();
   await getCoordinates(inputString, store.lang);
   setLocation();
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
@@ -216,7 +235,7 @@ celsiusBtn.addEventListener('click', () => {
   if (weatherUrlValuesObj.unit === 'si') return;
 
   weatherUrlValuesObj.unit = 'si';
-  // getSetImage();
+  getSetImage();
   updateWeatherOnPage();
 });
 
@@ -224,12 +243,12 @@ fahrenheitBtn.addEventListener('click', () => {
   if (weatherUrlValuesObj.unit === 'us') return;
 
   weatherUrlValuesObj.unit = 'us';
-  // getSetImage();
+  getSetImage();
   updateWeatherOnPage();
 });
 
 backgroundImageBtn.addEventListener('click', () => {
-  // getSetImage();
+  getSetImage();
 });
 
 // event on change language button
@@ -239,17 +258,21 @@ dropDownPanel.addEventListener('click', (event) => {
   switch (selectedLang.toLowerCase()) {
     case 'ru':
       store.lang = locales.ru;
+      store.translate = ru;
       break;
     case 'ua':
       store.lang = locales.ua;
+      store.translate = ua;
       break;
     default:
       store.lang = locales.en;
+      store.translate = en;
   }
 
   translateLocationName(store.locationCity, store.lang);
   updateWeatherOnPage();
-  // getSetImage();
+  getSetImage();
+  translatePage();
   switchLandBtn.innerHTML = selectedLang;
 });
 
