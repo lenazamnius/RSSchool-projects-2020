@@ -15,7 +15,7 @@ import {
 import {
   setDateClock,
   endForecastDateIso,
-} from './timeDate';
+} from './time-date';
 
 const { getName } = require('country-list');
 
@@ -36,6 +36,7 @@ const weatherUrlValuesObj = {
 };
 
 // const loader = document.getElementById('loader');
+const bgElement = document.querySelector('.bg-lazy');
 const btnSearch = document.getElementById('btn-search');
 const input = document.getElementById('input');
 const dropDownPanel = document.getElementById('dropdown-menu');
@@ -50,6 +51,34 @@ const backgroundImageBtn = document.getElementById('background');
 function showAlert(message) {
   alertMessage.innerHTML = message;
   alertBox.classList.toggle('hidden');
+}
+
+function preloader(url) {
+  bgElement.classList.add('bg-loading');
+  let preloaderImg = document.createElement('img');
+  preloaderImg.src = url;
+
+  preloaderImg.addEventListener('load', () => {
+    bgElement.classList.remove('bg-loading');
+    bgElement.style.background = `linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)), url('${url}') center center no-repeat`;
+    document.body.style.backgroundSize = 'cover';
+    preloaderImg = null;
+  });
+}
+
+async function getSetImage() {
+  try {
+    const response = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=pattern&client_id=${apiKeys.images}`);
+    if (response.ok) {
+      const image = await response.json();
+      console.log(image);
+      const imageUrl = image.urls.regular;
+
+      preloader(imageUrl);
+    } else {
+      throw Error('Rate Limit Exceeded');
+    }
+  } catch (e) { showAlert(e); }
 }
 
 // get and set location
@@ -73,27 +102,6 @@ function setLocation() {
   document.getElementById('longitude').innerHTML = weatherUrlValuesObj.lon;
   document.getElementById('location').innerHTML = locationString.toUpperCase();
 }
-
-// set current date and time
-setInterval(() => {
-  const curTime = setDateClock(store.lang, dateOptions);
-  document.getElementById('date-clock').innerHTML = curTime;
-}, 500);
-
-// async function getImage() {
-//   try {
-//     const response = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=pattern&client_id=${apiKeys.images}`);
-//     if (response.ok) {
-//       const image = await response.json();
-//       const imageUrl = image.urls.raw;
-//       document.body.style.background = `linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)), url('${imageUrl}') center center no-repeat`;
-//       document.body.style.backgroundSize = 'cover';
-//     } else {
-//       throw Error('Rate Limit Exceeded');
-//     }
-//     // preload(imageUrl);
-//   } catch (e) { showAlert(e); }
-// }
 
 // get input city coordinates
 async function getCoordinates(cityInput, lang) {
@@ -158,12 +166,13 @@ async function updateWeatherOnPage() {
         setDataFromForecast(obj, index, store.lang, weatherDescription);
       });
     })
-    .catch((e) => e);
+    .catch((e) => showAlert(e));
 }
+
 
 async function setPage() {
   store.locationCountry = '';
-  // await getImage();
+  // await getSetImage();
   await getCurLocation();
   setLocation();
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
@@ -171,12 +180,18 @@ async function setPage() {
 }
 
 async function updatePageOnRequest(inputString) {
-  // await getImage();
+  // await getSetImage();
   await getCoordinates(inputString, store.lang);
   setLocation();
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
   updateWeatherOnPage();
 }
+
+// set current date and time
+setInterval(() => {
+  const curTime = setDateClock(store.lang, dateOptions);
+  document.getElementById('date-clock').innerHTML = curTime;
+}, 500);
 
 // page initialization
 setPage();
@@ -201,6 +216,7 @@ celsiusBtn.addEventListener('click', () => {
   if (weatherUrlValuesObj.unit === 'si') return;
 
   weatherUrlValuesObj.unit = 'si';
+  // getSetImage();
   updateWeatherOnPage();
 });
 
@@ -208,11 +224,12 @@ fahrenheitBtn.addEventListener('click', () => {
   if (weatherUrlValuesObj.unit === 'us') return;
 
   weatherUrlValuesObj.unit = 'us';
+  // getSetImage();
   updateWeatherOnPage();
 });
 
 backgroundImageBtn.addEventListener('click', () => {
-  // getImage();
+  // getSetImage();
 });
 
 // event on change language button
@@ -232,6 +249,7 @@ dropDownPanel.addEventListener('click', (event) => {
 
   translateLocationName(store.locationCity, store.lang);
   updateWeatherOnPage();
+  // getSetImage();
   switchLandBtn.innerHTML = selectedLang;
 });
 

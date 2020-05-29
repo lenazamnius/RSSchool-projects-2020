@@ -17,11 +17,17 @@ body {
 body {
   font: 400 2.8rem 'Source Sans Pro', sans-serif;
   background-color: $bg-color;
-  // background: linear-gradient(rgba(0, 0, 0, .65), rgba(0, 0, 0, 0.45)),
-  //             url('../images/default-background-image.jpg');
-  // background-repeat: no-repeat;
-  // background-position: center;
-  // background-size: cover;
+
+  .bg-lazy {
+    height: 100vh;
+    width: 100vw;
+    transition: opacity 3s ease-out;
+  }
+  
+  .bg-loading {
+    opacity: 0;
+  }
+
 }
 
 .app-wrapper {
@@ -135,9 +141,9 @@ body {
         }
 
         .weather-data {
-
           text-align: left;
           font-size: 1.7rem;
+          letter-spacing: 0.5px;
 
           p {
             margin-bottom: 0;
@@ -159,25 +165,24 @@ body {
         }
 
         .forecast-future {
-          font-size: 3rem;
+          font-size: 2rem;
           border-top: 0;
 
           .forecast-future-item {
 
             .future-temp {
               margin-bottom: 0;
-              font-size: 5rem;
+              font-size: 4.5rem;
 
               @media (max-width: 991.98px) { font-size: 5.5rem; }
             }
 
             .future-weather-icon{
-              width: 100px;
-              opacity: 0.75;
+              width: 90px;
             }
 
             @media (max-width: 991.98px) {
-              font-size: 2.8rem;
+              font-size: 2.4rem;
               border: 1px solid $border-color;
               border-radius: 0.3rem;
             }
@@ -198,7 +203,7 @@ body {
 
           @media (max-width: 991.98px) { height: calc(100vw - 400px);}
           @media (max-width: 767.98px) { height: calc(100vw - 300px); }
-          @media (max-width: 575.98px) { height: calc(100vw - 150px); }
+          @media (max-width: 575.98px) { height: calc(100vw - 100px); }
         }
       }
 
@@ -267,3 +272,4 @@ body {
 .hidden {
   display: none;
 }
+
