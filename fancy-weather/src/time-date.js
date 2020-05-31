@@ -1,6 +1,6 @@
 export function setDateClock(lang, options) {
   const now = new Date();
-  const dateString = new Date(now).toLocaleString(lang, options);
+  const dateString = now.toLocaleString(lang, options);
   let hour = now.getHours();
   let minute = now.getMinutes();
   let second = now.getSeconds();

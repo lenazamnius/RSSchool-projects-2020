@@ -16,6 +16,9 @@ body {
 
 body {
   font: 400 2.8rem 'Source Sans Pro', sans-serif;
+  background: linear-gradient(rgba(5, 40, 49, 0.85), rgba(0, 0, 0, .65)),
+              url('../images/default-background-image.jpg') center center no-repeat;
+  background-size: cover;
   background-color: $bg-color;
 
   .bg-lazy {
@@ -27,7 +30,6 @@ body {
   .bg-loading {
     opacity: 0;
   }
-
 }
 
 .app-wrapper {
@@ -238,7 +240,7 @@ body {
         padding-left: 0;
         text-align: right;
         list-style: none;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         letter-spacing: 0.6px;
 
         @media (max-width: 991.98px) {
@@ -249,45 +251,6 @@ body {
       @media (max-width: 1199.98px) { width: 100%;}
     }
   }
-
-  // .loader {
-  //   position: absolute;
-  //   top: 50%;
-  //   left: 50%;
-
-  //   span{
-  //     display: inline-block;
-  //     width: 13px;
-  //     height: 13px;
-  //     border-radius: 100%;
-  //     background-color: $border-color;
-  //     margin: 10px 5px;
-  //     opacity: 0;
-  //   }
-    
-  //   span:nth-child(1) {
-  //     animation: opacitychange 1.5s ease-in-out infinite;
-  //   }
-    
-  //   span:nth-child(2) {
-  //     animation: opacitychange 1.5s ease-in-out 0.33s infinite;
-  //   }
-    
-  //   span:nth-child(3) {
-  //     animation: opacitychange 1.5s ease-in-out 0.66s infinite;
-  //   }
-    
-  //   @keyframes opacitychange {
-  //     0%, 100%{
-  //       opacity: 0;
-  //     }
-    
-  //     60%{
-  //       opacity: 1;
-  //     }
-  //   }
-
-  // }
 
   @media (max-width: 1365.98px) { margin: 50px 50px; }
   @media (max-width: 1199.98px) { margin: 50px 40px; }
@@ -300,6 +263,23 @@ body {
   display: none;
 }
 
-.gmnoprint{
+.active {
+  background-color: $dropdown-color;
+}
+
+.gmnoprint {
   display: none;
+}
+
+.spin {
+  animation: spin 0.7s infinite 0.5s linear;
+}
+
+@keyframes spin {
+    0%   {
+      transform: rotate(0deg);
+  }
+    100% {
+      transform: rotate(360deg);
+  }
 }
