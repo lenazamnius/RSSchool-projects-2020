@@ -1,4 +1,4 @@
-function setDateClock(lang, options) {
+export function setDateClock(lang, options) {
   const now = new Date();
   const dateString = new Date(now).toLocaleString(lang, options);
   let hour = now.getHours();
@@ -25,15 +25,10 @@ function endForecastDate(date, endDay) {
   return copy;
 }
 
-function endForecastDateIso(endDay) {
+export function endForecastDateIso(endDay) {
   const todayDAte = new Date();
   const endDate = endForecastDate(todayDAte, endDay);
   const andDateIso = endDate.toISOString().split('T');
 
   return andDateIso[0];
 }
-
-export {
-  setDateClock,
-  endForecastDateIso,
-};

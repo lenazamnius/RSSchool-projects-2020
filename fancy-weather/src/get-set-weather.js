@@ -12,7 +12,7 @@ const futureWeatherIcons = document.querySelectorAll('.future-weather-icon');
 const alertBox = document.getElementById('alert');
 const alertMessage = document.getElementById('error-message');
 
-async function getWeather(requestWeatherObj) {
+export async function loadWeather(requestWeatherObj) {
   const {
     time,
     endTime,
@@ -27,10 +27,12 @@ async function getWeather(requestWeatherObj) {
 
   try {
     const response = await fetch(url);
+
     if (response.ok) {
       forecast = await response.json();
     } else {
       const errorText = await response.json();
+
       throw (errorText.message);
     }
   } catch (e) {
@@ -41,7 +43,7 @@ async function getWeather(requestWeatherObj) {
   return forecast;
 }
 
-function setDataFromForecast(obj, index, lang, weatherDescription) {
+export function setDataFromForecast(obj, index, lang, weatherDescription) {
   const weatherCode = obj.weather_code.value;
   const tempValue = Math.round(obj.temp[1].max.value);
 
@@ -68,8 +70,3 @@ function setDataFromForecast(obj, index, lang, weatherDescription) {
     humidity.innerHTML = obj.humidity[1].max.value;
   }
 }
-
-export {
-  getWeather,
-  setDataFromForecast,
-};

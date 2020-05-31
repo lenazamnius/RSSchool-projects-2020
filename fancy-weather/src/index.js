@@ -3,22 +3,9 @@ import './assets/styles/main.scss';
 import en from './assets/translations/en';
 import ru from './assets/translations/ru';
 import ua from './assets/translations/ua';
-
-import {
-  apiKeys,
-  locales,
-  dateOptions,
-} from './constants';
-
-import {
-  getWeather,
-  setDataFromForecast,
-} from './get-set-weather';
-
-import {
-  setDateClock,
-  endForecastDateIso,
-} from './time-date';
+import { apiKeys, locales, dateOptions } from './constants';
+import { loadWeather, setDataFromForecast } from './get-set-weather';
+import { setDateClock, endForecastDateIso } from './time-date';
 
 const { getName } = require('country-list');
 
@@ -65,7 +52,7 @@ function preloader(url) {
 
   preloaderImg.addEventListener('load', () => {
     bgElement.classList.remove('bg-loading');
-    bgElement.style.background = `linear-gradient(rgba(0, 0, 0, .65), rgba(5, 40, 49, 0.85)), url('${url}') center center no-repeat`;
+    bgElement.style.background = `linear-gradient(rgba(5, 40, 49, 0.85), rgba(0, 0, 0, .65)), url('${url}') center center no-repeat`;
     document.body.style.backgroundSize = 'cover';
     preloaderImg = null;
   });
@@ -81,12 +68,24 @@ async function getSetImage() {
 
       preloader(imageUrl);
     } else {
-      // throw Error;
-      const errorText = 'Fetch image limit exceeded';
+      const errorText = 'Fetch image limit exceeded. Try it in an one hour.';
 
       showAlert(errorText);
     }
   } catch (e) { showAlert(e); }
+}
+
+// set map
+function initMap(lat, lng) {
+  const location = { lat: Number(lat), lng: Number(lng) };
+  const map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 8,
+    center: location,
+  });
+  const marker = new google.maps.Marker({
+    map,
+    position: location,
+  });
 }
 
 // get and set location
@@ -94,6 +93,7 @@ async function getCurLocation() {
   const response = await fetch(`https://ipinfo.io/?token=${apiKeys.curLocation}`);
   const location = await response.json();
   const coordinatesArr = location.loc.split(',');
+
 
   weatherUrlValuesObj.lat = coordinatesArr[0];
   weatherUrlValuesObj.lon = coordinatesArr[1];
@@ -103,11 +103,25 @@ async function getCurLocation() {
     : location.country;
 }
 
-function setLocation() {
-  const locationString = `${store.locationCity}, ${store.locationCountry}`;
+function convertCoordinate(coordinate) {
+  const absolute = Math.abs(coordinate);
+  const degrees = Math.floor(absolute);
+  const minutesNotTruncated = (absolute - degrees) * 60;
+  const minutes = Math.floor(minutesNotTruncated);
+  const seconds = Math.floor((minutesNotTruncated - minutes) * 60);
 
-  document.getElementById('latitude').innerHTML = weatherUrlValuesObj.lat;
-  document.getElementById('longitude').innerHTML = weatherUrlValuesObj.lon;
+  return `${degrees}° ${minutes}' ${seconds}"`;
+}
+
+function setLocation(lat, lng) {
+  const locationString = `${store.locationCity}, ${store.locationCountry}`;
+  const latitude = convertCoordinate(lat);
+  const longitude = convertCoordinate(lng);
+  const latitudeCardinal = lat >= 0 ? 'N' : 'S';
+  const longitudeCardinal = lng >= 0 ? 'E' : 'W';
+
+  document.getElementById('latitude').innerHTML = `${latitude} ${latitudeCardinal}`;
+  document.getElementById('longitude').innerHTML = `${longitude} ${longitudeCardinal}`;
   document.getElementById('location').innerHTML = locationString.toUpperCase();
 }
 
@@ -178,7 +192,7 @@ async function translateLocationName(city, lang) {
 }
 
 async function updateWeatherOnPage() {
-  await getWeather(weatherUrlValuesObj)
+  await loadWeather(weatherUrlValuesObj)
     .then((resData) => {
       resData.forEach((obj, index) => {
         setDataFromForecast(obj, index, store.lang, store.translate);
@@ -192,18 +206,20 @@ async function setPage() {
   store.locationCountry = '';
   await getSetImage();
   await getCurLocation();
-  setLocation();
+  setLocation(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
   translatePage();
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
   updateWeatherOnPage();
+  initMap(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
 }
 
 async function updatePageOnRequest(inputString) {
   await getSetImage();
   await getCoordinates(inputString, store.lang);
-  setLocation();
+  setLocation(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
   updateWeatherOnPage();
+  initMap(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
 }
 
 // set current date and time

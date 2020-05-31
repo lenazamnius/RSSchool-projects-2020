@@ -133,11 +133,25 @@ body {
 
         .temperature {
           font-size: 15rem;
-          font-weight: 700;
+          font-weight: 600;
+
+          .degree {
+            padding-top: 20px;
+            font-size: 8rem;
+
+            @media (max-width: 991.98px) {
+              padding-top: 10px;
+              font-size: 7rem;
+            }
+            @media (max-width: 575.98px) {
+              padding-top: 0;
+              font-size: 5rem;
+            }
+          }
 
           @media (max-width: 991.98px) { font-size: 12rem; }
           @media (max-width: 575.98px) { font-size: 9rem; }
-          @media (max-width: 475.98px) { font-size: 6rem; }
+          @media (max-width: 475.98px) { font-size: 5.5rem; }
         }
 
         .weather-data {
@@ -177,6 +191,15 @@ body {
               @media (max-width: 991.98px) { font-size: 5.5rem; }
             }
 
+            .degree {
+              padding-top: 5px;
+              font-size: 3.5rem;
+
+              @media (max-width: 991.98px) {
+                padding-top: 10px;
+              }
+            }
+
             .future-weather-icon{
               width: 90px;
             }
@@ -195,16 +218,20 @@ body {
       width: 400px;
       background-color: $bg-color-light;
 
-      .map {
+      .map-frame {
+        width: 100%;
+        height: 450px;
 
-        .map-frame {
-          width: 100%;
-          height: 450px;
-
-          @media (max-width: 991.98px) { height: calc(100vw - 500px);}
-          @media (max-width: 767.98px) { height: calc(100vw - 350px); }
-          @media (max-width: 575.98px) { height: calc(100vw - 100px); }
+        .map {
+          height: 100%;
+          border-top-left-radius: 0.35rem;
+          border-top-right-radius: 0.35rem;
+          clip-path: polygon(0% 0%, 100% 0%, 100% 93%, 77% 93%, 75% 100%, 64% 93%, 0 93%);
         }
+
+        @media (max-width: 991.98px) { height: calc(100vw - 500px);}
+        @media (max-width: 767.98px) { height: calc(100vw - 350px); }
+        @media (max-width: 575.98px) { height: calc(100vw - 100px); }
       }
 
       ul {
@@ -215,7 +242,6 @@ body {
         letter-spacing: 0.6px;
 
         @media (max-width: 991.98px) {
-          text-align: center;
           font-size: 1.3rem;
         }
       }
@@ -274,3 +300,6 @@ body {
   display: none;
 }
 
+.gmnoprint{
+  display: none;
+}
