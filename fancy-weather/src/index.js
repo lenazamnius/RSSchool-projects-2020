@@ -12,6 +12,7 @@ const { getName } = require('country-list');
 const store = {
   local: localStorage.getItem('lang') || 'en',
   tempUnit: localStorage.getItem('unit') || 'si',
+  langMessage: localStorage.getItem('message') || '',
   translate: en,
   lang: locales.en,
   locationCity: '',
@@ -28,7 +29,8 @@ const weatherUrlValuesObj = {
   apiKey: apiKeys.weather,
 };
 
-// const loader = document.getElementById('loader');
+const body = document.querySelector('body');
+const appBody = document.querySelector('.app-wrapper');
 const bgElement = document.querySelector('.bg-lazy');
 const btnSearch = document.getElementById('btn-search');
 const input = document.getElementById('input');
@@ -36,6 +38,7 @@ const dropDownPanel = document.getElementById('dropdown-menu');
 const switchLangBtn = document.getElementById('btnGroupDrop1');
 const alertBox = document.getElementById('alert');
 const alertMessage = document.getElementById('error-message');
+const langMessage = localStorage.getItem('message');
 const alertDismiss = document.getElementById('alert-close');
 const tempUnitsPanel = document.getElementById('temp-units');
 const celsiusBtn = document.getElementById('celsius-btn');
@@ -52,10 +55,10 @@ function showAlert(message) {
 
 // load and set background image
 function getQueryWords() {
-  const now = new Date();
-  const hour = now.getHours();
-  const month = now.toLocaleString('en', { month: 'long' });
+  const hour = new Date().getHours();
+  const month = new Date().toLocaleString('en', { month: 'long' });
   let dayPeriod;
+  let season;
 
   if (hour <= 6) {
     dayPeriod = 'night';
@@ -67,7 +70,17 @@ function getQueryWords() {
     dayPeriod = 'evening';
   }
 
-  return `${dayPeriod},nature,${month.toLowerCase()}`;
+  if (month === 'May' || month === 'April' || month === 'March') {
+    season = 'spring';
+  } else if (month === 'June' || month === 'July' || month === 'August') {
+    season = 'summer';
+  } else if (month === 'January ' || month === 'December' || month === 'February') {
+    season = 'winter';
+  } else if (month === 'September' || month === 'October' || month === 'November') {
+    season = 'autumn'
+  };
+  
+  return `${season},${dayPeriod},${month.toLowerCase()}`;
 }
 
 function preloader(url) {
@@ -266,7 +279,23 @@ function setDefault() {
   }
 }
 
+function setPreloadAnimation() {
+  const loader = document.createElement('div');
+
+  loader.classList.add('loader');
+  body.appendChild(loader);
+  appBody.classList.add('blurred');
+}
+
+function removePreloadAnimation() {
+  const loader = document.querySelector('.loader');
+
+  body.removeChild(loader);
+  appBody.classList.remove('blurred');
+}
+
 async function setPage() {
+  setPreloadAnimation();
   setDefault();
   await getCurLocation();
   setLocation(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
@@ -277,6 +306,12 @@ async function setPage() {
   await initMap(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
   queryImgString = getQueryWords();
   await loadSetImage(queryImgString);
+  removePreloadAnimation();
+
+  if(!langMessage) {
+    alertBox.classList.remove('hidden');
+    localStorage.setItem('message', 'shown');
+  }
 }
 
 async function updatePageOnRequest(inputString) {

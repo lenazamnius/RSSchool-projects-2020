@@ -1,4 +1,5 @@
 @import 'alert-box';
+@import 'loader';
 
 $bg-color: #073642;
 $bg-color-light: rgba(42, 161, 152, .3);
@@ -20,6 +21,7 @@ body {
               url('../images/default-background-image.jpg') center center no-repeat;
   background-size: cover;
   background-color: $bg-color;
+  
 
   .bg-lazy {
     height: 100vh;

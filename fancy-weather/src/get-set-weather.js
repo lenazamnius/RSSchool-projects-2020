@@ -51,7 +51,7 @@ export function setDataFromForecast(obj, index, lang, weatherDescription) {
     weekDay.forEach((val, idx) => {
       const weekName = new Date(obj.observation_time.value).toLocaleString(lang, { weekday: 'long' });
 
-      if (index === idx + 1) val.innerHTML = weekName;
+      if (index === idx + 1) val.innerHTML = weekName.toUpperCase();
     });
     futureTemps.forEach((val, idx) => {
       if (index === idx + 1) val.innerHTML = tempValue;
