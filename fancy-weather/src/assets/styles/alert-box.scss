@@ -15,12 +15,13 @@
   }
 
   @media (max-width: 991.98px) {
-    top: 39%;
+    top: 38%;
     left: 50%;
     font-size: 1.7rem;
   }
   
   @media (max-width: 425.98px){
+    top: 36%;
     width: 250px;
     margin-left: -125px;
   }
@@ -29,4 +30,29 @@
 .close {
   font-size: 1.8rem;
   opacity: .6;
+}
+
+#lang-alert {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -200px;
+  width: 400px;
+  font-size: 1.9rem;
+  text-align: center;
+  overflow: hidden;
+  z-index: 100;
+
+  @media (max-width: 991.98px) {
+    top: 57%;
+    left: 50%;
+    font-size: 1.7rem;
+  }
+  
+  @media (max-width: 425.98px){
+    top: 58%;
+    width: 250px;
+    margin-left: -125px;
+  }
 }

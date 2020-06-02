@@ -37,9 +37,11 @@ const input = document.getElementById('input');
 const dropDownPanel = document.getElementById('dropdown-menu');
 const switchLangBtn = document.getElementById('btnGroupDrop1');
 const alertBox = document.getElementById('alert');
+const langAlertBox = document.getElementById('lang-alert');
 const alertMessage = document.getElementById('error-message');
 const langMessage = localStorage.getItem('message');
 const alertDismiss = document.getElementById('alert-close');
+const langAlertDismiss = document.getElementById('langAlert-close');
 const tempUnitsPanel = document.getElementById('temp-units');
 const celsiusBtn = document.getElementById('celsius-btn');
 const fahrenheitBtn = document.getElementById('fahrenheit-btn');
@@ -56,7 +58,7 @@ function showAlert(message) {
 // load and set background image
 function getQueryWords() {
   const hour = new Date().getHours();
-  const month = new Date().toLocaleString('en', { month: 'long' });
+  const month = new Date().getMonth();
   let dayPeriod;
   let season;
 
@@ -70,17 +72,17 @@ function getQueryWords() {
     dayPeriod = 'evening';
   }
 
-  if (month === 'May' || month === 'April' || month === 'March') {
+  if (month > 1 && month <= 4) {
     season = 'spring';
-  } else if (month === 'June' || month === 'July' || month === 'August') {
+  } else if (month >= 5 && month < 8) {
     season = 'summer';
-  } else if (month === 'January ' || month === 'December' || month === 'February') {
+  } else if (month === 11 || month === 0 || month === 1) {
     season = 'winter';
-  } else if (month === 'September' || month === 'October' || month === 'November') {
+  } else if (month <= 8 && month < 11) {
     season = 'autumn'
   };
   
-  return `${season},${dayPeriod},${month.toLowerCase()}`;
+  return `${season},${dayPeriod},nature`;
 }
 
 function preloader(url) {
@@ -309,7 +311,7 @@ async function setPage() {
   removePreloadAnimation();
 
   if(!langMessage) {
-    alertBox.classList.remove('hidden');
+    langAlertBox.classList.remove('hidden');
     localStorage.setItem('message', 'shown');
   }
 }
@@ -406,4 +408,8 @@ dropDownPanel.addEventListener('click', (event) => {
 
 alertDismiss.addEventListener('click', () => {
   alertBox.classList.toggle('hidden');
+});
+
+langAlertDismiss.addEventListener('click', () => {
+  langAlertBox.classList.add('hidden');
 });
