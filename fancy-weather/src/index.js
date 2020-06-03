@@ -10,13 +10,13 @@ import { setDateClock, endForecastDateIso } from './time-date';
 const { getName } = require('country-list');
 
 const store = {
-  local: localStorage.getItem('lang') || 'en',
   tempUnit: localStorage.getItem('unit') || 'si',
   langMessage: localStorage.getItem('message') || '',
   translate: en,
   lang: locales.en,
   locationCity: '',
   locationCountry: '',
+  alert: 0,
 };
 
 const weatherUrlValuesObj = {
@@ -37,11 +37,8 @@ const input = document.getElementById('input');
 const dropDownPanel = document.getElementById('dropdown-menu');
 const switchLangBtn = document.getElementById('btnGroupDrop1');
 const alertBox = document.getElementById('alert');
-const langAlertBox = document.getElementById('lang-alert');
-const alertMessage = document.getElementById('error-message');
 const langMessage = localStorage.getItem('message');
 const alertDismiss = document.getElementById('alert-close');
-const langAlertDismiss = document.getElementById('langAlert-close');
 const tempUnitsPanel = document.getElementById('temp-units');
 const celsiusBtn = document.getElementById('celsius-btn');
 const fahrenheitBtn = document.getElementById('fahrenheit-btn');
@@ -50,9 +47,33 @@ const spinnerImg = document.getElementById('spinner-img');
 const textToTranslate = document.querySelectorAll('[data-i18n]');
 let queryImgString;
 
-function showAlert(message) {
-  alertMessage.innerHTML = message;
-  alertBox.classList.toggle('hidden');
+function clearHideAlertBox() {
+  alertBox.classList.add('hidden');
+  document.querySelectorAll('.alert-text').forEach((val) => val.remove());
+  store.alert = 0;
+}
+
+function createErrorText(message, apiName) {
+  const newErrorMessage = document.createElement('p');
+
+  store.alert += 1;
+  newErrorMessage.classList.add('alert-text');
+  newErrorMessage.innerText = apiName ? `${apiName}: ${message}` : `${message}`;
+  alertBox.appendChild(newErrorMessage);
+}
+
+function setPreloadAnimation() {
+  const loader = document.createElement('div');
+
+  loader.classList.add('loader');
+  body.appendChild(loader);
+}
+
+function removePreloadAnimation() {
+  const loader = document.querySelector('.loader');
+
+  body.removeChild(loader);
+  appBody.style.removeProperty('opacity');
 }
 
 // load and set background image
@@ -79,9 +100,9 @@ function getQueryWords() {
   } else if (month === 11 || month === 0 || month === 1) {
     season = 'winter';
   } else if (month <= 8 && month < 11) {
-    season = 'autumn'
-  };
-  
+    season = 'autumn';
+  }
+
   return `${season},${dayPeriod},nature`;
 }
 
@@ -101,20 +122,31 @@ function preloader(url) {
 }
 
 async function loadSetImage(queryString) {
+  console.log(`query string for image API: ${queryString}`);
   try {
     const response = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&query=${queryString}&client_id=${apiKeys.images}`);
 
     if (response.ok) {
       const image = await response.json();
       const imageUrl = image.urls.raw;
-
       preloader(imageUrl);
     } else {
-      const errorText = 'Fetch image limit exceeded. Try it at the beginning of the next hour.';
+      if (response.status === 403) {
+        const errorText = 'Image limit exceeded. Try it at the beginning of the next hour.';
 
-      showAlert(errorText);
+        throw (errorText);
+      }
+      const errorText = await response.json();
+
+      throw (errorText.errors);
     }
-  } catch (e) { showAlert(e); }
+  } catch (e) { createErrorText(e, 'Image API'); }
+}
+
+async function updateBackgroundImage() {
+  queryImgString = getQueryWords();
+  await loadSetImage(queryImgString);
+  if (store.alert) { alertBox.classList.toggle('hidden'); }
 }
 
 // set map
@@ -192,17 +224,17 @@ async function getCoordinates(cityInput, lang) {
       } else {
         const errorText = 'No results for such a place. Try a different input.';
 
-        showAlert(errorText);
+        createErrorText(errorText, 'Opencagedata API');
       }
     } else {
       const errorText = await response.json();
-
       throw (errorText.status.message);
     }
-  } catch (e) { showAlert(e); }
+  } catch (e) { createErrorText(e, 'Opencagedata API'); }
 }
 
-function translatePage() {
+// translate page
+function translateDefault() {
   textToTranslate.forEach((val) => {
     if (val.dataset.i18n === 'placeholder') {
       val.setAttribute('placeholder', store.translate[val.dataset.i18n]);
@@ -218,6 +250,7 @@ async function translateLocationName(city, lang) {
 
     if (response.ok) {
       const resultsObj = await response.json();
+
       if (resultsObj.total_results) {
         const cityObj = resultsObj.results[0];
         const locationName = cityObj.formatted.split(', ');
@@ -227,23 +260,35 @@ async function translateLocationName(city, lang) {
       } else {
         const errorText = 'Something went wrong. Try a different input.';
 
-        showAlert(errorText);
+        createErrorText(errorText, 'Opencagedata API');
       }
     } else {
       const errorText = await response.json();
       throw (errorText.status.message);
     }
-  } catch (e) { showAlert(e); }
+  } catch (e) { createErrorText(e, 'Opencagedata API'); }
 }
 
 async function updateWeatherOnPage() {
   await loadWeather(weatherUrlValuesObj)
     .then((resData) => {
-      resData.forEach((obj, index) => {
-        setDataFromForecast(obj, index, store.lang, store.translate);
-      });
+      if (resData) {
+        resData.forEach((obj, index) => {
+          setDataFromForecast(obj, index, store.lang, store.translate);
+        });
+      } else {
+        const errorText = 'Something went wrong.';
+        throw (errorText);
+      }
     })
-    .catch((e) => showAlert(e));
+    .catch((e) => createErrorText(e, 'Weather Api'));
+}
+
+async function translatePage() {
+  await translateLocationName(store.locationCity, store.lang);
+  await updateWeatherOnPage();
+  await translateDefault();
+  if (store.alert) { alertBox.classList.toggle('hidden'); }
 }
 
 function setDefault() {
@@ -259,68 +304,43 @@ function setDefault() {
     fahrenheitBtn.classList.add('active');
   }
 
-  if (storageValLang && storageValLang === 'en') {
-    store.translate = en;
-    store.lang = locales.en;
-  }
   if (storageValLang && storageValLang === 'ru') {
     store.translate = ru;
     store.lang = locales.ru;
+    switchLangBtn.innerHTML = 'Ru';
   }
   if (storageValLang && storageValLang === 'ua') {
     store.translate = ua;
     store.lang = locales.ua;
-  }
-
-  if (store.local === 'en') {
-    switchLangBtn.innerHTML = 'En';
-  } else if (store.local === 'ru') {
-    switchLangBtn.innerHTML = 'Ru';
-  } else if (store.local === 'ua') {
     switchLangBtn.innerHTML = 'Ua';
   }
 }
 
-function setPreloadAnimation() {
-  const loader = document.createElement('div');
-
-  loader.classList.add('loader');
-  body.appendChild(loader);
-  appBody.classList.add('blurred');
-}
-
-function removePreloadAnimation() {
-  const loader = document.querySelector('.loader');
-
-  body.removeChild(loader);
-  appBody.classList.remove('blurred');
-}
-
 async function setPage() {
+  if (!langMessage) {
+    createErrorText('Беларуский язык был заменён на мой родной украинский. Прошу не считать ошибкой, а эквивалентной заменой. :)');
+    localStorage.setItem('message', 'shown');
+  }
+
   setPreloadAnimation();
   setDefault();
   await getCurLocation();
   setLocation(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
   await translateLocationName(store.locationCity, store.lang);
-  translatePage();
+  translateDefault();
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
   await updateWeatherOnPage();
   await initMap(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
-  queryImgString = getQueryWords();
-  await loadSetImage(queryImgString);
+  updateBackgroundImage();
   removePreloadAnimation();
-
-  if(!langMessage) {
-    langAlertBox.classList.remove('hidden');
-    localStorage.setItem('message', 'shown');
-  }
 }
 
 async function updatePageOnRequest(inputString) {
   await getCoordinates(inputString, store.lang);
-  setLocation(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
   await updateWeatherOnPage();
+  await setLocation(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
+  if (store.alert) { alertBox.classList.toggle('hidden'); }
 }
 
 // set current date and time
@@ -374,8 +394,7 @@ fahrenheitBtn.addEventListener('click', () => {
 
 // event on change background image button
 backgroundImageBtn.addEventListener('click', () => {
-  queryImgString = getQueryWords();
-  loadSetImage(queryImgString);
+  updateBackgroundImage();
 });
 
 // event on change language button
@@ -400,16 +419,18 @@ dropDownPanel.addEventListener('click', (event) => {
       localStorage.setItem('lang', 'en');
   }
 
-  translateLocationName(store.locationCity, store.lang);
-  updateWeatherOnPage();
   translatePage();
   switchLangBtn.innerHTML = selectedLang;
 });
 
+// dismiss and clear alert box
 alertDismiss.addEventListener('click', () => {
-  alertBox.classList.toggle('hidden');
+  clearHideAlertBox();
 });
 
-langAlertDismiss.addEventListener('click', () => {
-  langAlertBox.classList.add('hidden');
+document.body.addEventListener('click', () => {
+  const alertText = document.querySelector('.alert-text');
+  if (!alertText) return;
+
+  clearHideAlertBox();
 });

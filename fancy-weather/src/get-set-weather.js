@@ -10,7 +10,6 @@ const weekDay = document.querySelectorAll('.week-day');
 const futureTemps = document.querySelectorAll('.future-temp');
 const futureWeatherIcons = document.querySelectorAll('.future-weather-icon');
 const alertBox = document.getElementById('alert');
-const alertMessage = document.getElementById('error-message');
 
 export async function loadWeather(requestWeatherObj) {
   const {
@@ -36,8 +35,11 @@ export async function loadWeather(requestWeatherObj) {
       throw (errorText.message);
     }
   } catch (e) {
-    alertMessage.innerHTML = e;
-    alertBox.classList.toggle('hidden');
+    const newErrorMessage = document.createElement('p');
+
+    newErrorMessage.classList.add('alert-text');
+    newErrorMessage.innerText = `Weather Api: ${e}`;
+    alertBox.appendChild(newErrorMessage);
   }
 
   return forecast;

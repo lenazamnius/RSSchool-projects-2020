@@ -13,7 +13,7 @@
 </head>
 <body class="bg-lazy">
   
-  <div class="app-wrapper d-flex flex-column"  id="app-wrapper">
+  <div class="app-wrapper d-flex flex-column" style="opacity: 0;" id="app-wrapper">
     <div class="controls-wrapper d-flex justify-content-between flex-column-reverse flex-lg-row p-3 p-md-4 p-lg-5 rounded-sm">
       <div class="btn-toolbar controls d-flex justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
         <div class="btn-group mr-2 mr-sm-4" role="group" aria-label="First group">
@@ -46,34 +46,34 @@
 
         <div class="forecast-container d-flex flex-column" id="forecast">
           <div class="d-flex flex-grow-1" id="forecast-today">
-            <div class="temperature d-flex justify-content-center flex-grow-1"><span id="temp">15</span><span class="degree">°</span></div>
+            <div class="temperature d-flex justify-content-center flex-grow-1"><span id="temp">0</span><span class="degree">°</span></div>
             <div class="weather-data pr-0 pr-sm-3 pr-lg-4">
               <img class="weather-icon" id="weather-icon" src="/src/assets/images/clear.svg" alt="">
-              <p class="weather-type pl-2 pl-md-4" id="weather-type">clear</p>
-              <p class="feels-like pl-2 pl-md-4"><span data-i18n="feelsText">Feels Like:  </span><span id="feels-temp">12</span> <span id="feels-unit">C</span>°</p>
-              <p class="humidity pl-2 pl-md-4"><span data-i18n="humidity">Humidity: </span><span id="humidity">60</span> %</p>
-              <p class="wind-speed pl-2 pl-md-4"><span data-i18n="windSpeed">Wind Speed: </span><span id="wind-speed">2</span> <span id="wind-unit">m/s</span></p>
+              <p class="weather-type pl-2 pl-md-4" id="weather-type"></p>
+              <p class="feels-like pl-2 pl-md-4"><span data-i18n="feelsText">Feels Like:  </span><span id="feels-temp">0</span> <span id="feels-unit">C</span>°</p>
+              <p class="humidity pl-2 pl-md-4"><span data-i18n="humidity">Humidity: </span><span id="humidity">0</span> %</p>
+              <p class="wind-speed pl-2 pl-md-4"><span data-i18n="windSpeed">Wind Speed: </span><span id="wind-speed">0</span> <span id="wind-unit">m/s</span></p>
             </div>
           </div>
           <div class="forecast-future d-flex flex-column flex-lg-row mt-4 mt-md-3" id="forecast-future">
             <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
-              <div class="week-day">Monday</div>
+              <div class="week-day">Week Day</div>
               <div class="forecast-container d-flex justify-content-center">
-                <p class="d-flex align-self-end pr-2"><span class="future-temp">5</span><span class="degree"> °</span></p>
+                <p class="d-flex align-self-end pr-2"><span class="future-temp">0</span><span class="degree"> °</span></p>
                 <img class="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
               </div>
             </div>
             <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
-              <div class="week-day">Tuesday</div>
+              <div class="week-day">Week Day</div>
               <div class="forecast-container d-flex justify-content-center">
-                <p class="d-flex align-self-end pr-2"><span class="future-temp">5</span><span class="degree"> °</span></p>
+                <p class="d-flex align-self-end pr-2"><span class="future-temp">0</span><span class="degree"> °</span></p>
                 <img class="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
               </div>
             </div>
             <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
-              <div class="week-day">Thursday</div>
+              <div class="week-day">Week Day</div>
               <div class="forecast-container d-flex justify-content-center">
-                <p class="d-flex align-self-end pr-2"><span class="future-temp">5</span><span class="degree"> °</span></p>
+                <p class="d-flex align-self-end pr-2"><span class="future-temp">0</span><span class="degree"> °</span></p>
                 <img class="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
               </div>
             </div>
@@ -92,16 +92,10 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="alert alert-dismissible alert-primary hidden" id="alert">
-    <button type="button" class="close"  id="alert-close">&times;</button>
-    <span id="error-message"></span>
-  </div>
-
-  <div class="alert alert-dismissible alert-primary hidden" id="lang-alert">
-    <button type="button" class="close"  id="langAlert-close">&times;</button>
-    <span id="error-message">Беларуский язык был заменён на мой родной украинский. Прошу не считать ошибкой, а эквивалентной заменой. :)</span>
+    <div class="alert alert-dismissible alert-primary hidden" id="alert">
+      <button type="button" class="close"  id="alert-close">&times;</button>
+    </div>
   </div>
 
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLTpYlmYlbPtc7dxu-jLEmplpW34YtpGA&callback&language=ru&region=RU" async defer></script>
