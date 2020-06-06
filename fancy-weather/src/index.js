@@ -4,7 +4,7 @@ import en from './assets/translations/en';
 import ru from './assets/translations/ru';
 import ua from './assets/translations/ua';
 import { apiKeys, locales, dateOptions } from './constants';
-import { loadWeather, setDataFromForecast } from './get-set-weather';
+import { loadWeather, setDataFromForecast } from './weather';
 import { setDateClock, endForecastDateIso } from './time-date';
 
 const { getName } = require('country-list');
@@ -16,7 +16,7 @@ const store = {
   lang: locales.en,
   locationCity: '',
   locationCountry: '',
-  alert: 0,
+  alertsCount: 0,
 };
 
 const weatherUrlValuesObj = {
@@ -49,14 +49,16 @@ let queryImgString;
 
 function clearHideAlertBox() {
   alertBox.classList.add('hidden');
-  document.querySelectorAll('.alert-text').forEach((val) => val.remove());
-  store.alert = 0;
+  document.querySelectorAll('.alert-text').forEach((val) => {
+    val.remove();
+  });
+  store.alertsCount = 0;
 }
 
 function createErrorText(message, apiName) {
   const newErrorMessage = document.createElement('p');
 
-  store.alert += 1;
+  store.alertsCount += 1;
   newErrorMessage.classList.add('alert-text');
   newErrorMessage.innerText = apiName ? `${apiName}: ${message}` : `${message}`;
   alertBox.appendChild(newErrorMessage);
@@ -106,7 +108,7 @@ function getQueryWords() {
   return `${season},${dayPeriod},nature`;
 }
 
-function preloader(url) {
+function preloadImage(url) {
   spinnerImg.classList.add('spin');
   bgElement.classList.add('bg-loading');
   let preloaderImg = document.createElement('img');
@@ -121,15 +123,14 @@ function preloader(url) {
   });
 }
 
-async function loadSetImage(queryString) {
-  console.log(`query string for image API: ${queryString}`);
+async function loadImage(queryString) {
   try {
     const response = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&query=${queryString}&client_id=${apiKeys.images}`);
 
     if (response.ok) {
       const image = await response.json();
-      const imageUrl = image.urls.raw;
-      preloader(imageUrl);
+      const imageUrl = image.urls.regular;
+      preloadImage(imageUrl);
     } else {
       if (response.status === 403) {
         const errorText = 'Image limit exceeded. Try it at the beginning of the next hour.';
@@ -140,13 +141,15 @@ async function loadSetImage(queryString) {
 
       throw (errorText.errors);
     }
-  } catch (e) { createErrorText(e, 'Image API'); }
+  } catch (e) {
+    createErrorText(e, 'Image API');
+  }
 }
 
 async function updateBackgroundImage() {
   queryImgString = getQueryWords();
-  await loadSetImage(queryImgString);
-  if (store.alert) { alertBox.classList.toggle('hidden'); }
+  await loadImage(queryImgString);
+  if (store.alertsCount) alertBox.classList.toggle('hidden');
 }
 
 // set map
@@ -230,7 +233,9 @@ async function getCoordinates(cityInput, lang) {
       const errorText = await response.json();
       throw (errorText.status.message);
     }
-  } catch (e) { createErrorText(e, 'Opencagedata API'); }
+  } catch (e) {
+    createErrorText(e, 'Opencagedata API');
+  }
 }
 
 // translate page
@@ -266,7 +271,9 @@ async function translateLocationName(city, lang) {
       const errorText = await response.json();
       throw (errorText.status.message);
     }
-  } catch (e) { createErrorText(e, 'Opencagedata API'); }
+  } catch (e) {
+    createErrorText(e, 'Opencagedata API');
+  }
 }
 
 async function updateWeatherOnPage() {
@@ -281,22 +288,24 @@ async function updateWeatherOnPage() {
         throw (errorText);
       }
     })
-    .catch((e) => createErrorText(e, 'Weather Api'));
+    .catch((e) => {
+      createErrorText(e, 'Weather Api');
+    });
 }
 
 async function translatePage() {
   await translateLocationName(store.locationCity, store.lang);
   await updateWeatherOnPage();
   await translateDefault();
-  if (store.alert) { alertBox.classList.toggle('hidden'); }
+  if (store.alertsCount) alertBox.classList.toggle('hidden');
 }
 
 function setDefault() {
   const storageValLang = localStorage.getItem('lang');
   const storageValUnit = localStorage.getItem('unit');
 
-  if (storageValUnit && storageValUnit === 'si') { weatherUrlValuesObj.unit = 'si'; }
-  if (storageValUnit && storageValUnit === 'us') { weatherUrlValuesObj.unit = 'us'; }
+  if (storageValUnit && storageValUnit === 'si') weatherUrlValuesObj.unit = 'si';
+  if (storageValUnit && storageValUnit === 'us') weatherUrlValuesObj.unit = 'us';
 
   if (store.tempUnit === 'si') {
     celsiusBtn.classList.add('active');
@@ -340,7 +349,7 @@ async function updatePageOnRequest(inputString) {
   weatherUrlValuesObj.endTime = endForecastDateIso(3);
   await updateWeatherOnPage();
   await setLocation(weatherUrlValuesObj.lat, weatherUrlValuesObj.lon);
-  if (store.alert) { alertBox.classList.toggle('hidden'); }
+  if (store.alertsCount) { alertBox.classList.toggle('hidden'); }
 }
 
 // set current date and time
