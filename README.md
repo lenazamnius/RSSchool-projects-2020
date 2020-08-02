@@ -4,3 +4,10 @@ Simple application to search and get movie information on demand by OMDb API web
 This was done as part of the educational **RSSchool front-end program** (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/movie-search.md)
 
 ![movie search](/movie-search/src/assets/images/readme-title.jpg)
+
+---
+
+# [FANCY-WEATHER APP demo](https://fancy-weather-lenazamnius.netlify.app)
+
+Simple weather forecast application.
+This was done as part of the educational **RSSchool front-end program** (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/fancy-weather.md)
