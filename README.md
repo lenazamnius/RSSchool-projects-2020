@@ -1,3 +1,6 @@
-# lenazamnius-RS2020Q1
+# [MOVIE SEARCH APP demo](https://zamnius-movies-search.netlify.app/)
 
-This is privat Lena Zamnius repository for projects at RSSchool front-end course (spring / summer 2020).
+Simple application to search and get movie information on demand by OMDb API web service.
+This was done as part of the educational **RSSchool front-end program** (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/movie-search.md)
+
+![movie search](/movie-search/src/assets/images/readme-title.jpg)
