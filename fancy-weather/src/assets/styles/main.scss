@@ -1,0 +1,287 @@
+@import 'alert-box';
+@import 'loader';
+
+$bg-color: #073642;
+$bg-color-light: rgba(42, 161, 152, .3);
+$border-color: rgb(42, 161, 152);
+$dropdown-color: #1f7972;
+$hover-color: #002b36;
+$text-color: #FFFFFF;
+$icon-color: #FDF6E3;
+
+html, 
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font: 400 2.8rem 'Source Sans Pro', sans-serif;
+  background: linear-gradient(rgba(5, 40, 49, 0.85), rgba(0, 0, 0, .65)),
+              url('../images/default-background-image.jpg') center center no-repeat;
+  background-size: cover;
+  background-color: $bg-color;
+  
+
+  .bg-lazy {
+    height: 100vh;
+    width: 100vw;
+    transition: opacity 3s ease-out;
+  }
+  
+  .bg-loading {
+    opacity: 0;
+  }
+}
+
+.app-wrapper {
+  max-width: 1400px;
+  margin: 50px auto;
+  padding: 0 10px;
+  text-align: center;
+  color: $text-color;
+
+  .controls-wrapper {
+    width: 100%;
+    background-color: $bg-color-light;
+
+    .btn-toolbar.controls {
+      height: 55px;
+
+      .dropdown-menu.show {
+        min-width: 5.5rem;
+        background-color: $dropdown-color;
+
+        .dropdown-item {
+          color: $icon-color;
+
+          &:hover {
+            color: $hover-color;
+            font-weight: 800;
+            background: none;
+          }
+        }
+      }
+  
+      button.change-background,
+      button.dropdown-toggle,
+      .dropdown-menu button,
+      .btn-group button {
+        font-size: 1.85rem;
+        padding: 0 15px;
+
+        @media (max-width: 991.98px) { font-size: 1.7rem; }
+        @media (max-width: 767.98px) { font-size: 1.5rem; }
+      }
+    }
+  
+    .btn-toolbar.input {
+      height: 55px;
+      
+      .input-group {
+
+        input.form-control {
+          font-size: 1.85rem;
+          border-right: 0;
+          border: 1px solid $border-color;
+  
+          @media (max-width: 991.98px) { font-size: 1.7rem; }
+          @media (max-width: 767.98px) { font-size: 1.5rem; }
+        }
+    
+        button.btn {
+          font-size: 1.85rem;
+          border-left: 0;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+  
+          @media (max-width: 991.98px) { font-size: 1.7rem; }
+          @media (max-width: 767.98px) { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 991.98px) { width: 80%; }
+        @media (max-width: 575.98px) { width: 100%; }
+      }
+    }
+  }
+
+  .main-wrapper {
+
+    .forecast-wrapper {
+      background-color: $bg-color-light;
+
+      .date-clock {
+
+        .clock {
+          margin-left: 20px;
+          font-size: 2.7rem;
+          
+          @media (max-width: 991.98px) { font-size: 2.3rem; }
+          @media (max-width: 767.98px) { font-size: 2rem; }
+          @media (max-width: 575.98px) { font-size: 1.8rem; }
+        }
+
+        @media (max-width: 991.98px) { font-size: 2.5rem; }
+        @media (max-width: 767.98px) { font-size: 2.3rem; }
+        @media (max-width: 575.98px) { font-size: 1.8rem; }
+      }
+      
+
+      .location {
+        @media (max-width: 767.98px) { font-size: 2.5rem; }
+        @media (max-width: 575.98px) { font-size: 2rem; }
+      }
+
+      .forecast-container {
+        height: 100%;
+
+        .temperature {
+          font-size: 15rem;
+          font-weight: 600;
+
+          .degree {
+            padding-top: 20px;
+            font-size: 8rem;
+
+            @media (max-width: 991.98px) {
+              padding-top: 10px;
+              font-size: 7rem;
+            }
+            @media (max-width: 575.98px) {
+              padding-top: 0;
+              font-size: 5rem;
+            }
+          }
+
+          @media (max-width: 991.98px) { font-size: 12rem; }
+          @media (max-width: 575.98px) { font-size: 9rem; }
+          @media (max-width: 475.98px) { font-size: 5rem; }
+        }
+
+        .weather-data {
+          text-align: left;
+          font-size: 1.7rem;
+          letter-spacing: 0.5px;
+
+          p {
+            margin-bottom: 0;
+          }
+
+          .weather-icon {
+            width: 220px;
+            opacity: 0.75;
+
+           @media (max-width: 767.98px) { 
+             padding-left: 10px;
+             width: 150px;
+           }
+           @media (max-width: 575.98px) { width: 120px; }
+          }
+
+          @media (max-width: 767.98px) { font-size: 1.3rem; }
+          @media (max-width: 575.98px) { font-size: 1.15rem; }
+        }
+
+        .forecast-future {
+          font-size: 2rem;
+          border-top: 0;
+
+          .forecast-future-item {
+
+            .future-temp {
+              margin-bottom: 0;
+              font-size: 4.5rem;
+
+              @media (max-width: 991.98px) { font-size: 5rem; }
+            }
+
+            .degree {
+              padding-top: 5px;
+              font-size: 3.5rem;
+
+              @media (max-width: 991.98px) {
+                padding-top: 10px;
+              }
+            }
+
+            .future-weather-icon{
+              width: 90px;
+            }
+
+            @media (max-width: 991.98px) {
+              font-size: 2.4rem;
+              border: 1px solid $border-color;
+              border-radius: 0.3rem;
+            }
+          }
+        }
+      }
+    }
+
+    .location-wrapper {
+      width: 400px;
+      background-color: $bg-color-light;
+
+      .map-frame {
+        width: 100%;
+        height: 450px;
+
+        .map {
+          height: 100%;
+          border-top-left-radius: 0.35rem;
+          border-top-right-radius: 0.35rem;
+          clip-path: polygon(0% 0%, 100% 0%, 100% 93%, 77% 93%, 75% 100%, 64% 93%, 0 93%);
+        }
+
+        @media (max-width: 991.98px) { height: calc(100vw - 500px);}
+        @media (max-width: 767.98px) { height: calc(100vw - 350px); }
+        @media (max-width: 575.98px) { height: calc(100vw - 100px); }
+      }
+
+      ul {
+        padding-left: 0;
+        text-align: right;
+        list-style: none;
+        font-size: 1.4rem;
+        letter-spacing: 0.6px;
+
+        @media (max-width: 991.98px) {
+          font-size: 1.3rem;
+        }
+      }
+
+      @media (max-width: 1199.98px) { width: 100%;}
+    }
+  }
+
+  @media (max-width: 1365.98px) { margin: 50px 50px; }
+  @media (max-width: 1199.98px) { margin: 50px 40px; }
+  @media (max-width: 991.98px) { margin: 35px 30px; }
+  @media (max-width: 767.98px) { margin: 15px 20px; }
+  @media (max-width: 575.98px) { margin: 5px 5px; }
+}
+
+.hidden {
+  display: none;
+}
+
+.active {
+  background-color: $dropdown-color;
+}
+
+.gmnoprint {
+  display: none;
+}
+
+.spin {
+  animation: spin 0.7s infinite 0.5s linear;
+}
+
+@keyframes spin {
+    0%   {
+      transform: rotate(0deg);
+  }
+    100% {
+      transform: rotate(360deg);
+  }
+}
