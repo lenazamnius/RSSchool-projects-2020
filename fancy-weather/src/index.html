@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FANCY WEATHER</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/solar/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon.ico">
+</head>
+<body class="bg-lazy">
+  
+  <div class="app-wrapper d-flex flex-column" style="opacity: 0;" id="app-wrapper">
+    <div class="controls-wrapper d-flex justify-content-between flex-column-reverse flex-lg-row p-3 p-md-4 p-lg-5 rounded-sm">
+      <div class="btn-toolbar controls d-flex justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="btn-group mr-2 mr-sm-4" role="group" aria-label="First group">
+          <button type="button" class="change-background btn btn-success" id="background"><i class="fas fa-sync-alt" id="spinner-img"></i></button>
+        </div>
+        <div class="btn-group mr-2 mr-sm-4" role="group">
+          <button id="btnGroupDrop1" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">En</button>
+          <div class="dropdown-menu" id="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <button class="dropdown-item">En</button>
+            <button class="dropdown-item">Ru</button>
+            <button class="dropdown-item">Ua</button>
+          </div>
+        </div>
+        <div class="btn-group" role="group" aria-label="Third group" id="temp-units">
+          <button type="button" class="btn btn-success" id="celsius-btn">°C</button>
+          <button type="button" class="btn btn-success" id="fahrenheit-btn">°F</button>
+        </div>
+      </div>
+      <form class="btn-toolbar input justify-content-center mb-5 mb-lg-0 pt-4 pt-lg-0" onsubmit="return false;" autocomplete="off" role="toolbar" aria-label="Toolbar with button groups">
+        <div class="input-group">
+          <input type="text" class="form-control" id='input' data-i18n="placeholder" placeholder="Find your city" aria-label="Recipient's username" aria-describedby="basic-addon2">
+          <button class="btn btn-success" type="submit" id='btn-search' data-i18n="search">Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="main-wrapper d-flex flex-column flex-xl-row flex-grow-1 mt-2">
+      <div class="forecast-wrapper d-flex flex-column flex-grow-1 rounded-lg mr-0 mr-xl-2 mb-2 mb-xl-0 p-3 p-lg-4">
+        <div class="location pb-1" id="location"></div>
+        <div class="date-clock pb-1" id="date-clock"></div>
+
+        <div class="forecast-container d-flex flex-column" id="forecast">
+          <div class="d-flex flex-grow-1" id="forecast-today">
+            <div class="temperature d-flex justify-content-center flex-grow-1"><span id="temp">0</span><span class="degree">°</span></div>
+            <div class="weather-data pr-0 pr-sm-3 pr-lg-4">
+              <img class="weather-icon" id="weather-icon" src="/src/assets/images/clear.svg" alt="">
+              <p class="weather-type pl-2 pl-md-4" id="weather-type"></p>
+              <p class="feels-like pl-2 pl-md-4"><span data-i18n="feelsText">Feels Like:  </span><span id="feels-temp">0</span> <span id="feels-unit">C</span>°</p>
+              <p class="humidity pl-2 pl-md-4"><span data-i18n="humidity">Humidity: </span><span id="humidity">0</span> %</p>
+              <p class="wind-speed pl-2 pl-md-4"><span data-i18n="windSpeed">Wind Speed: </span><span id="wind-speed">0</span> <span id="wind-unit">m/s</span></p>
+            </div>
+          </div>
+          <div class="forecast-future d-flex flex-column flex-lg-row mt-4 mt-md-3" id="forecast-future">
+            <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
+              <div class="week-day">Week Day</div>
+              <div class="forecast-container d-flex justify-content-center">
+                <p class="d-flex align-self-end pr-2"><span class="future-temp">0</span><span class="degree"> °</span></p>
+                <img class="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
+              </div>
+            </div>
+            <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
+              <div class="week-day">Week Day</div>
+              <div class="forecast-container d-flex justify-content-center">
+                <p class="d-flex align-self-end pr-2"><span class="future-temp">0</span><span class="degree"> °</span></p>
+                <img class="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
+              </div>
+            </div>
+            <div class="forecast-future-item d-flex flex-column pr-0 pr-lg-5 pr-lg-4 p-3 p-lg-2 mt-3">
+              <div class="week-day">Week Day</div>
+              <div class="forecast-container d-flex justify-content-center">
+                <p class="d-flex align-self-end pr-2"><span class="future-temp">0</span><span class="degree"> °</span></p>
+                <img class="future-weather-icon" src="/src/assets/images/partly_cloudy_day.svg" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="location-wrapper d-flex flex-column justify-content-between rounded-lg p-2 p-sm-3 p-lg-4">
+        <div class="map-frame">
+          <div class="map" id="map"></div>
+        </div>
+        <div class="coordinates mb-0 mb-lg-3 mt-3 mt-xl-0" id="coordinates">
+          <ul>
+            <li><span data-i18n="latitude">latitude: </span><span id="latitude"></span></li>
+            <li><span data-i18n="longitude">longitude: </span><span id="longitude"></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-dismissible alert-primary hidden" id="alert">
+      <button type="button" class="close"  id="alert-close">&times;</button>
+    </div>
+  </div>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLTpYlmYlbPtc7dxu-jLEmplpW34YtpGA&callback&language=ru&region=RU" async defer></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
