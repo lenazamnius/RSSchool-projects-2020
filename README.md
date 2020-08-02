@@ -1,9 +1,16 @@
+# English-for-kids [demo](https://eng-for-kids-zamnius.netlify.app/)
+
+Application for children to learn English words for RSSchool front-end course (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rslang/english-for-kids.md)
+
+![English-for-kids](https://user-images.githubusercontent.com/7431085/79695173-f6b80780-827d-11ea-986f-e82607aba1a5.jpg)
+---
+
 # [MOVIE SEARCH APP demo](https://zamnius-movies-search.netlify.app/)
 
 Simple application to search and get movie information on demand by OMDb API web service.
 This was done as part of the educational **RSSchool front-end program** (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/movie-search.md)
 
-![movie search](/movie-search/src/assets/images/readme-title.jpg)
+![Movie Search](/movie-search/src/assets/images/readme-title.jpg)
 
 ---
 
@@ -12,6 +19,7 @@ This was done as part of the educational **RSSchool front-end program** (spring/
 Simple weather forecast application.
 This was done as part of the educational **RSSchool front-end program** (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/fancy-weather.md)
 
+![Fancy Weather](https://user-images.githubusercontent.com/7431085/83358890-5f1afe00-a37f-11ea-99a7-94ebadfb2049.jpg)
 ---
 
 # React Basics Presentation
