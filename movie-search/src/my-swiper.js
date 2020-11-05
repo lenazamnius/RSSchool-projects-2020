@@ -11,6 +11,8 @@ const mySwiper = new Swiper('.swiper-container', {
   pagination: {
     el: '.swiper-pagination',
     clickable: true,
+    dynamicBullets: true,
+    dynamicMainBullets: 6,
   },
   navigation: {
     nextEl: '.swiper-button-next',

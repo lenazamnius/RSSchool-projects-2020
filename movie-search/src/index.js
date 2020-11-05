@@ -1,6 +1,4 @@
-// import './styles/main.scss';
-import '../src/assets/styles/main.scss';
-
+import './assets/styles/main.scss';
 import mySwiper from './my-swiper';
 import MovieSlide from './movie-slide';
 import {
@@ -11,7 +9,6 @@ import {
   eventsOnMouseup,
 } from './keyboard';
 
-const yandexAPIKey = 'trnsl.1.1.20200504T064520Z.e1d33f74b883176a.a15696bdad0036d0f2f9a019f51db4f0ae1cf1b0';
 const btnSearch = document.getElementById('btn-search');
 const inputMessage = document.getElementById('input-message');
 const deleteInput = document.getElementById('delete-input');
@@ -31,7 +28,13 @@ let keyboardContainer;
 let message;
 
 function createNewSlide(movieInfo) {
-  const {id, title, poster, year, movRating} = movieInfo;
+  const {
+    id,
+    title,
+    poster,
+    year,
+    movRating,
+  } = movieInfo;
   const newSlideObj = new MovieSlide(id, title, poster, year, movRating);
   const newCardHtmlElement = newSlideObj.createSlideHtmlElements();
 
@@ -56,14 +59,6 @@ function deleteInputMessage() {
   store.isMessage = false;
   store.massageTranslate = '';
   innerMessage.remove();
-}
-
-async function translateInput(word) {
-  const requestTranslate = `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${yandexAPIKey}&text=${word}&lang=en`;
-  const responseTranslate = await fetch(`${requestTranslate}`);
-  const translatedWord = await responseTranslate.json();
-
-  return translatedWord;
 }
 
 async function fetchMovies(word, page) {
@@ -119,13 +114,15 @@ async function appendSlides() {
 async function renderSwiper(inputStr) {
   if (store.isMessage) deleteInputMessage();
 
-  await translateInput(inputStr)
-    .then((res) => {
-      store.inputString = res.text[0];
-      store.massageTranslate = res.lang === 'ru-en' ? 'ru' : '';
-    });
+  // yandex translator doesn't work in Ukraine now
 
-  await fetchMovies(store.inputString, store.requestPage)
+  // await translateInput(inputStr)
+  //   .then((res) => {
+  //     store.inputString = res.text[0];
+  //     store.massageTranslate = res.lang === 'ru-en' ? 'ru' : '';
+  //   });
+
+  await fetchMovies(inputStr, store.requestPage)
     .then((resMovie) => {
       if (resMovie.Response === 'False') {
         store.massageTranslate = '';
@@ -205,7 +202,7 @@ keyboardBtn.addEventListener('click', (event) => {
       }
       eventsOnMousedown(eventMousedown);
     });
-    
+
     document.addEventListener('keyup', (eventKeyup) => keyUpEvent(eventKeyup));
     keyboardContainer.addEventListener('mouseup', (eventMouseup) => eventsOnMouseup(eventMouseup));
   } else {

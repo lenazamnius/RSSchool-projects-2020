@@ -224,23 +224,16 @@ body {
             background-position: center;
           }
         }
-      }
 
-      .swiper-pagination {
-        width: 100%;
-        max-width: 750px;
-        height: 28px;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-        overflow: hidden;
-  
-        .swiper-pagination-bullet {
-          width: 9px;
-          height: 9px;
-          margin-right: 8px;
-          background: $main-green-color;
-          outline-color: $transparent;
+        .swiper-pagination {
+    
+          .swiper-pagination-bullet {
+            width: 9px;
+            height: 9px;
+            margin-right: 8px;
+            background: $main-green-color;
+            outline-color: $transparent;
+          }
         }
       }
   
