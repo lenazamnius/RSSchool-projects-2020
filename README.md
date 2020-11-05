@@ -1,28 +1,30 @@
-# English-for-kids [demo](https://eng-for-kids-zamnius.netlify.app/)
+# All of this projects were completed for [RSSchool front-end course](https://rs.school/) (spring/summer 2020)
+>***[graduation certificate](https://app.rs.school/certificate/cj796sbs)***
 
-Application for children to learn English words for RSSchool front-end course (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rslang/english-for-kids.md)
+## ENGLISH-FOR-KIDS APP
+Application for children to learn English words according to this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rslang/english-for-kids.md)
+Build with JS ES6, Bootstrap 4.4
+
+*[watch demo](https://eng-for-kids-zamnius.netlify.app/)*
 
 ![English-for-kids](https://user-images.githubusercontent.com/7431085/79695173-f6b80780-827d-11ea-986f-e82607aba1a5.jpg)
----
 
-# [MOVIE SEARCH APP demo](https://zamnius-movies-search.netlify.app/)
+## MOVIE SEARCH APP
+Application to search and get movie information on demand by OMDb API web service according to this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/movie-search.md) Build with JS ES6, Bootstrap 4.4, Swiper JS API, OMDb API
 
-Simple application to search and get movie information on demand by OMDb API web service.
-This was done as part of the educational **RSSchool front-end program** (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/movie-search.md)
+*[watch demo](https://zamnius-movies-search.netlify.app/)*
 
 ![Movie Search](/movie-search/src/assets/images/readme-title.jpg)
 
----
+## FANCY-WEATHER APP
+Weather forecast application was done according to this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/fancy-weather.md)
+Build with JS ES6, Bootstrap 4.4, Climacell API, Google Maps API, IPinfo API, OpenCage Geocoding API
 
-# [FANCY-WEATHER APP demo](https://fancy-weather-lenazamnius.netlify.app)
-
-Simple weather forecast application.
-This was done as part of the educational **RSSchool front-end program** (spring/summer 2020) according this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/fancy-weather.md)
+*[watch demo](https://fancy-weather-lenazamnius.netlify.app)*
 
 ![Fancy Weather](https://user-images.githubusercontent.com/7431085/83358890-5f1afe00-a37f-11ea-99a7-94ebadfb2049.jpg)
----
 
-# React Basics Presentation
+## React Basics Presentation
 
 Short presentation about React JavaScript library and its main concepts.
 
