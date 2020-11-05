@@ -1,8 +1,8 @@
 # All of this projects were completed for <br /> [RSSchool front-end course](https://rs.school/) (spring/summer 2020)
 >***[graduation certificate](https://app.rs.school/certificate/cj796sbs)***
-\
-\
-\
+
+<br />
+
 ## ENGLISH-FOR-KIDS APP
 Application for children to learn English words according to this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/rslang/english-for-kids.md)
 Build with JS ES6, Bootstrap 4.4
@@ -10,8 +10,9 @@ Build with JS ES6, Bootstrap 4.4
 *[watch demo](https://eng-for-kids-zamnius.netlify.app/)*
 
 ![English-for-kids](https://user-images.githubusercontent.com/7431085/79695173-f6b80780-827d-11ea-986f-e82607aba1a5.jpg)
-\
-\
+
+<br />
+
 ## MOVIE SEARCH APP
 Application to search and get movie information on demand by OMDb API web service according to this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/movie-search.md)
 Build with JS ES6, Bootstrap 4.4, Swiper JS API, OMDb API
@@ -19,8 +20,9 @@ Build with JS ES6, Bootstrap 4.4, Swiper JS API, OMDb API
 *[watch demo](https://zamnius-movies-search.netlify.app/)*
 
 ![Movie Search](/movie-search/src/assets/images/readme-title.jpg)
-\
-\
+
+<br />
+
 ## FANCY-WEATHER APP
 Weather forecast application was done according to this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/fancy-weather.md)
 Build with JS ES6, Bootstrap 4.4, Climacell API, Google Maps API, IPinfo API, OpenCage Geocoding API
@@ -28,8 +30,9 @@ Build with JS ES6, Bootstrap 4.4, Climacell API, Google Maps API, IPinfo API, Op
 *[watch demo](https://fancy-weather-lenazamnius.netlify.app)*
 
 ![Fancy Weather](https://user-images.githubusercontent.com/7431085/83358890-5f1afe00-a37f-11ea-99a7-94ebadfb2049.jpg)
-\
-\
+
+<br />
+
 ## React Basics Presentation
 Short presentation about React JavaScript library and its main concepts according to this [assignment.](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/presentation.md)
 
