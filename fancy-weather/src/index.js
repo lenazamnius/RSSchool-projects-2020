@@ -126,7 +126,7 @@ function preloadImage(url) {
 async function loadImage(queryString) {
   try {
     const response = await fetch(`https://api.unsplash.com/photos/random?orientation=landscape&query=${queryString}&client_id=${apiKeys.images}`);
-
+    
     if (response.ok) {
       const image = await response.json();
       const imageUrl = image.urls.regular;
