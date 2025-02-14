@@ -43,6 +43,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "netlify-cli": "^17.15.7"
+    "netlify-cli": "^18.1.0"
   }
 }
