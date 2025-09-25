@@ -32,7 +32,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.6",
+    "@babel/runtime": "^7.28.4",
     "swiper": "^6.5.1"
   }
 }
