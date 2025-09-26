@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.28.4",
-    "swiper": "^6.5.1"
+    "swiper": "^6.8.4"
   }
 }
